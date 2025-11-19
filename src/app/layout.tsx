@@ -9,8 +9,8 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Global Cargo Care App',
-  description: 'Your trusted partner for global transport and logistics solutions.',
+  title: 'Aplicación Global Cargo Care',
+  description: 'Su socio de confianza para soluciones globales de transporte y logística.',
 };
 
 export default function RootLayout({
@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="es" className="h-full">
       <body
         className={cn(
           'relative h-full font-sans antialiased',

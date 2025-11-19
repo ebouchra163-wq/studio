@@ -49,21 +49,21 @@ export default function TrackingPage() {
   return (
     <div className="container mx-auto max-w-4xl py-12">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Track Your Shipment</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Rastree su Envío</h1>
         <p className="text-muted-foreground">
-          Enter your tracking ID to get real-time updates on your shipment.
+          Ingrese su ID de seguimiento para obtener actualizaciones en tiempo real de su envío.
         </p>
       </div>
       <Separator className="my-6" />
 
       <Card>
         <CardHeader>
-          <CardTitle>Enter Tracking ID</CardTitle>
+          <CardTitle>Ingrese el ID de Seguimiento</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex w-full items-end gap-2">
             <div className="flex-1">
-              <Label htmlFor="tracking-id">Tracking ID</Label>
+              <Label htmlFor="tracking-id">ID de Seguimiento</Label>
               <Input
                 id="tracking-id"
                 placeholder={MOCK_TRACKING_ID}
@@ -78,7 +78,7 @@ export default function TrackingPage() {
               ) : (
                 <PackageSearch className="mr-2 h-4 w-4" />
               )}
-              Track
+              Rastrear
             </Button>
           </div>
         </CardContent>
@@ -94,10 +94,10 @@ export default function TrackingPage() {
         {status === "not_found" && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Not Found</AlertTitle>
+            <AlertTitle>No Encontrado</AlertTitle>
             <AlertDescription>
-              No shipment found for tracking ID &quot;{trackingId}&quot;. Please
-              check the ID and try again.
+              No se encontró ningún envío para el ID de seguimiento &quot;{trackingId}&quot;. Por favor
+              verifique el ID e intente de nuevo.
             </AlertDescription>
           </Alert>
         )}
@@ -105,21 +105,21 @@ export default function TrackingPage() {
         {status === "found" && (
           <Card>
             <CardHeader>
-              <CardTitle>Shipment Status for {MOCK_TRACKING_ID}</CardTitle>
+              <CardTitle>Estado del Envío para {MOCK_TRACKING_ID}</CardTitle>
               <CardDescription>
-                Your package is on its way!
+                ¡Su paquete está en camino!
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
                  <CheckCircle className="h-6 w-6 text-green-600" />
-                 <p className="text-lg font-medium">In Transit</p>
+                 <p className="text-lg font-medium">En Tránsito</p>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><span className="font-semibold text-foreground">Origin:</span> New York, NY</li>
-                <li><span className="font-semibold text-foreground">Destination:</span> Los Angeles, CA</li>
-                <li><span className="font-semibold text-foreground">Estimated Delivery:</span> August 5, 2024</li>
-                <li><span className="font-semibold text-foreground">Last Update:</span> En route to sorting facility in Chicago, IL.</li>
+                <li><span className="font-semibold text-foreground">Origen:</span> Nueva York, NY</li>
+                <li><span className="font-semibold text-foreground">Destino:</span> Los Angeles, CA</li>
+                <li><span className="font-semibold text-foreground">Entrega Estimada:</span> 5 de agosto de 2024</li>
+                <li><span className="font-semibold text-foreground">Última Actualización:</span> En ruta hacia el centro de clasificación en Chicago, IL.</li>
               </ul>
               {trackingMapImage && (
                 <div className="overflow-hidden rounded-lg border">
@@ -135,7 +135,7 @@ export default function TrackingPage() {
               )}
             </CardContent>
             <CardFooter>
-                 <p className="text-xs text-muted-foreground">This is a simulation. For actual tracking, please contact customer support.</p>
+                 <p className="text-xs text-muted-foreground">Esto es una simulación. Para un seguimiento real, por favor contacte a soporte al cliente.</p>
             </CardFooter>
           </Card>
         )}

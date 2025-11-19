@@ -2,13 +2,13 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "A large cargo ship on the ocean, representing global transport.",
+      "description": "Un gran buque de carga en el océano, representando el transporte global.",
       "imageUrl": "https://images.unsplash.com/photo-1568347877321-f8935c7dc5a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYXJnbyUyMHNoaXB8ZW58MHx8fHwxNzYzNTgwMDU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cargo ship"
     },
     {
       "id": "tracking-map",
-      "description": "A map showing a transport route from a warehouse to a destination.",
+      "description": "Un mapa que muestra una ruta de transporte desde un almacén hasta un destino.",
       "imageUrl": "https://images.unsplash.com/photo-1651313527570-8bec5a11922c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxyb3V0ZSUyMG1hcHxlbnwwfHx8fDE3NjM1NzEyNTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "route map"
     }

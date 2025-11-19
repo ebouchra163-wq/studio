@@ -12,13 +12,13 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const SummarizeCustomerInquiryInputSchema = z.object({
-  inquiry: z.string().describe('The customer inquiry text to summarize.'),
+  inquiry: z.string().describe('El texto de la consulta del cliente a resumir.'),
 });
 
 export type SummarizeCustomerInquiryInput = z.infer<typeof SummarizeCustomerInquiryInputSchema>;
 
 const SummarizeCustomerInquiryOutputSchema = z.object({
-  summary: z.string().describe('A concise summary of the customer inquiry.'),
+  summary: z.string().describe('Un resumen conciso de la consulta del cliente.'),
 });
 
 export type SummarizeCustomerInquiryOutput = z.infer<typeof SummarizeCustomerInquiryOutputSchema>;
@@ -31,7 +31,7 @@ const prompt = ai.definePrompt({
   name: 'summarizeCustomerInquiryPrompt',
   input: {schema: SummarizeCustomerInquiryInputSchema},
   output: {schema: SummarizeCustomerInquiryOutputSchema},
-  prompt: `Summarize the following customer inquiry in a concise manner:\n\n{{inquiry}}`,
+  prompt: `Resume la siguiente consulta de cliente de manera concisa:\n\n{{inquiry}}`,
 });
 
 const summarizeCustomerInquiryFlow = ai.defineFlow(

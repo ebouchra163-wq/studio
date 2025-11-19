@@ -41,12 +41,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
-  origin: z.string().min(1, "Origin is required."),
-  destination: z.string().min(1, "Destination is required."),
+  origin: z.string().min(1, "El origen es obligatorio."),
+  destination: z.string().min(1, "El destino is obligatorio."),
   waypoints: z.string().optional(),
   trafficConditions: z.enum(["Light", "Moderate", "Heavy"]),
-  weatherConditions: z.string().min(1, "Weather conditions are required."),
-  deliverySchedule: z.string().min(1, "Delivery schedule is required."),
+  weatherConditions: z.string().min(1, "Las condiciones climáticas son obligatorias."),
+  deliverySchedule: z.string().min(1, "El horario de entrega es obligatorio."),
 });
 
 export default function OptimizePage() {
@@ -83,11 +83,11 @@ export default function OptimizePage() {
       const optimizationResult = await optimizeTransportRoutes(input);
       setResult(optimizationResult);
     } catch (error) {
-      console.error("Optimization failed:", error);
+      console.error("La optimización falló:", error);
       toast({
         variant: "destructive",
-        title: "Optimization Failed",
-        description: "An error occurred while optimizing the route. Please try again.",
+        title: "Optimización Fallida",
+        description: "Ocurrió un error al optimizar la ruta. Por favor, inténtalo de nuevo.",
       });
     } finally {
       setIsLoading(false);
@@ -98,19 +98,19 @@ export default function OptimizePage() {
     <div className="container mx-auto max-w-4xl py-12">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          Logistics Route Optimization
+          Optimización de Rutas Logísticas
         </h1>
         <p className="text-muted-foreground">
-          Use our AI tool to find the most efficient route for your shipments.
+          Utilice nuestra herramienta de IA para encontrar la ruta más eficiente para sus envíos.
         </p>
       </div>
       <Separator className="my-6" />
 
       <Card>
         <CardHeader>
-          <CardTitle>Route Parameters</CardTitle>
+          <CardTitle>Parámetros de la Ruta</CardTitle>
           <CardDescription>
-            Fill in the details below to generate an optimized route.
+            Rellene los detalles a continuación para generar una ruta optimizada.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -122,9 +122,9 @@ export default function OptimizePage() {
                   name="origin"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Origin</FormLabel>
+                      <FormLabel>Origen</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., New York, NY" {...field} />
+                        <Input placeholder="p. ej., Nueva York, NY" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -135,9 +135,9 @@ export default function OptimizePage() {
                   name="destination"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Destination</FormLabel>
+                      <FormLabel>Destino</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Los Angeles, CA" {...field} />
+                        <Input placeholder="p. ej., Los Ángeles, CA" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -149,15 +149,15 @@ export default function OptimizePage() {
                 name="waypoints"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Waypoints (optional)</FormLabel>
+                    <FormLabel>Puntos Intermedios (opcional)</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., Chicago, IL (one per line)"
+                        placeholder="p. ej., Chicago, IL (uno por línea)"
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      Enter any intermediate stops, one per line.
+                      Ingrese las paradas intermedias, una por línea.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -169,20 +169,20 @@ export default function OptimizePage() {
                   name="trafficConditions"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Traffic Conditions</FormLabel>
+                      <FormLabel>Condiciones del Tráfico</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select traffic conditions" />
+                            <SelectValue placeholder="Seleccione las condiciones del tráfico" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Light">Light</SelectItem>
-                          <SelectItem value="Moderate">Moderate</SelectItem>
-                          <SelectItem value="Heavy">Heavy</SelectItem>
+                          <SelectItem value="Light">Ligero</SelectItem>
+                          <SelectItem value="Moderate">Moderado</SelectItem>
+                          <SelectItem value="Heavy">Pesado</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -194,9 +194,9 @@ export default function OptimizePage() {
                   name="weatherConditions"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Weather Conditions</FormLabel>
+                      <FormLabel>Condiciones Climáticas</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Clear skies, 75°F" {...field} />
+                        <Input placeholder="p. ej., Cielos despejados, 24°C" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -208,10 +208,10 @@ export default function OptimizePage() {
                 name="deliverySchedule"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Delivery Schedule</FormLabel>
+                    <FormLabel>Horario de Entrega</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g., Deliver by July 30, 5:00 PM"
+                        placeholder="p. ej., Entregar antes del 30 de julio, 5:00 PM"
                         {...field}
                       />
                     </FormControl>
@@ -224,11 +224,11 @@ export default function OptimizePage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Optimizing...
+                    Optimizando...
                   </>
                 ) : (
                   <>
-                    <Route className="mr-2 h-4 w-4" /> Optimize Route
+                    <Route className="mr-2 h-4 w-4" /> Optimizar Ruta
                   </>
                 )}
               </Button>
@@ -246,24 +246,24 @@ export default function OptimizePage() {
       {result && (
         <Card className="mt-8">
           <CardHeader>
-            <CardTitle>Optimization Result</CardTitle>
+            <CardTitle>Resultado de la Optimización</CardTitle>
             <CardDescription>
-              Here is the AI-powered route recommendation.
+              Aquí está la recomendación de ruta impulsada por IA.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <h3 className="font-semibold">Optimized Route</h3>
+              <h3 className="font-semibold">Ruta Optimizada</h3>
               <p className="text-muted-foreground">{result.optimizedRoute}</p>
             </div>
             <div>
-              <h3 className="font-semibold">Estimated Travel Time</h3>
+              <h3 className="font-semibold">Tiempo Estimado de Viaje</h3>
               <p className="text-muted-foreground">
                 {result.estimatedTravelTime}
               </p>
             </div>
             <div>
-              <h3 className="font-semibold">Recommendations</h3>
+              <h3 className="font-semibold">Recomendaciones</h3>
               <p className="text-muted-foreground">{result.recommendations}</p>
             </div>
           </CardContent>

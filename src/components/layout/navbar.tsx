@@ -12,9 +12,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 const mainNavLinks = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/tracking", label: "Tracking", icon: PackageSearch },
-  { href: "/optimize", label: "Optimize Route", icon: Route },
+  { href: "/", label: "Inicio", icon: Home },
+  { href: "/tracking", label: "Seguimiento", icon: PackageSearch },
+  { href: "/optimize", label: "Optimizar Ruta", icon: Route },
 ];
 
 export function Navbar() {
@@ -32,13 +32,13 @@ export function Navbar() {
         <div className="container flex h-14 items-center justify-between px-4 md:px-6">
           <Link href="/">
             <Logo />
-            <span className="sr-only">Home</span>
+            <span className="sr-only">Inicio</span>
           </Link>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Open navigation menu</span>
+                <span className="sr-only">Abrir menú de navegación</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
@@ -63,11 +63,11 @@ export function Navbar() {
                 </nav>
                 <div className="mt-auto flex flex-col gap-4">
                    <Button asChild variant="secondary">
-                    <Link href="/signup">Sign Up</Link>
+                    <Link href="/signup">Registrarse</Link>
                   </Button>
                   <Button asChild>
                     <Link href="/login">
-                      <LogIn className="mr-2 h-4 w-4" /> Client Login
+                      <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
                     </Link>
                   </Button>
                 </div>
@@ -84,7 +84,7 @@ export function Navbar() {
       <div className="container flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="mr-8">
           <Logo />
-          <span className="sr-only">Home</span>
+          <span className="sr-only">Inicio</span>
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium">
           {mainNavLinks.map((link) => (
@@ -104,11 +104,11 @@ export function Navbar() {
         </nav>
         <div className="ml-auto flex items-center gap-4">
           <Button asChild variant="ghost">
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/signup">Registrarse</Link>
           </Button>
           <Button asChild>
             <Link href="/login">
-              <LogIn className="mr-2 h-4 w-4" /> Client Login
+              <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
             </Link>
           </Button>
         </div>
