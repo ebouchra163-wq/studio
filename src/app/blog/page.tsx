@@ -41,7 +41,7 @@ export default function BlogPage() {
                         src={postImage.imageUrl}
                         alt={post.title}
                         fill
-                        className="rounded-l-lg object-cover"
+                        className="rounded-t-lg object-cover md:rounded-l-lg md:rounded-t-none"
                         data-ai-hint={postImage.imageHint}
                       />
                     </Link>
