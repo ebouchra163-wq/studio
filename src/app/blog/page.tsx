@@ -11,41 +11,61 @@ import {
 import { format } from 'date-fns';
 import { ca } from 'date-fns/locale';
 import { Calendar } from 'lucide-react';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function BlogPage() {
   return (
-    <div className="container mx-auto max-w-4xl py-12">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Blog de la Indústria</h1>
-        <p className="text-muted-foreground">
+    <div className="container mx-auto max-w-5xl py-12 md:py-20">
+      <div className="space-y-2 text-center">
+        <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Blog de la Indústria</h1>
+        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
           Les últimes notícies, tendències i coneixements del sector de la logística i el transport.
         </p>
       </div>
-      <Separator className="my-6" />
+      <Separator className="my-12" />
 
-      <div className="grid gap-8">
-        {posts.map((post) => (
-          <Link href={`/blog/${post.slug}`} key={post.id}>
-            <Card className="transform-gpu transition-all duration-300 hover:shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-2xl hover:text-primary">
-                  {post.title}
-                </CardTitle>
-                <CardDescription className="flex items-center gap-2 pt-2">
-                  <Calendar className="h-4 w-4" />
-                  <time dateTime={post.date}>
-                    {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", {
-                      locale: ca,
-                    })}
-                  </time>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{post.excerpt}</p>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+      <div className="grid gap-12">
+        {posts.map((post) => {
+          const postImage = PlaceHolderImages.find(
+            (img) => img.id === post.imageId
+          );
+          return (
+            <Link href={`/blog/${post.slug}`} key={post.id} className="group">
+              <Card className="grid grid-cols-1 overflow-hidden transition-all duration-300 group-hover:shadow-xl md:grid-cols-2">
+                {postImage && (
+                  <div className="relative h-64 w-full md:h-auto">
+                    <Image
+                      src={postImage.imageUrl}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      data-ai-hint={postImage.imageHint}
+                    />
+                  </div>
+                )}
+                <div className="flex flex-col">
+                  <CardHeader>
+                    <CardTitle className="text-2xl group-hover:text-primary">
+                      {post.title}
+                    </CardTitle>
+                    <CardDescription className="flex items-center gap-2 pt-2">
+                      <Calendar className="h-4 w-4" />
+                      <time dateTime={post.date}>
+                        {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", {
+                          locale: ca,
+                        })}
+                      </time>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{post.excerpt}</p>
+                  </CardContent>
+                </div>
+              </Card>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
