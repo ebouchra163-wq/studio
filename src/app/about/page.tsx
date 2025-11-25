@@ -11,11 +11,11 @@ export default function AboutPage() {
     <div className="container mx-auto max-w-6xl py-12 md:py-20">
       <div className="space-y-4 text-center">
         <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
-          About Global Cargo Care
+          Sobre Global Cargo Care
         </h1>
         <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-          Connecting the world with reliable and efficient logistics solutions, one
-          shipment at a time.
+          Conectando el mundo con soluciones logísticas fiables y eficientes, un
+          envío a la vez.
         </p>
       </div>
       
@@ -32,18 +32,18 @@ export default function AboutPage() {
           )}
         </div>
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold">Our Story</h2>
+          <h2 className="text-3xl font-bold">Nuestra Historia</h2>
           <p className="text-muted-foreground">
-            Founded in 2010, Global Cargo Care was born from a vision to
-            simplify global logistics. We started with a small team and a
-            big dream: to make international shipping accessible, transparent,
-            and seamless for businesses of all sizes.
+            Fundada en 2010, Global Cargo Care nació de una visión para
+            simplificar la logística global. Empezamos con un pequeño equipo y un
+            gran sueño: hacer que el envío internacional sea accesible, transparente,
+            y sin interrupciones para empresas de todos los tamaños.
           </p>
           <p className="text-muted-foreground">
-            Over the years, we have grown into a trusted logistics partner,
-            known for our commitment to reliability, innovation, and
-            exceptional customer service. Our network spans the globe, yet
-            our focus remains personal.
+            A lo largo de los años, nos hemos convertido en un socio logístico de confianza,
+            conocido por nuestro compromiso con la fiabilidad, la innovación y
+            un servicio al cliente excepcional. Nuestra red se extiende por todo el mundo, pero
+            nuestro enfoque sigue siendo personal.
           </p>
         </div>
       </div>
@@ -56,13 +56,13 @@ export default function AboutPage() {
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Target className="h-8 w-8" />
             </div>
-            <CardTitle>Our Mission</CardTitle>
+            <CardTitle>Nuestra Misión</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              To provide superior logistics solutions that power our clients'
-              growth and success, ensuring the timely and safe delivery of
-              their goods anywhere in the world.
+              Proporcionar soluciones logísticas superiores que impulsen el crecimiento
+              y el éxito de nuestros clientes, garantizando la entrega puntual y segura de
+              sus mercancías en cualquier parte del mundo.
             </p>
           </CardContent>
         </Card>
@@ -71,13 +71,13 @@ export default function AboutPage() {
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Users className="h-8 w-8" />
             </div>
-            <CardTitle>Our Vision</CardTitle>
+            <CardTitle>Nuestra Visión</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              To be the world's most customer-centric logistics provider,
-              setting the standard for excellence in the industry and building
-              lasting relationships based on trust.
+              Ser el proveedor de logística más centrado en el cliente del mundo,
+              estableciendo el estándar de excelencia en la industria y construyendo
+              relaciones duraderas basadas en la confianza.
             </p>
           </CardContent>
         </Card>
@@ -86,40 +86,40 @@ export default function AboutPage() {
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Heart className="h-8 w-8" />
             </div>
-            <CardTitle>Our Values</CardTitle>
+            <CardTitle>Nuestros Valores</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              Integrity, reliability, innovation, and a relentless dedication
-              to our customers' success. These principles guide our every
-              action and decision.
+              Integridad, fiabilidad, innovación y una dedicación incesante
+              al éxito de nuestros clientes. Estos principios guían cada una de nuestras
+              acciones y decisiones.
             </p>
           </CardContent>
         </Card>
       </div>
 
       <div className="mt-12 rounded-lg bg-accent/20 p-8 md:mt-20">
-        <h2 className="mb-8 text-center text-3xl font-bold">Why Choose Us?</h2>
+        <h2 className="mb-8 text-center text-3xl font-bold">¿Por Qué Elegirnos?</h2>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <div className="flex items-start gap-4">
             <Clock className="mt-1 h-8 w-8 shrink-0 text-primary" />
             <div>
-              <h3 className="text-lg font-semibold">Years of Experience</h3>
-              <p className="text-muted-foreground">Over a decade of leading the logistics industry.</p>
+              <h3 className="text-lg font-semibold">Años de Experiencia</h3>
+              <p className="text-muted-foreground">Más de una década liderando la industria logística.</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
             <Globe className="mt-1 h-8 w-8 shrink-0 text-primary" />
             <div>
-              <h3 className="text-lg font-semibold">Global Reach</h3>
-              <p className="text-muted-foreground">A network connecting major ports and cities worldwide.</p>
+              <h3 className="text-lg font-semibold">Alcance Global</h3>
+              <p className="text-muted-foreground">Una red que conecta los principales puertos y ciudades de todo el mundo.</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
             <Ship className="mt-1 h-8 w-8 shrink-0 text-primary" />
             <div>
-              <h3 className="text-lg font-semibold">Tailored Solutions</h3>
-              <p className="text-muted-foreground">Services adapted to your specific shipping needs.</p>
+              <h3 className="text-lg font-semibold">Soluciones a Medida</h3>
+              <p className="text-muted-foreground">Servicios adaptados a sus necesidades específicas de envío.</p>
             </div>
           </div>
         </div>

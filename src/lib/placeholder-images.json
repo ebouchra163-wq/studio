@@ -4,31 +4,31 @@
       "id": "hero-image",
       "description": "Un gran buque de carga en el océano, representando el transporte global.",
       "imageUrl": "https://images.unsplash.com/photo-1568347877321-f8935c7dc5a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYXJnbyUyMHNoaXB8ZW58MHx8fHwxNzYzNTgwMDU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "cargo ship"
+      "imageHint": "buque de carga"
     },
     {
       "id": "tracking-map",
       "description": "Un mapa que muestra una ruta de transporte desde un almacén hasta un destino.",
       "imageUrl": "https://images.unsplash.com/photo-1651313527570-8bec5a11922c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxyb3V0ZSUyMG1hcHxlbnwwfHx8fDE3NjM1NzEyNTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "route map"
+      "imageHint": "mapa de ruta"
     },
     {
       "id": "blog-post-1",
       "description": "Un almacén moderno con robots automatizados moviendo estanterías.",
       "imageUrl": "https://images.unsplash.com/photo-1678453147318-56142c1b631f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhdXRvbWF0ZWQlMjB3YXJlaG91c2V8ZW58MHx8fHwxNzY0NTIyNTgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "automated warehouse"
+      "imageHint": "almacén automatizado"
     },
     {
       "id": "blog-post-2",
       "description": "Una pila de cajas de cartón listas para ser recicladas o reutilizadas.",
       "imageUrl": "https://images.unsplash.com/photo-1596598024828-568393524b07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxyZXR1cm4lMjBib3hlc3xlbnwwfHx8fDE3NjQ1MjI2MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "return boxes"
+      "imageHint": "cajas de devolución"
     },
     {
       "id": "about-us",
-      "description": "Un equip divers de professionals de la logística col·laborant en una oficina moderna.",
+      "description": "Un equipo diverso de profesionales de la logística colaborando en una oficina moderna.",
       "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsb2dpc3RpY3MlMjB0ZWFtfGVufDB8fHx8MTc2NDYwMzkzNnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "logistics team"
+      "imageHint": "equipo de logística"
     }
   ]
 }

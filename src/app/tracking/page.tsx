@@ -49,21 +49,21 @@ export default function TrackingPage() {
   return (
     <div className="container mx-auto max-w-4xl py-12">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Fes el seguiment del teu enviament</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Rastrea tu Envío</h1>
         <p className="text-muted-foreground">
-          Introdueix el teu ID de seguiment per obtenir actualitzacions en temps real sobre el teu enviament.
+          Introduce tu ID de seguimiento para obtener actualizaciones en tiempo real sobre tu envío.
         </p>
       </div>
       <Separator className="my-6" />
 
       <Card>
         <CardHeader>
-          <CardTitle>Introdueix l'ID de seguiment</CardTitle>
+          <CardTitle>Introduce el ID de Seguimiento</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex w-full items-end gap-2">
             <div className="flex-1">
-              <Label htmlFor="tracking-id">ID de seguiment</Label>
+              <Label htmlFor="tracking-id">ID de Seguimiento</Label>
               <Input
                 id="tracking-id"
                 placeholder={MOCK_TRACKING_ID}
@@ -78,7 +78,7 @@ export default function TrackingPage() {
               ) : (
                 <PackageSearch className="mr-2 h-4 w-4" />
               )}
-              Seguiment
+              Rastrear
             </Button>
           </div>
         </CardContent>
@@ -94,10 +94,10 @@ export default function TrackingPage() {
         {status === "not_found" && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>No trobat</AlertTitle>
+            <AlertTitle>No Encontrado</AlertTitle>
             <AlertDescription>
-              No s'ha trobat cap enviament amb l'ID de seguiment &quot;{trackingId}&quot;.
-              Verifica l'ID i torna-ho a provar.
+              No se encontró ningún envío con el ID de seguimiento &quot;{trackingId}&quot;.
+              Verifica el ID e inténtalo de nuevo.
             </AlertDescription>
           </Alert>
         )}
@@ -105,21 +105,21 @@ export default function TrackingPage() {
         {status === "found" && (
           <Card>
             <CardHeader>
-              <CardTitle>Estat de l'enviament per a {MOCK_TRACKING_ID}</CardTitle>
+              <CardTitle>Estado del Envío para {MOCK_TRACKING_ID}</CardTitle>
               <CardDescription>
-                El teu paquet està en camí!
+                ¡Tu paquete está en camino!
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
                  <CheckCircle className="h-6 w-6 text-green-600" />
-                 <p className="text-lg font-medium">En trànsit</p>
+                 <p className="text-lg font-medium">En Tránsito</p>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><span className="font-semibold text-foreground">Origen:</span> Nova York, NY</li>
-                <li><span className="font-semibold text-foreground">Destinació:</span> Los Angeles, CA</li>
-                <li><span className="font-semibold text-foreground">Lliurament estimat:</span> 5 d'agost de 2024</li>
-                <li><span className="font-semibold text-foreground">Darrera actualització:</span> En ruta cap a la instal·lació de classificació a Chicago, IL.</li>
+                <li><span className="font-semibold text-foreground">Origen:</span> Nueva York, NY</li>
+                <li><span className="font-semibold text-foreground">Destino:</span> Los Ángeles, CA</li>
+                <li><span className="font-semibold text-foreground">Entrega Estimada:</span> 5 de Agosto de 2024</li>
+                <li><span className="font-semibold text-foreground">Última Actualización:</span> En ruta hacia la instalación de clasificación en Chicago, IL.</li>
               </ul>
               {trackingMapImage && (
                 <div className="overflow-hidden rounded-lg border">
@@ -135,7 +135,7 @@ export default function TrackingPage() {
               )}
             </CardContent>
             <CardFooter>
-                 <p className="text-xs text-muted-foreground">Això és una simulació. Per a un seguiment real, contacta amb atenció al client.</p>
+                 <p className="text-xs text-muted-foreground">Esto es una simulación. Para un seguimiento real, contacta con atención al cliente.</p>
             </CardFooter>
           </Card>
         )}

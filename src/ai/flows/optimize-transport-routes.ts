@@ -1,30 +1,30 @@
 'use server';
 
 /**
- * @fileOverview An AI agent to optimize transport routes.
+ * @fileOverview Un agente de IA para optimizar rutas de transporte.
  *
- * - optimizeTransportRoutes - A function that handles the route optimization process.
- * - OptimizeTransportRoutesInput - The input type for the optimizeTransportRoutes function.
- * - OptimizeTransportRoutesOutput - The return type for the optimizeTransportRoutes function.
+ * - optimizeTransportRoutes - Una función que maneja el proceso de optimización de rutas.
+ * - OptimizeTransportRoutesInput - El tipo de entrada para la función optimizeTransportRoutes.
+ * - OptimizeTransportRoutesOutput - El tipo de retorno para la función optimizeTransportRoutes.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const OptimizeTransportRoutesInputSchema = z.object({
-  origin: z.string().describe("The starting location of the transport route."),
-  destination: z.string().describe("The final destination of the transport route."),
-  waypoints: z.array(z.string()).optional().describe("An optional list of intermediate locations to pass through."),
-  trafficConditions: z.string().describe("Real-time traffic conditions along the route."),
-  weatherConditions: z.string().describe("Current weather conditions along the route."),
-  deliverySchedule: z.string().describe("The delivery schedule, including time windows."),
+  origin: z.string().describe("La ubicación de inicio de la ruta de transporte."),
+  destination: z.string().describe("El destino final de la ruta de transporte."),
+  waypoints: z.array(z.string()).optional().describe("Una lista opcional de ubicaciones intermedias por las que pasar."),
+  trafficConditions: z.string().describe("Condiciones del tráfico en tiempo real a lo largo de la ruta."),
+  weatherConditions: z.string().describe("Condiciones climáticas actuales a lo largo de la ruta."),
+  deliverySchedule: z.string().describe("El horario de entrega, incluyendo ventanas de tiempo."),
 });
 export type OptimizeTransportRoutesInput = z.infer<typeof OptimizeTransportRoutesInputSchema>;
 
 const OptimizeTransportRoutesOutputSchema = z.object({
-  optimizedRoute: z.string().describe("The optimized transport route with estimated travel time."),
-  estimatedTravelTime: z.string().describe("The estimated travel time for the optimized route."),
-  recommendations: z.string().describe("Recommendations to minimize delays and improve efficiency based on traffic, weather, and schedule."),
+  optimizedRoute: z.string().describe("La ruta de transporte optimizada con el tiempo de viaje estimado."),
+  estimatedTravelTime: z.string().describe("El tiempo de viaje estimado para la ruta optimizada."),
+  recommendations: z.string().describe("Recomendaciones para minimizar retrasos y mejorar la eficiencia basadas en el tráfico, el clima y el horario."),
 });
 export type OptimizeTransportRoutesOutput = z.infer<typeof OptimizeTransportRoutesOutputSchema>;
 
@@ -36,18 +36,18 @@ const prompt = ai.definePrompt({
   name: 'optimizeTransportRoutesPrompt',
   input: {schema: OptimizeTransportRoutesInputSchema},
   output: {schema: OptimizeTransportRoutesOutputSchema},
-  prompt: `You are an expert transport route optimizer. Your goal is to find the best route to minimize delays and improve efficiency, based on real-time traffic, weather conditions, and the delivery schedule.
+  prompt: `Eres un experto optimizador de rutas de transporte. Tu objetivo es encontrar la mejor ruta para minimizar retrasos y mejorar la eficiencia, basándote en el tráfico en tiempo real, las condiciones climáticas y el horario de entrega.
 
-  Origin: {{{origin}}}
-  Destination: {{{destination}}}
+  Origen: {{{origin}}}
+  Destino: {{{destination}}}
   {{#if waypoints}}
-  Waypoints: {{{waypoints}}}
+  Puntos intermedios: {{{waypoints}}}
   {{/if}}
-  Traffic Conditions: {{{trafficConditions}}}
-  Weather Conditions: {{{weatherConditions}}}
-  Delivery Schedule: {{{deliverySchedule}}}
+  Condiciones del Tráfico: {{{trafficConditions}}}
+  Condiciones Climáticas: {{{weatherConditions}}}
+  Horario de Entrega: {{{deliverySchedule}}}
 
-  Provide the optimized route, estimated travel time, and recommendations to minimize delays and improve efficiency.
+  Proporciona la ruta optimizada, el tiempo estimado de viaje y recomendaciones para minimizar retrasos y mejorar la eficiencia.
   `,
 });
 
