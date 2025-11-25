@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { format } from 'date-fns';
-import { ca } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { Calendar } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -18,9 +18,9 @@ export default function BlogPage() {
   return (
     <div className="container mx-auto max-w-5xl py-12 md:py-20">
       <div className="space-y-2 text-center">
-        <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Blog de la Indústria</h1>
+        <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Industry Blog</h1>
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-          Les últimes notícies, tendències i coneixements del sector de la logística i el transport.
+          The latest news, trends, and insights from the logistics and shipping industry.
         </p>
       </div>
       <Separator className="my-12" />
@@ -52,8 +52,8 @@ export default function BlogPage() {
                     <CardDescription className="flex items-center gap-2 pt-2">
                       <Calendar className="h-4 w-4" />
                       <time dateTime={post.date}>
-                        {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", {
-                          locale: ca,
+                        {format(new Date(post.date), "MMMM d, yyyy", {
+                          locale: enUS,
                         })}
                       </time>
                     </CardDescription>

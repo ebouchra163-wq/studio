@@ -12,19 +12,19 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const OptimizeTransportRoutesInputSchema = z.object({
-  origin: z.string().describe('La ubicació d\'inici de la ruta de transport.'),
-  destination: z.string().describe('La destinació final de la ruta de transport.'),
-  waypoints: z.array(z.string()).optional().describe('Una llista opcional d\'ubicacions intermèdies per les quals passar.'),
-  trafficConditions: z.string().describe('Condicions del trànsit en temps real al llarg de la ruta.'),
-  weatherConditions: z.string().describe('Condicions climàtiques actuals al llarg de la ruta.'),
-  deliverySchedule: z.string().describe('El cronograma d\'entrega, incloses les finestres de temps.'),
+  origin: z.string().describe("The starting location of the transport route."),
+  destination: z.string().describe("The final destination of the transport route."),
+  waypoints: z.array(z.string()).optional().describe("An optional list of intermediate locations to pass through."),
+  trafficConditions: z.string().describe("Real-time traffic conditions along the route."),
+  weatherConditions: z.string().describe("Current weather conditions along the route."),
+  deliverySchedule: z.string().describe("The delivery schedule, including time windows."),
 });
 export type OptimizeTransportRoutesInput = z.infer<typeof OptimizeTransportRoutesInputSchema>;
 
 const OptimizeTransportRoutesOutputSchema = z.object({
-  optimizedRoute: z.string().describe('La ruta de transport optimitzada amb el temps de viatge estimat.'),
-  estimatedTravelTime: z.string().describe('El temps de viatge estimat per a la ruta optimitzada.'),
-  recommendations: z.string().describe('Recomanacions per minimitzar retards i millorar l\'eficiència basades en el trànsit, el clima i el cronograma.'),
+  optimizedRoute: z.string().describe("The optimized transport route with estimated travel time."),
+  estimatedTravelTime: z.string().describe("The estimated travel time for the optimized route."),
+  recommendations: z.string().describe("Recommendations to minimize delays and improve efficiency based on traffic, weather, and schedule."),
 });
 export type OptimizeTransportRoutesOutput = z.infer<typeof OptimizeTransportRoutesOutputSchema>;
 
@@ -36,18 +36,18 @@ const prompt = ai.definePrompt({
   name: 'optimizeTransportRoutesPrompt',
   input: {schema: OptimizeTransportRoutesInputSchema},
   output: {schema: OptimizeTransportRoutesOutputSchema},
-  prompt: `Ets un expert optimitzador de rutes de transport. El teu objectiu és trobar la millor ruta per minimitzar retards i millorar l'eficiència, basant-te en el trànsit en temps real, les condicions climàtiques i el cronograma d'entrega.
+  prompt: `You are an expert transport route optimizer. Your goal is to find the best route to minimize delays and improve efficiency, based on real-time traffic, weather conditions, and the delivery schedule.
 
-  Origen: {{{origin}}}
-  Destinació: {{{destination}}}
+  Origin: {{{origin}}}
+  Destination: {{{destination}}}
   {{#if waypoints}}
-  Punts intermedis: {{{waypoints}}}
+  Waypoints: {{{waypoints}}}
   {{/if}}
-  Condicions del trànsit: {{{trafficConditions}}}
-  Condicions climàtiques: {{{weatherConditions}}}
-  Cronograma d'entrega: {{{deliverySchedule}}}
+  Traffic Conditions: {{{trafficConditions}}}
+  Weather Conditions: {{{weatherConditions}}}
+  Delivery Schedule: {{{deliverySchedule}}}
 
-  Proporciona la ruta optimitzada, el temps de viatge estimat i recomanacions per minimitzar retards i millorar l'eficiència.
+  Provide the optimized route, estimated travel time, and recommendations to minimize delays and improve efficiency.
   `,
 });
 

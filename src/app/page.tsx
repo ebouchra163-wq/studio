@@ -37,31 +37,31 @@ import { useToast } from "@/hooks/use-toast";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 const contactFormSchema = z.object({
-  name: z.string().min(2, "El nom ha de tenir almenys 2 caràcters."),
-  email: z.string().email("Si us plau, introduïu una adreça de correu electrònic vàlida."),
-  message: z.string().min(10, "El missatge ha de tenir almenys 10 caràcters."),
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Please enter a valid email address."),
+  message: z.string().min(10, "Message must be at least 10 characters."),
 });
 
 const services = [
   {
     icon: Globe,
-    title: "Transport Internacional",
-    description: "Enviaments fiables i eficients a tot el món.",
+    title: "International Shipping",
+    description: "Reliable and efficient shipping across the globe.",
   },
   {
     icon: Truck,
-    title: "Transport Nacional",
-    description: "Serveis d'entrega ràpids i segurs dins del país.",
+    title: "Domestic Freight",
+    description: "Fast and secure delivery services within the country.",
   },
   {
     icon: Warehouse,
-    title: "Logística",
-    description: "Solucions integrals per a emmagatzematge i distribució.",
+    title: "Warehousing",
+    description: "Comprehensive solutions for storage and distribution.",
   },
   {
     icon: Recycle,
-    title: "Logística Inversa",
-    description: "Gestió optimitzada de devolucions i cicle de vida del producte.",
+    title: "Reverse Logistics",
+    description: "Optimized management of returns and product lifecycle.",
   },
 ];
 
@@ -84,10 +84,10 @@ export default function Home() {
         inquiry: values.message,
       });
       toast({
-        title: "Consulta Enviada!",
+        title: "Inquiry Submitted!",
         description: (
           <div>
-            <p className="font-semibold">La teva consulta ha estat resumida:</p>
+            <p className="font-semibold">Your inquiry has been summarized:</p>
             <p className="mt-2 text-sm text-muted-foreground">{summary}</p>
           </div>
         ),
@@ -97,7 +97,7 @@ export default function Home() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Error en enviar la consulta. Si us plau, torna-ho a provar.",
+        description: "Failed to submit inquiry. Please try again.",
       });
     }
   }
@@ -121,10 +121,10 @@ export default function Home() {
             Global Cargo Care
           </h1>
           <p className="mt-4 max-w-2xl text-lg md:text-xl">
-            El vostre soci de confiança per a solucions globals de transport i logística.
+            Your trusted partner for global shipping and logistics solutions.
           </p>
           <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-            <Link href="#contact">Obtenir una Cotització</Link>
+            <Link href="#contact">Get a Quote</Link>
           </Button>
         </div>
       </section>
@@ -133,11 +133,11 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="text-center">
             <h2 className="font-headline text-3xl font-bold md:text-4xl">
-              Els Nostres Serveis
+              Our Services
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-              Oferim una gamma completa de serveis de transport i logística
-              adaptats a les vostres necessitats.
+              We offer a comprehensive range of shipping and logistics services
+              tailored to your needs.
             </p>
           </div>
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -167,10 +167,10 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="text-center">
             <h2 className="font-headline text-3xl font-bold md:text-4xl">
-              Contacta'ns
+              Contact Us
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-              Tens preguntes o necessites una cotització? Omple el formulari a continuació.
+              Have questions or need a quote? Fill out the form below.
             </p>
           </div>
           <Card className="mx-auto mt-12 max-w-2xl">
@@ -185,9 +185,9 @@ export default function Home() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Nom Complert</FormLabel>
+                        <FormLabel>Full Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Joan Petit" {...field} />
+                          <Input placeholder="John Doe" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -198,10 +198,10 @@ export default function Home() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Correu Electrònic</FormLabel>
+                        <FormLabel>Email Address</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="joan.petit@example.com"
+                            placeholder="john.doe@example.com"
                             {...field}
                           />
                         </FormControl>
@@ -214,10 +214,10 @@ export default function Home() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>El Teu Missatge o Consulta</FormLabel>
+                        <FormLabel>Your Message or Inquiry</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Digues-nos com et podem ajudar..."
+                            placeholder="Tell us how we can help..."
                             className="min-h-[120px]"
                             {...field}
                           />
@@ -234,11 +234,11 @@ export default function Home() {
                     {form.formState.isSubmitting ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Enviant...
+                        Sending...
                       </>
                     ) : (
                       <>
-                        <Send className="mr-2 h-4 w-4" /> Enviar Consulta
+                        <Send className="mr-2 h-4 w-4" /> Send Inquiry
                       </>
                     )}
                   </Button>

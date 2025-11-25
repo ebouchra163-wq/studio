@@ -16,30 +16,30 @@ export default function LoginPage() {
     <div className="flex min-h-full flex-1 items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Inici de Sessió de Client</CardTitle>
+          <CardTitle className="text-2xl">Client Login</CardTitle>
           <CardDescription>
-            Introduïu el vostre correu electrònic a continuació per iniciar sessió al vostre compte.
+            Enter your email below to login to your account.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="email">Correu Electrònic</Label>
+            <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" placeholder="m@example.com" required />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password">Contrasenya</Label>
+            <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" required />
           </div>
           <Button asChild className="w-full">
             <Link href="/account">
-                <LogIn className="mr-2 h-4 w-4"/> Iniciar Sessió
+                <LogIn className="mr-2 h-4 w-4"/> Login
             </Link>
           </Button>
         </CardContent>
         <div className="mb-4 mt-2 text-center text-sm">
-          No tens un compte?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/signup" className="underline">
-            Registra't
+            Sign up
           </Link>
         </div>
       </Card>
