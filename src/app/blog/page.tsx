@@ -26,30 +26,34 @@ export default function BlogPage() {
       </div>
       <Separator className="my-12" />
 
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-12">
         {posts.map((post) => {
           const postImage = PlaceHolderImages.find(
             (img) => img.id === post.imageId
           );
           return (
-            <Card key={post.id} className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-xl">
-              <Link href={`/blog/${post.slug}`} className="group">
+            <Card key={post.id} className="transition-all duration-300 hover:shadow-xl">
+              <div className="grid grid-cols-1 md:grid-cols-3">
                 {postImage && (
-                  <div className="relative h-56 w-full">
-                    <Image
-                      src={postImage.imageUrl}
-                      alt={post.title}
-                      fill
-                      className="object-cover"
-                      data-ai-hint={postImage.imageHint}
-                    />
+                  <div className="relative h-64 w-full md:h-full">
+                    <Link href={`/blog/${post.slug}`}>
+                      <Image
+                        src={postImage.imageUrl}
+                        alt={post.title}
+                        fill
+                        className="rounded-l-lg object-cover"
+                        data-ai-hint={postImage.imageHint}
+                      />
+                    </Link>
                   </div>
                 )}
-                <div className="flex flex-1 flex-col">
+                <div className="flex flex-col md:col-span-2">
                   <CardHeader>
-                    <CardTitle className="text-xl group-hover:text-primary">
-                      {post.title}
-                    </CardTitle>
+                    <Link href={`/blog/${post.slug}`} className="group">
+                      <CardTitle className="text-xl group-hover:text-primary">
+                        {post.title}
+                      </CardTitle>
+                    </Link>
                     <CardDescription className="flex items-center gap-2 pt-2">
                       <Calendar className="h-4 w-4" />
                       <time dateTime={post.date}>
@@ -62,14 +66,14 @@ export default function BlogPage() {
                   <CardContent>
                     <p className="text-sm text-muted-foreground">{post.excerpt}</p>
                   </CardContent>
+                  <CardFooter className="mt-auto">
+                    <Link href={`/blog/${post.slug}`} className="flex items-center text-sm font-semibold text-primary transition-colors hover:text-primary/80">
+                      Leer más
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </CardFooter>
                 </div>
-              </Link>
-              <CardFooter className="mt-auto">
-                <Link href={`/blog/${post.slug}`} className="flex items-center text-sm font-semibold text-primary transition-colors hover:text-primary/80">
-                  Leer más
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </CardFooter>
+              </div>
             </Card>
           );
         })}
