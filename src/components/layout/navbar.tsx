@@ -1,7 +1,7 @@
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogIn, Menu, PackageSearch, Route, Home } from "lucide-react";
+import { LogIn, Menu, PackageSearch, Route, Home, Newspaper } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 const mainNavLinks = [
   { href: "/", label: "Inicio", icon: Home },
+  { href: "/blog", label: "Blog", icon: Newspaper },
   { href: "/tracking", label: "Seguimiento", icon: PackageSearch },
   { href: "/optimize", label: "Optimizar Ruta", icon: Route },
 ];

@@ -16,6 +16,7 @@ export function Footer() {
             <div className="flex flex-col gap-2">
               <h3 className="font-semibold">Enlaces Rápidos</h3>
               <Link href="/" className="text-muted-foreground hover:text-primary">Inicio</Link>
+              <Link href="/blog" className="text-muted-foreground hover:text-primary">Blog</Link>
               <Link href="/tracking" className="text-muted-foreground hover:text-primary">Rastrear Envío</Link>
               <Link href="/optimize" className="text-muted-foreground hover:text-primary">Optimizar Ruta</Link>
               <Link href="#contact" className="text-muted-foreground hover:text-primary">Contacto</Link>
