@@ -23,6 +23,12 @@
       "description": "Una pila de cajas de cartón listas para ser recicladas o reutilizadas.",
       "imageUrl": "https://images.unsplash.com/photo-1596598024828-568393524b07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxyZXR1cm4lMjBib3hlc3xlbnwwfHx8fDE3NjQ1MjI2MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "return boxes"
+    },
+    {
+      "id": "about-us",
+      "description": "Un equip divers de professionals de la logística col·laborant en una oficina moderna.",
+      "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsb2dpc3RpY3MlMjB0ZWFtfGVufDB8fHx8MTc2NDYwMzkzNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "logistics team"
     }
   ]
 }

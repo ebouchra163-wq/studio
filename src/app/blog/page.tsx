@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { ca } from 'date-fns/locale';
 import { Calendar } from 'lucide-react';
 
 export default function BlogPage() {
@@ -35,7 +35,7 @@ export default function BlogPage() {
                   <Calendar className="h-4 w-4" />
                   <time dateTime={post.date}>
                     {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", {
-                      locale: es,
+                      locale: ca,
                     })}
                   </time>
                 </CardDescription>
