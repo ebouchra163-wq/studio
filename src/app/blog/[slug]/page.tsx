@@ -10,9 +10,11 @@ import { Calendar, ChevronLeft } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import React from 'react';
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+  const resolvedParams = React.use(params);
+  const post = getPostBySlug(resolvedParams.slug);
 
   if (!post) {
     notFound();
