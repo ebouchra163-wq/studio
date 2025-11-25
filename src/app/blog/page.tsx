@@ -50,7 +50,7 @@ export default function BlogPage() {
                 <div className="flex flex-col md:col-span-2">
                   <CardHeader>
                     <Link href={`/blog/${post.slug}`} className="group">
-                      <CardTitle className="text-xl group-hover:text-primary">
+                      <CardTitle className="text-2xl group-hover:text-primary">
                         {post.title}
                       </CardTitle>
                     </Link>
@@ -64,10 +64,10 @@ export default function BlogPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">{post.excerpt}</p>
+                    <p className="text-muted-foreground">{post.excerpt}</p>
                   </CardContent>
                   <CardFooter className="mt-auto">
-                    <Link href={`/blog/${post.slug}`} className="flex items-center text-sm font-semibold text-primary transition-colors hover:text-primary/80">
+                    <Link href={`/blog/${post.slug}`} className="flex items-center font-semibold text-primary transition-colors hover:text-primary/80">
                       Leer más
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
