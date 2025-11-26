@@ -7,8 +7,8 @@ export function Logo({ className }: { className?: string }) {
       <Image
         src="/logo.png"
         alt="Logo de la empresa"
-        width={120}
-        height={30}
+        width={140}
+        height={40}
         className="object-contain"
         priority
       />
