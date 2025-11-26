@@ -1,17 +1,13 @@
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Globe } from 'lucide-react';
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center", className)}>
-      <Image 
-        src="/logo.png" 
-        alt="Logotipo de la empresa" 
-        width={150} 
-        height={40} 
-        className="h-10 w-auto" 
-        priority
-      />
+    <div className={cn("flex items-center gap-2", className)}>
+      <Globe className="h-7 w-7 text-primary" />
+      <span className="text-xl font-bold text-foreground">
+        Global Cargo Care
+      </span>
     </div>
   );
 }
