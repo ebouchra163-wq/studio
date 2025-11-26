@@ -29,6 +29,30 @@
       "description": "Un equipo diverso de profesionales de la logística colaborando en una oficina moderna.",
       "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsb2dpc3RpY3MlMjB0ZWFtfGVufDB8fHx8MTc2NDYwMzkzNnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "equipo de logística"
+    },
+    {
+      "id": "international-shipping",
+      "description": "Un buque portacontenedores navegando en mar abierto.",
+      "imageUrl": "https://images.unsplash.com/photo-1676910777145-3c7cbf3c529d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxidXF1ZSUyMGNhcmdhfGVufDB8fHx8MTc2NDE4MzQxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "buque carga"
+    },
+    {
+      "id": "domestic-freight",
+      "description": "Un camión conduciendo por una carretera al atardecer.",
+      "imageUrl": "https://images.unsplash.com/photo-1594665877570-2be128f984ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYW1pJUMzJUIzbiUyMGNhcnJldGVyYXxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "camión carretera"
+    },
+    {
+      "id": "warehousing",
+      "description": "El interior de un gran almacén con estanterías altas.",
+      "imageUrl": "https://images.unsplash.com/photo-1614670151727-d2829b6551e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhbG1hYyVDMyVBOW4lMjBpbnRlcmlvcnxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "almacén interior"
+    },
+    {
+      "id": "reverse-logistics",
+      "description": "Cajas apiladas en un palé, listas para devolución.",
+      "imageUrl": "https://images.unsplash.com/photo-1463717738788-85fcacb6ac3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYWphcyUyMGRldm9sdWNpJUMzJUIzbnxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cajas devolución"
     }
   ]
 }

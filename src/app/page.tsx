@@ -15,6 +15,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { summarizeCustomerInquiry } from "@/ai/flows/summarize-customer-inquiries";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -46,22 +52,26 @@ const services = [
   {
     icon: Globe,
     title: "Envío Internacional",
-    description: "Envío fiable y eficiente a través del globo.",
+    description: "Conectamos tu negocio con el mundo a través de soluciones de flete marítimo, aéreo y terrestre. Nos encargamos de la aduana y la documentación para un tránsito sin problemas.",
+    imageId: "international-shipping",
   },
   {
     icon: Truck,
     title: "Transporte Nacional",
-    description: "Servicios de entrega rápidos y seguros dentro del país.",
+    description: "Nuestra red de transporte nacional garantiza entregas rápidas y seguras en todo el país. Ofrecemos seguimiento en tiempo real y opciones de carga completa (FTL) y carga parcial (LTL).",
+    imageId: "domestic-freight",
   },
   {
     icon: Warehouse,
     title: "Almacenamiento",
-    description: "Soluciones integrales para almacenamiento y distribución.",
+    description: "Instalaciones de almacenamiento modernas y seguras para tus mercancías. Ofrecemos gestión de inventario, picking y packing, y distribución para optimizar tu cadena de suministro.",
+    imageId: "warehousing",
   },
   {
     icon: Recycle,
     title: "Logística Inversa",
-    description: "Gestión optimizada de devoluciones y ciclo de vida del producto.",
+    description: "Gestionamos de manera eficiente el flujo de retorno de tus productos, desde devoluciones de clientes hasta reciclaje y disposición final, maximizando la recuperación de valor y la sostenibilidad.",
+    imageId: "reverse-logistics",
   },
 ];
 
@@ -140,25 +150,44 @@ export default function Home() {
               adaptados a sus necesidades.
             </p>
           </div>
-          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map((service) => (
-              <Card
-                key={service.title}
-                className="transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-              >
-                <CardHeader className="items-center text-center">
-                  <div className="rounded-full bg-accent/20 p-4">
-                    <service.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="pt-4">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center">
-                    {service.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="mx-auto mt-12 max-w-4xl">
+            <Accordion type="single" collapsible className="w-full">
+              {services.map((service, index) => {
+                const serviceImage = PlaceHolderImages.find(
+                  (img) => img.id === service.imageId
+                );
+                return (
+                  <AccordionItem value={`item-${index}`} key={service.title}>
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-4 text-lg font-semibold text-primary">
+                        <service.icon className="h-8 w-8" />
+                        {service.title}
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-1 gap-6 pt-4 md:grid-cols-3">
+                        <div className="md:col-span-2">
+                          <p className="text-muted-foreground">
+                            {service.description}
+                          </p>
+                        </div>
+                        {serviceImage && (
+                          <div className="relative h-40 w-full overflow-hidden rounded-lg">
+                            <Image
+                              src={serviceImage.imageUrl}
+                              alt={service.title}
+                              fill
+                              className="object-cover"
+                              data-ai-hint={serviceImage.imageHint}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
           </div>
         </div>
       </section>
