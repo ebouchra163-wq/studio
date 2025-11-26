@@ -3,13 +3,13 @@ import Image from 'next/image';
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex h-10 items-center", className)}>
       <Image
         src="/logo.png"
-        alt="Global Cargo Care Logo"
-        width={160}
-        height={40}
-        className="object-contain"
+        alt="Logo de la empresa"
+        width={140}
+        height={35}
+        className="h-auto w-auto object-contain"
         priority
       />
     </div>
