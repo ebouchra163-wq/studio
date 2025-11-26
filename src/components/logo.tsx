@@ -3,9 +3,15 @@ import { cn } from '@/lib/utils';
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center gap-2 text-primary", className)}>
-      <Image src="/logo.png" alt="Global Cargo Care Logo" width={120} height={30} className="h-8 w-auto" />
-      <span className="sr-only">Global Cargo Care</span>
+    <div className={cn("flex items-center", className)}>
+      <Image 
+        src="/logo.png" 
+        alt="Logotipo de la empresa" 
+        width={150} 
+        height={40} 
+        className="h-10 w-auto" 
+        priority
+      />
     </div>
   );
 }
