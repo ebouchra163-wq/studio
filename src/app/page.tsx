@@ -14,7 +14,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { summarizeCustomerInquiry } from "@/ai/flows/summarize-customer-inquiries";
 import {
   Accordion,
   AccordionContent,
@@ -25,28 +24,11 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-
-const contactFormSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
-  email: z.string().email("Por favor, introduce una dirección de correo electrónico válida."),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres."),
-});
+import { Label } from "@/components/ui/label";
 
 const services = [
   {
@@ -78,39 +60,6 @@ const services = [
 const heroImage = PlaceHolderImages.find((img) => img.id === "hero-image");
 
 export default function Home() {
-  const { toast } = useToast();
-  const form = useForm<z.infer<typeof contactFormSchema>>({
-    resolver: zodResolver(contactFormSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof contactFormSchema>) {
-    try {
-      const { summary } = await summarizeCustomerInquiry({
-        inquiry: values.message,
-      });
-      toast({
-        title: "¡Consulta Enviada!",
-        description: (
-          <div>
-            <p className="font-semibold">Tu consulta ha sido resumida:</p>
-            <p className="mt-2 text-sm text-muted-foreground">{summary}</p>
-          </div>
-        ),
-      });
-      form.reset();
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Error al enviar la consulta. Por favor, inténtalo de nuevo.",
-      });
-    }
-  }
 
   return (
     <>
@@ -204,75 +153,42 @@ export default function Home() {
           </div>
           <Card className="mx-auto mt-12 max-w-2xl">
             <CardContent className="p-6">
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-6"
-                >
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nombre Completo</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
+              <form
+                action="https://formspree.io/f/xyzrjdqq"
+                method="POST"
+                className="space-y-6"
+              >
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nombre Completo</Label>
+                  <Input id="name" name="name" placeholder="John Doe" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Dirección de Correo Electrónico</Label>
+                  <Input
+                    id="email"
                     name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Dirección de Correo Electrónico</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="john.doe@example.com"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    type="email"
+                    placeholder="john.doe@example.com"
+                    required
                   />
-                  <FormField
-                    control={form.control}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Su Mensaje o Consulta</Label>
+                  <Textarea
+                    id="message"
                     name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Su Mensaje o Consulta</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Cuéntenos cómo podemos ayudarle..."
-                            className="min-h-[120px]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    placeholder="Cuéntenos cómo podemos ayudarle..."
+                    className="min-h-[120px]"
+                    required
                   />
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={form.formState.isSubmitting}
-                  >
-                    {form.formState.isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="mr-2 h-4 w-4" /> Enviar Consulta
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </Form>
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full"
+                >
+                  <Send className="mr-2 h-4 w-4" /> Enviar Consulta
+                </Button>
+              </form>
             </CardContent>
           </Card>
         </div>
