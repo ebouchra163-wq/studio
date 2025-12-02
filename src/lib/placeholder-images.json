@@ -32,9 +32,9 @@
     },
     {
       "id": "international-shipping",
-      "description": "Un avión de carga siendo cargado con contenedores en un aeropuerto al atardecer.",
-      "imageUrl": "https://images.unsplash.com/photo-1578574577694-16274b7c938a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjYXJnbyUyMHBsYW5lfGVufDB8fHx8MTc2NDgxMDU3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "avión carga"
+      "description": "Un buque portacontenedores navegando en mar abierto.",
+      "imageUrl": "https://images.unsplash.com/photo-1613689283522-4a0b073b6a2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYXJnbyUyMHNoaXB8ZW58MHx8fHwxNzY1MzgyNjMzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "buque carga"
     },
     {
       "id": "domestic-freight",
