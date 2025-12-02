@@ -1,9 +1,7 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Globe,
-  Loader2,
   Recycle,
   Send,
   Truck,
@@ -11,8 +9,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import {
   Accordion,
@@ -159,11 +155,11 @@ export default function Home() {
                 className="space-y-6"
               >
                 <div className="space-y-2">
-                  <Label htmlFor="name">Nombre Completo</Label>
+                  <label htmlFor="name">Nombre Completo</label>
                   <Input id="name" name="name" placeholder="John Doe" required />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Dirección de Correo Electrónico</Label>
+                  <label htmlFor="email">Dirección de Correo Electrónico</label>
                   <Input
                     id="email"
                     name="email"
@@ -173,7 +169,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="message">Su Mensaje o Consulta</Label>
+                  <label htmlFor="message">Su Mensaje o Consulta</label>
                   <Textarea
                     id="message"
                     name="message"
