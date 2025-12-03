@@ -24,7 +24,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Label } from "@/components/ui/label";
 
 const services = [
   {
@@ -155,11 +154,11 @@ export default function Home() {
                 className="space-y-6"
               >
                 <div className="space-y-2">
-                  <label htmlFor="name">Nombre Completo</label>
+                  <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Nombre Completo</label>
                   <Input id="name" name="name" placeholder="John Doe" required />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="email">Dirección de Correo Electrónico</label>
+                  <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Dirección de Correo Electrónico</label>
                   <Input
                     id="email"
                     name="email"
@@ -169,7 +168,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="message">Su Mensaje o Consulta</label>
+                  <label htmlFor="message" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Su Mensaje o Consulta</label>
                   <Textarea
                     id="message"
                     name="message"
