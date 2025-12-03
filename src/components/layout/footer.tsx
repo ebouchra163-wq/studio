@@ -36,7 +36,8 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t pt-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Global Cargo Care. Todos los derechos reservados.
+          <p className="mb-2">Ver. 1.0 - 2 de desembre de 2024</p>
+          © 2024 Global Cargo Care. Todos los derechos reservados.
         </div>
       </div>
     </footer>
