@@ -1,7 +1,7 @@
 'use client';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { getPostBySlug } from '@/lib/blog-posts';
+import { getPostBySlug, posts } from '@/lib/blog-posts';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { format } from 'date-fns';
@@ -12,9 +12,15 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import React from 'react';
 
+// Genera las rutas estáticas para cada post del blog
+export function generateStaticParams() {
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const resolvedParams = React.use(params);
-  const post = getPostBySlug(resolvedParams.slug);
+  const post = getPostBySlug(params.slug);
 
   if (!post) {
     notFound();
