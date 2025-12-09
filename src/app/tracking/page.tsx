@@ -38,7 +38,7 @@ interface ShipmentData {
   status: ShippingStatus;
 }
 
-const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/7wm9ojrecm2pq';
+const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/n5eliliog16ts';
 
 const statusConfig: {
   [key in ShippingStatus]: {
