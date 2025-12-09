@@ -1,145 +1,241 @@
-"use client";
+'use client';
 
-import { AlertCircle, Loader2, PackageSearch, CheckCircle } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
-
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import {
+  AlertCircle,
+  CheckCircle,
+  Loader2,
+  PackageSearch,
+  MapPin,
+  Calendar,
+  Warehouse as WarehouseIcon,
+  Truck,
+  PackageCheck,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-const MOCK_TRACKING_ID = "GCC-12345";
-const trackingMapImage = PlaceHolderImages.find(
-  (img) => img.id === "tracking-map"
-);
+type ShippingStatus = 'En magatzem' | 'En trànsit' | 'Lliurat';
 
-type TrackingStatus =
-  | "idle"
-  | "loading"
-  | "found"
-  | "not_found"
-  | "error";
+interface ShipmentData {
+  tracking_code: string;
+  origin: string;
+  destination: string;
+  eta: string;
+  current_location: string;
+  status: ShippingStatus;
+}
+
+const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/7wm9ojrecm2pq';
+
+const statusConfig: {
+  [key in ShippingStatus]: {
+    progress: number;
+    color: string;
+    icon: React.ElementType;
+    text: string;
+  };
+} = {
+  'En magatzem': {
+    progress: 10,
+    color: 'bg-gray-400',
+    icon: WarehouseIcon,
+    text: 'A l\'origen',
+  },
+  'En trànsit': {
+    progress: 50,
+    color: 'bg-blue-500',
+    icon: Truck,
+    text: 'En repartiment',
+  },
+  'Lliurat': {
+    progress: 100,
+    color: 'bg-green-500',
+    icon: PackageCheck,
+    text: 'Lliurat',
+  },
+};
 
 export default function TrackingPage() {
-  const [trackingId, setTrackingId] = useState("");
-  const [status, setStatus] = useState<TrackingStatus>("idle");
+  const [trackingCode, setTrackingCode] = useState('');
+  const [shipmentData, setShipmentData] = useState<ShipmentData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleTrack = () => {
-    setStatus("loading");
-    setTimeout(() => {
-      if (trackingId.toUpperCase() === MOCK_TRACKING_ID) {
-        setStatus("found");
-      } else {
-        setStatus("not_found");
+  const handleSearch = async () => {
+    if (!trackingCode) {
+      setError('Si us plau, introdueix un codi de seguiment.');
+      return;
+    }
+    setIsLoading(true);
+    setError(null);
+    setShipmentData(null);
+
+    try {
+      const response = await fetch(
+        `${SHEETDB_API_URL}/search?tracking_code=${trackingCode}`
+      );
+      if (!response.ok) {
+        throw new Error('No s\'ha pogut connectar amb el servidor.');
       }
-    }, 1500);
+      const data: ShipmentData[] = await response.json();
+
+      if (data.length > 0) {
+        setShipmentData(data[0]);
+      } else {
+        setError('Codi no trobat. Revisa el codi i torna a intentar-ho.');
+      }
+    } catch (err) {
+      setError('Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
+  const currentStatus = shipmentData ? statusConfig[shipmentData.status] : null;
 
   return (
-    <div className="container mx-auto max-w-4xl py-12">
+    <div className="container mx-auto max-w-4xl py-12 md:py-20">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Rastrea tu Envío</h1>
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+          Localitza el teu enviament
+        </h1>
         <p className="text-muted-foreground">
-          Introduce tu ID de seguimiento para obtener actualizaciones en tiempo real sobre tu envío.
+          Introdueix el teu codi de seguiment per veure l'estat en temps real.
         </p>
       </div>
-      <Separator className="my-6" />
+      <Separator className="my-8" />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Introduce el ID de Seguimiento</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex w-full items-end gap-2">
-            <div className="flex-1">
-              <Label htmlFor="tracking-id">ID de Seguimiento</Label>
+      <Card className="mb-8">
+        <CardContent className="p-6">
+          <div className="flex w-full flex-col items-end gap-4 sm:flex-row">
+            <div className="w-full flex-1">
+              <Label htmlFor="tracking-code" className="font-semibold">Codi de Seguiment</Label>
               <Input
-                id="tracking-id"
-                placeholder={MOCK_TRACKING_ID}
-                value={trackingId}
-                onChange={(e) => setTrackingId(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleTrack()}
+                id="tracking-code"
+                type="text"
+                placeholder="Ex: TRK12345678"
+                value={trackingCode}
+                onChange={(e) => setTrackingCode(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                className="mt-2 text-base"
               />
             </div>
-            <Button onClick={handleTrack} disabled={status === "loading"}>
-              {status === "loading" ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Button
+              onClick={handleSearch}
+              disabled={isLoading}
+              className="w-full sm:w-auto"
+              size="lg"
+            >
+              {isLoading ? (
+                <Loader2 className="animate-spin" />
               ) : (
-                <PackageSearch className="mr-2 h-4 w-4" />
+                <PackageSearch />
               )}
-              Rastrear
+              <span className="ml-2">Cercar</span>
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      <div className="mt-8">
-        {status === "loading" && (
-          <div className="flex justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        )}
+      {isLoading && (
+        <div className="flex justify-center p-8">
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        </div>
+      )}
 
-        {status === "not_found" && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>No Encontrado</AlertTitle>
-            <AlertDescription>
-              No se encontró ningún envío con el ID de seguimiento &quot;{trackingId}&quot;.
-              Verifica el ID e inténtalo de nuevo.
-            </AlertDescription>
-          </Alert>
-        )}
+      {error && !isLoading && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
-        {status === "found" && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Estado del Envío para {MOCK_TRACKING_ID}</CardTitle>
-              <CardDescription>
-                ¡Tu paquete está en camino!
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center gap-4">
-                 <CheckCircle className="h-6 w-6 text-green-600" />
-                 <p className="text-lg font-medium">En Tránsito</p>
-              </div>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><span className="font-semibold text-foreground">Origen:</span> Nueva York, NY</li>
-                <li><span className="font-semibold text-foreground">Destino:</span> Los Ángeles, CA</li>
-                <li><span className="font-semibold text-foreground">Entrega Estimada:</span> 5 de Agosto de 2024</li>
-                <li><span className="font-semibold text-foreground">Última Actualización:</span> En ruta hacia la instalación de clasificación en Chicago, IL.</li>
-              </ul>
-              {trackingMapImage && (
-                <div className="overflow-hidden rounded-lg border">
-                  <Image
-                    src={trackingMapImage.imageUrl}
-                    alt={trackingMapImage.description}
-                    width={1200}
-                    height={800}
-                    className="aspect-video w-full object-cover"
-                    data-ai-hint={trackingMapImage.imageHint}
+      {shipmentData && !isLoading && (
+        <Card className="overflow-hidden shadow-lg">
+          <CardHeader className="bg-muted/30">
+            <CardTitle className="flex items-center gap-3 text-2xl">
+              <CheckCircle className="text-green-500" />
+              <span>Resultats per: {shipmentData.tracking_code}</span>
+            </CardTitle>
+            <CardDescription>
+              A continuació es mostren els detalls del teu enviament.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            {currentStatus && (
+              <div className="mb-8">
+                <h3 className="mb-4 text-lg font-semibold">Estat de l'enviament</h3>
+                <div className="relative h-2 w-full rounded-full bg-muted">
+                   <div
+                    className={cn(
+                      'absolute h-2 rounded-full transition-all duration-500',
+                      currentStatus.color
+                    )}
+                    style={{ width: `${currentStatus.progress}%` }}
                   />
                 </div>
-              )}
-            </CardContent>
-            <CardFooter>
-                 <p className="text-xs text-muted-foreground">Esto es una simulación. Para un seguimiento real, contacta con atención al cliente.</p>
-            </CardFooter>
-          </Card>
-        )}
-      </div>
+                 <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
+                  <div className={cn(shipmentData.status === 'En magatzem' && 'font-bold text-primary')}>A l'origen</div>
+                  <div className={cn(shipmentData.status === 'En trànsit' && 'font-bold text-primary')}>En trànsit</div>
+                  <div className={cn(shipmentData.status === 'Lliurat' && 'font-bold text-primary')}>Lliurat</div>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                 <div className="flex items-start gap-3">
+                  <MapPin className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                  <div>
+                    <h4 className="font-semibold">Origen</h4>
+                    <p className="text-muted-foreground">{shipmentData.origin}</p>
+                  </div>
+                </div>
+                 <div className="flex items-start gap-3">
+                  <PackageSearch className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                  <div>
+                    <h4 className="font-semibold">Destí</h4>
+                    <p className="text-muted-foreground">{shipmentData.destination}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                 <div className="flex items-start gap-3">
+                  <Calendar className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                  <div>
+                    <h4 className="font-semibold">Data prevista (ETA)</h4>
+                    <p className="text-muted-foreground">{shipmentData.eta}</p>
+                  </div>
+                </div>
+                {currentStatus && (
+                   <div className="flex items-start gap-3">
+                    <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                    <div>
+                      <h4 className="font-semibold">Ubicació actual</h4>
+                      <p className="text-muted-foreground">{shipmentData.current_location}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
