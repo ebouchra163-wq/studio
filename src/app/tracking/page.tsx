@@ -164,7 +164,7 @@ export default function TrackingPage() {
         </Alert>
       )}
 
-      {shipmentData && !isLoading && (
+      {shipmentData && currentStatus && !isLoading && (
         <Card className="overflow-hidden shadow-lg">
           <CardHeader className="bg-muted/30">
             <CardTitle className="flex items-center gap-3 text-2xl">
@@ -176,25 +176,18 @@ export default function TrackingPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
-            {currentStatus && (
-              <div className="mb-8">
-                <h3 className="mb-4 text-lg font-semibold">Progreso del envío</h3>
-                <div className="relative h-2 w-full rounded-full bg-muted">
-                   <div
-                    className={cn(
-                      'absolute h-2 rounded-full transition-all duration-500',
-                      currentStatus.color
-                    )}
-                    style={{ width: `${currentStatus.progress}%` }}
-                  />
-                </div>
-                 <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
-                  <div className={cn(shipmentData.status === 'En almacen' && 'font-bold text-primary')}>En origen</div>
-                  <div className={cn(shipmentData.status === 'En transito' && 'font-bold text-primary')}>En tránsito</div>
-                  <div className={cn(shipmentData.status === 'Entregado' && 'font-bold text-primary')}>Entregado</div>
-                </div>
+            <div className="mb-8">
+              <h3 className="mb-4 text-lg font-semibold">Progreso del envío</h3>
+              <Progress
+                  value={currentStatus.progress}
+                  indicatorClassName={currentStatus.color}
+                />
+               <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
+                <div className={cn(shipmentData.status === 'En almacen' && 'font-bold text-primary')}>En origen</div>
+                <div className={cn(shipmentData.status === 'En transito' && 'font-bold text-primary')}>En tránsito</div>
+                <div className={cn(shipmentData.status === 'Entregado' && 'font-bold text-primary')}>Entregado</div>
               </div>
-            )}
+            </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-4">
@@ -228,15 +221,13 @@ export default function TrackingPage() {
                     <p className="text-muted-foreground">{shipmentData.status}</p>
                   </div>
                 </div>
-                {currentStatus && (
-                   <div className="flex items-start gap-3">
-                    <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
-                    <div>
-                      <h4 className="font-semibold">Ubicación actual</h4>
-                      <p className="text-muted-foreground">{shipmentData.current_location}</p>
-                    </div>
+                 <div className="flex items-start gap-3">
+                  <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                  <div>
+                    <h4 className="font-semibold">Ubicación actual</h4>
+                    <p className="text-muted-foreground">{shipmentData.current_location}</p>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </CardContent>
