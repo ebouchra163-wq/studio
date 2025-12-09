@@ -11,6 +11,7 @@ import {
   Warehouse as WarehouseIcon,
   Truck,
   PackageCheck,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -177,7 +178,7 @@ export default function TrackingPage() {
           <CardContent className="p-6">
             {currentStatus && (
               <div className="mb-8">
-                <h3 className="mb-4 text-lg font-semibold">Estat de l'enviament</h3>
+                <h3 className="mb-4 text-lg font-semibold">Progrés de l'enviament</h3>
                 <div className="relative h-2 w-full rounded-full bg-muted">
                    <div
                     className={cn(
@@ -211,13 +212,20 @@ export default function TrackingPage() {
                     <p className="text-muted-foreground">{shipmentData.destination}</p>
                   </div>
                 </div>
-              </div>
-              <div className="space-y-4">
                  <div className="flex items-start gap-3">
                   <Calendar className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold">Data prevista (ETA)</h4>
                     <p className="text-muted-foreground">{shipmentData.eta}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <Info className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                  <div>
+                    <h4 className="font-semibold">Estat</h4>
+                    <p className="text-muted-foreground">{shipmentData.status}</p>
                   </div>
                 </div>
                 {currentStatus && (
