@@ -88,7 +88,8 @@ export default function TrackingPage() {
         `${SHEETDB_API_URL}/search?tracking_code=${trackingCode}`
       );
       if (!response.ok) {
-        throw new Error('No s\'ha pogut connectar amb el servidor.');
+        // This will be caught by the catch block below
+        throw new Error('Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
       }
       const data: ShipmentData[] = await response.json();
 
@@ -97,8 +98,8 @@ export default function TrackingPage() {
       } else {
         setError('Codi no trobat. Revisa el codi i torna a intentar-ho.');
       }
-    } catch (err) {
-      setError('Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
+    } catch (err: any) {
+      setError(err.message || 'Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
       console.error(err);
     } finally {
       setIsLoading(false);
