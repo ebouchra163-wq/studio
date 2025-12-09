@@ -87,19 +87,16 @@ export default function TrackingPage() {
       const response = await fetch(
         `${SHEETDB_API_URL}/search?tracking_code=${trackingCode}`
       );
-      if (!response.ok) {
-        // This will be caught by the catch block below
-        throw new Error('Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
-      }
+      
       const data: ShipmentData[] = await response.json();
 
-      if (data.length > 0) {
+      if (response.ok && data.length > 0) {
         setShipmentData(data[0]);
       } else {
         setError('Codi no trobat. Revisa el codi i torna a intentar-ho.');
       }
     } catch (err: any) {
-      setError(err.message || 'Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
+      setError('Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
       console.error(err);
     } finally {
       setIsLoading(false);
