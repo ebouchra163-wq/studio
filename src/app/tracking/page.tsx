@@ -28,7 +28,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-type ShippingStatus = 'En magatzem' | 'En trànsit' | 'Lliurat';
+type ShippingStatus = 'En almacen' | 'En transito' | 'Entregado';
 
 interface ShipmentData {
   tracking_code: string;
@@ -49,23 +49,23 @@ const statusConfig: {
     text: string;
   };
 } = {
-  'En magatzem': {
+  'En almacen': {
     progress: 10,
     color: 'bg-gray-400',
     icon: WarehouseIcon,
-    text: 'A l\'origen',
+    text: 'En origen',
   },
-  'En trànsit': {
+  'En transito': {
     progress: 50,
     color: 'bg-blue-500',
     icon: Truck,
-    text: 'En repartiment',
+    text: 'En reparto',
   },
-  'Lliurat': {
+  'Entregado': {
     progress: 100,
     color: 'bg-green-500',
     icon: PackageCheck,
-    text: 'Lliurat',
+    text: 'Entregado',
   },
 };
 
@@ -77,7 +77,7 @@ export default function TrackingPage() {
 
   const handleSearch = async () => {
     if (!trackingCode) {
-      setError('Si us plau, introdueix un codi de seguiment.');
+      setError('Por favor, introduce un código de seguimiento.');
       return;
     }
     setIsLoading(true);
@@ -94,10 +94,10 @@ export default function TrackingPage() {
       if (response.ok && data.length > 0) {
         setShipmentData(data[0]);
       } else {
-        setError('Codi no trobat. Revisa el codi i torna a intentar-ho.');
+        setError('Código no encontrado. Revisa el código y vuelve a intentarlo.');
       }
     } catch (err: any) {
-      setError('Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
+      setError('Ha habido un problema con la conexión. Inténtalo más tarde.');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -110,10 +110,10 @@ export default function TrackingPage() {
     <div className="container mx-auto max-w-4xl py-12 md:py-20">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-          Localitza el teu enviament
+          Localiza tu envío
         </h1>
         <p className="text-muted-foreground">
-          Introdueix el teu codi de seguiment per veure l'estat en temps real.
+          Introduce tu código de seguimiento para ver el estado en tiempo real.
         </p>
       </div>
       <Separator className="my-8" />
@@ -122,11 +122,11 @@ export default function TrackingPage() {
         <CardContent className="p-6">
           <div className="flex w-full flex-col items-end gap-4 sm:flex-row">
             <div className="w-full flex-1">
-              <Label htmlFor="tracking-code" className="font-semibold">Codi de Seguiment</Label>
+              <Label htmlFor="tracking-code" className="font-semibold">Código de Seguimiento</Label>
               <Input
                 id="tracking-code"
                 type="text"
-                placeholder="Ex: TRK12345678"
+                placeholder="Ej: TRK12345678"
                 value={trackingCode}
                 onChange={(e) => setTrackingCode(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -144,7 +144,7 @@ export default function TrackingPage() {
               ) : (
                 <PackageSearch />
               )}
-              <span className="ml-2">Cercar</span>
+              <span className="ml-2">Buscar</span>
             </Button>
           </div>
         </CardContent>
@@ -169,16 +169,16 @@ export default function TrackingPage() {
           <CardHeader className="bg-muted/30">
             <CardTitle className="flex items-center gap-3 text-2xl">
               <CheckCircle className="text-green-500" />
-              <span>Resultats per: {shipmentData.tracking_code}</span>
+              <span>Resultados para: {shipmentData.tracking_code}</span>
             </CardTitle>
             <CardDescription>
-              A continuació es mostren els detalls del teu enviament.
+              A continuación se muestran los detalles de tu envío.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
             {currentStatus && (
               <div className="mb-8">
-                <h3 className="mb-4 text-lg font-semibold">Progrés de l'enviament</h3>
+                <h3 className="mb-4 text-lg font-semibold">Progreso del envío</h3>
                 <div className="relative h-2 w-full rounded-full bg-muted">
                    <div
                     className={cn(
@@ -189,9 +189,9 @@ export default function TrackingPage() {
                   />
                 </div>
                  <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
-                  <div className={cn(shipmentData.status === 'En magatzem' && 'font-bold text-primary')}>A l'origen</div>
-                  <div className={cn(shipmentData.status === 'En trànsit' && 'font-bold text-primary')}>En trànsit</div>
-                  <div className={cn(shipmentData.status === 'Lliurat' && 'font-bold text-primary')}>Lliurat</div>
+                  <div className={cn(shipmentData.status === 'En almacen' && 'font-bold text-primary')}>En origen</div>
+                  <div className={cn(shipmentData.status === 'En transito' && 'font-bold text-primary')}>En tránsito</div>
+                  <div className={cn(shipmentData.status === 'Entregado' && 'font-bold text-primary')}>Entregado</div>
                 </div>
               </div>
             )}
@@ -208,14 +208,14 @@ export default function TrackingPage() {
                  <div className="flex items-start gap-3">
                   <PackageSearch className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
-                    <h4 className="font-semibold">Destí</h4>
+                    <h4 className="font-semibold">Destino</h4>
                     <p className="text-muted-foreground">{shipmentData.destination}</p>
                   </div>
                 </div>
                  <div className="flex items-start gap-3">
                   <Calendar className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
-                    <h4 className="font-semibold">Data prevista (ETA)</h4>
+                    <h4 className="font-semibold">Fecha prevista (ETA)</h4>
                     <p className="text-muted-foreground">{shipmentData.eta}</p>
                   </div>
                 </div>
@@ -224,7 +224,7 @@ export default function TrackingPage() {
                 <div className="flex items-start gap-3">
                   <Info className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
-                    <h4 className="font-semibold">Estat</h4>
+                    <h4 className="font-semibold">Estado</h4>
                     <p className="text-muted-foreground">{shipmentData.status}</p>
                   </div>
                 </div>
@@ -232,7 +232,7 @@ export default function TrackingPage() {
                    <div className="flex items-start gap-3">
                     <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
                     <div>
-                      <h4 className="font-semibold">Ubicació actual</h4>
+                      <h4 className="font-semibold">Ubicación actual</h4>
                       <p className="text-muted-foreground">{shipmentData.current_location}</p>
                     </div>
                   </div>
