@@ -164,7 +164,7 @@ export default function TrackingPage() {
         </Alert>
       )}
 
-      {shipmentData && currentStatus && !isLoading && (
+      {!isLoading && shipmentData && currentStatus && (
         <Card className="overflow-hidden shadow-lg">
           <CardHeader className="bg-muted/30">
             <CardTitle className="flex items-center gap-3 text-2xl">
