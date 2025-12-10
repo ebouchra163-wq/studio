@@ -20,7 +20,13 @@ export function generateStaticParams() {
   }));
 }
 
-function BlogPostContent({ post }: { post: Post }) {
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = getPostBySlug(params.slug);
+
+  if (!post) {
+    notFound();
+  }
+  
   const postImage = PlaceHolderImages.find((img) => img.id === post.imageId);
 
   return (
@@ -61,15 +67,4 @@ function BlogPostContent({ post }: { post: Post }) {
       </article>
     </div>
   );
-}
-
-
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
-
-  if (!post) {
-    notFound();
-  }
-
-  return <BlogPostContent post={post} />;
 }
