@@ -178,15 +178,19 @@ export default function TrackingPage() {
           <CardContent className="p-6">
             <div className="mb-8">
               <h3 className="mb-4 text-lg font-semibold">Progreso del envío</h3>
-              <Progress
-                  value={currentStatus.progress}
-                  indicatorClassName={currentStatus.color}
-                />
-               <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
-                <div className={cn(shipmentData.status === 'En almacen' && 'font-bold text-primary')}>En origen</div>
-                <div className={cn(shipmentData.status === 'En transito' && 'font-bold text-primary')}>En tránsito</div>
-                <div className={cn(shipmentData.status === 'Entregado' && 'font-bold text-primary')}>Entregado</div>
-              </div>
+              {currentStatus && (
+                <>
+                  <Progress
+                    value={currentStatus.progress}
+                    indicatorClassName={currentStatus.color}
+                  />
+                  <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
+                    <div className={cn(shipmentData.status === 'En almacen' && 'font-bold text-primary')}>En origen</div>
+                    <div className={cn(shipmentData.status === 'En transito' && 'font-bold text-primary')}>En tránsito</div>
+                    <div className={cn(shipmentData.status === 'Entregado' && 'font-bold text-primary')}>Entregado</div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
