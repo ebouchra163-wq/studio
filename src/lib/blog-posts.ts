@@ -1,4 +1,15 @@
-export const posts = [
+export type Post = {
+  id: number;
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  content: string;
+  imageId: string;
+};
+
+
+export const posts: Post[] = [
   {
     id: 1,
     slug: 'tendencias-logisticas-2024',
