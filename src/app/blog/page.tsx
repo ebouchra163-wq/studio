@@ -1,3 +1,4 @@
+"use client";
 
 import { posts } from '@/lib/blog-posts';
 import { Separator } from '@/components/ui/separator';
