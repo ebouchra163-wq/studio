@@ -28,6 +28,11 @@ export function Navbar() {
     setSheetOpen(false);
   }, [pathname]);
 
+  // Evita el error de hidratación no renderizando nada hasta que 'isMobile' tenga un valor definido en el cliente.
+  if (isMobile === undefined) {
+    return null;
+  }
+
   if (isMobile) {
     return (
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
