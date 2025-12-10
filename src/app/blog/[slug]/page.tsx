@@ -18,7 +18,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  // This is a Server Component, it fetches data and passes it
-  // to the Client Component responsible for rendering.
+  // Aquest és un Server Component, obté les dades i les passa
+  // al Client Component responsable de la renderització.
   return <BlogPostContent post={post} />;
 }
