@@ -49,7 +49,7 @@ export default function AccountPage() {
               <CardTitle>Información de Dirección</CardTitle>
               <CardDescription>
                 Gestiona tus direcciones de facturación y envío.
-              </-carddescription>
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex gap-4">
