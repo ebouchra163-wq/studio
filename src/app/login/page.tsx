@@ -58,7 +58,8 @@ export default function LoginPage() {
       );
       
       if (!response.ok) {
-        throw new Error(`Error de l'API: ${response.statusText}`);
+        // Aquest error es llançarà si l'API retorna un codi com 4xx o 5xx
+        throw new Error(`Error de l'API: ${response.status} ${response.statusText}`);
       }
 
       const result: UserData[] = await response.json();
@@ -72,8 +73,8 @@ export default function LoginPage() {
         setError("Dades incorrectes. Revisa l'usuari i la contrasenya.");
       }
     } catch (err) {
-      setError("No s'ha pogut connectar amb el servidor. Intenta-ho més tard.");
-      console.error(err);
+      console.error("Error durant el login:", err);
+      setError("No s'ha pogut connectar amb el servidor. Revisa la teva connexió o intenta-ho més tard.");
     } finally {
       setLoading(false);
     }
