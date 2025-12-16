@@ -54,7 +54,7 @@ export default function LoginPage() {
       const password = encodeURIComponent(data.password);
       
       const response = await fetch(
-        `https://sheetdb.io/api/v1/n5eliliog16ts/search?sheet=usuaris&user=${user}&password=${password}`
+        `https://sheetdb.io/api/v1/n5eliliog16ts/search?user=${user}&password=${password}&sheet=usuaris`
       );
       
       if (!response.ok) {
@@ -72,9 +72,9 @@ export default function LoginPage() {
       } else {
         setError("Dades incorrectes. Revisa l'usuari i la contrasenya.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error durant el login:", err);
-      setError("No s'ha pogut connectar amb el servidor. Revisa la teva connexió o intenta-ho més tard.");
+      setError(err.message || "No s'ha pogut connectar amb el servidor. Revisa la teva connexió o intenta-ho més tard.");
     } finally {
       setLoading(false);
     }
