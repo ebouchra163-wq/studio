@@ -1,7 +1,7 @@
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogIn, Menu, PackageSearch, Route, Home, Newspaper, Users } from "lucide-react";
+import { LogIn, Menu, PackageSearch, Route, Home, Newspaper, Users, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -23,15 +23,68 @@ export function Navbar() {
   const isMobile = useIsMobile();
   const pathname = usePathname();
   const [isSheetOpen, setSheetOpen] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
+  React.useEffect(() => {
+    // Comprovar si l'usuari està autenticat llegint del localStorage
+    const userName = localStorage.getItem("userName");
+    setIsAuthenticated(!!userName);
+  }, [pathname]); // Re-comprovar en canviar de ruta
 
   React.useEffect(() => {
     setSheetOpen(false);
   }, [pathname]);
 
-  // Evita el error de hidratación no renderizando nada hasta que 'isMobile' tenga un valor definido en el cliente.
   if (isMobile === undefined) {
     return null;
   }
+  
+  const authLinks = (
+    <>
+      {isAuthenticated ? (
+        <Button asChild>
+          <Link href="/dashboard">
+            <User className="mr-2 h-4 w-4" /> Perfil
+          </Link>
+        </Button>
+      ) : (
+        <>
+          <Button asChild variant="ghost">
+            <Link href="/signup">Regístrate</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/login">
+              <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
+            </Link>
+          </Button>
+        </>
+      )}
+    </>
+  );
+
+  const mobileAuthLinks = (
+    <>
+      {isAuthenticated ? (
+         <Button asChild className="w-full">
+          <Link href="/dashboard">
+            <User className="mr-2 h-4 w-4" /> Perfil
+          </Link>
+        </Button>
+      ) : (
+        <>
+          <Button asChild variant="secondary" className="w-full">
+            <Link href="/signup">Regístrate</Link>
+          </Button>
+          <Button asChild className="w-full">
+            <Link href="/login">
+              <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
+            </Link>
+          </Button>
+        </>
+      )}
+    </>
+  )
+
 
   if (isMobile) {
     return (
@@ -49,7 +102,7 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col gap-6 p-4">
+              <div className="flex h-full flex-col gap-6 p-4">
                 <Logo />
                 <nav className="flex flex-col gap-4">
                   {mainNavLinks.map((link) => (
@@ -69,14 +122,7 @@ export function Navbar() {
                   ))}
                 </nav>
                 <div className="mt-auto flex flex-col gap-4">
-                   <Button asChild variant="secondary">
-                    <Link href="/signup">Regístrate</Link>
-                  </Button>
-                  <Button asChild>
-                    <Link href="/login">
-                      <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
-                    </Link>
-                  </Button>
+                  {mobileAuthLinks}
                 </div>
               </div>
             </SheetContent>
@@ -110,14 +156,7 @@ export function Navbar() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-4">
-          <Button asChild variant="ghost">
-            <Link href="/signup">Regístrate</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/login">
-              <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
-            </Link>
-          </Button>
+          {authLinks}
         </div>
       </div>
     </header>
