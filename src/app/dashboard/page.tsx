@@ -34,7 +34,6 @@ export default function DashboardPage() {
 
   const handleLogout = () => {
     localStorage.removeItem("userName");
-    localStorage.removeItem("userCompany");
     router.push("/login");
     router.refresh(); // Força l'actualització de la barra de navegació
   };
