@@ -16,20 +16,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function DashboardPage() {
   const [userName, setUserName] = useState<string | null>(null);
-  const [userCompany, setUserCompany] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     // Aquesta funció s'executarà només al client
     const name = localStorage.getItem("userName");
-    const company = localStorage.getItem("userCompany");
 
-    if (name && company) {
+    if (name) {
       setUserName(name);
-      setUserCompany(company);
     } else {
-      // Si no hi ha dades, potser l'usuari no ha iniciat sessió
+      // Si no hi ha dades, fem fora l'usuari cap a /login
       router.push('/login');
     }
     setLoading(false);
@@ -53,61 +50,44 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <Skeleton className="h-8 w-1/4" />
-            <Skeleton className="h-4 w-1/3" />
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="flex items-center gap-4">
-              <Skeleton className="h-6 w-6 rounded-full" />
-              <Skeleton className="h-6 w-1/2" />
-            </div>
-            <div className="flex items-center gap-4">
-              <Skeleton className="h-6 w-6 rounded-full" />
-              <Skeleton className="h-6 w-2/3" />
-            </div>
+             <Skeleton className="h-8 w-2/3" />
+          </CardContent>
+          <CardContent>
+            <Skeleton className="h-10 w-full" />
           </CardContent>
         </Card>
       </div>
     );
   }
+  
+  if (!userName) {
+    // Aquesta comprovació evita un flaix de contingut mentre es redirigeix
+    return null;
+  }
 
   return (
     <div className="container mx-auto max-w-4xl py-12">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">El Teu Perfil</h1>
-            <p className="text-muted-foreground">
-              Aquí pots veure la teva informació d'usuari.
-            </p>
+            <h1 className="text-3xl font-bold tracking-tight">Benvingut a la teva zona privada, {userName}</h1>
         </div>
-        <Button variant="outline" onClick={handleLogout}>
+        <Button variant="outline" onClick={handleLogout} className="w-full sm:w-auto">
             <LogOut className="mr-2 h-4 w-4" />
-            Tancar Sessió
+            Sortir
         </Button>
       </div>
-      <Separator className="my-6" />
-
-      <Card>
+      <Separator className="my-8" />
+       <Card>
         <CardHeader>
-          <CardTitle>Informació del teu Compte</CardTitle>
-          <CardDescription>
-            Aquestes són les dades associades al teu usuari.
+          <CardTitle>El teu Perfil</CardTitle>
+           <CardDescription>
+            Aquí pots gestionar la teva informació.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center gap-4">
-            <User className="h-6 w-6 text-primary" />
-            <div>
-              <h3 className="font-semibold">Nom d'Usuari</h3>
-              <p className="text-muted-foreground">{userName}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Building className="h-6 w-6 text-primary" />
-            <div>
-              <h3 className="font-semibold">Empresa</h3>
-              <p className="text-muted-foreground">{userCompany}</p>
-            </div>
-          </div>
+        <CardContent>
+           <p className="text-muted-foreground">Properament podràs veure aquí els teus enviaments i dades...</p>
         </CardContent>
       </Card>
     </div>
