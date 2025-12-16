@@ -20,14 +20,14 @@ import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const loginSchema = z.object({
-  user: z.string().min(1, { message: "L'usuari és requerit." }),
+  usuari: z.string().min(1, { message: "L'usuari és requerit." }),
   password: z.string().min(1, { message: "La contrasenya és requerida." }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 interface UserData {
-  user: string;
+  usuari: string;
   nom: string;
   empresa: string;
   password?: string;
@@ -41,7 +41,7 @@ export default function LoginPage() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      user: "",
+      usuari: "",
       password: "",
     },
   });
@@ -51,7 +51,6 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      // Fem una petició per obtenir TOTS els usuaris
       const response = await fetch(
         `https://sheetdb.io/api/v1/n5eliliog16ts?sheet=usuaris`
       );
@@ -61,10 +60,9 @@ export default function LoginPage() {
       }
 
       const allUsers: UserData[] = await response.json();
-
-      // Busquem l'usuari manualment al client
+      
       const foundUser = allUsers.find(
-        (u) => u.user === data.user && u.password === data.password
+        (u) => u.usuari === data.usuari && u.password === data.password
       );
 
       if (foundUser) {
@@ -96,15 +94,15 @@ export default function LoginPage() {
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="user">Usuari</Label>
+              <Label htmlFor="usuari">Usuari</Label>
               <Input
-                id="user"
+                id="usuari"
                 placeholder="El teu usuari"
-                {...form.register("user")}
+                {...form.register("usuari")}
                 disabled={loading}
               />
-              {form.formState.errors.user && (
-                <p className="text-sm font-medium text-destructive">{form.formState.errors.user.message}</p>
+              {form.formState.errors.usuari && (
+                <p className="text-sm font-medium text-destructive">{form.formState.errors.usuari.message}</p>
               )}
             </div>
             <div className="grid gap-2">
