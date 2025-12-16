@@ -30,6 +30,7 @@ interface UserData {
   usuari: string;
   nom: string;
   empresa: string;
+  rol: string;
   password?: string;
 }
 
@@ -67,6 +68,7 @@ export default function LoginPage() {
 
       if (foundUser) {
         localStorage.setItem("userName", foundUser.usuari);
+        localStorage.setItem("userRole", foundUser.rol);
         router.push("/dashboard");
         router.refresh();
       } else {
