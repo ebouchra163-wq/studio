@@ -50,19 +50,24 @@ export default function LoginPage() {
     setError(null);
 
     try {
+      const user = encodeURIComponent(data.user);
+      const password = encodeURIComponent(data.password);
+      
       const response = await fetch(
-        `https://sheetdb.io/api/v1/n5eliliog16ts/search?sheet=usuaris&user=${data.user}&password=${data.password}`
+        `https://sheetdb.io/api/v1/n5eliliog16ts/search?sheet=usuaris&user=${user}&password=${password}`
       );
       
+      if (!response.ok) {
+        throw new Error(`Error de l'API: ${response.statusText}`);
+      }
+
       const result: UserData[] = await response.json();
 
-      if (response.ok && result.length > 0) {
-        // Guardar dades al localStorage
+      if (result.length > 0) {
         localStorage.setItem("userName", result[0].nom);
         localStorage.setItem("userCompany", result[0].empresa);
-        // Redirigir al dashboard
         router.push("/dashboard");
-        router.refresh(); // Força l'actualització de la barra de navegació
+        router.refresh();
       } else {
         setError("Dades incorrectes. Revisa l'usuari i la contrasenya.");
       }
