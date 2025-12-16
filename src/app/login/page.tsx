@@ -30,6 +30,7 @@ interface UserData {
   user: string;
   nom: string;
   empresa: string;
+  password?: string;
 }
 
 export default function LoginPage() {
@@ -50,23 +51,25 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const user = encodeURIComponent(data.user);
-      const password = encodeURIComponent(data.password);
-      
+      // Fem una petició per obtenir TOTS els usuaris
       const response = await fetch(
-        `https://sheetdb.io/api/v1/n5eliliog16ts/search?user=${user}&password=${password}&sheet=usuaris`
+        `https://sheetdb.io/api/v1/n5eliliog16ts?sheet=usuaris`
       );
       
       if (!response.ok) {
-        // Aquest error es llançarà si l'API retorna un codi com 4xx o 5xx
         throw new Error(`Error de l'API: ${response.status} ${response.statusText}`);
       }
 
-      const result: UserData[] = await response.json();
+      const allUsers: UserData[] = await response.json();
 
-      if (result.length > 0) {
-        localStorage.setItem("userName", result[0].nom);
-        localStorage.setItem("userCompany", result[0].empresa);
+      // Busquem l'usuari manualment al client
+      const foundUser = allUsers.find(
+        (u) => u.user === data.user && u.password === data.password
+      );
+
+      if (foundUser) {
+        localStorage.setItem("userName", foundUser.nom);
+        localStorage.setItem("userCompany", foundUser.empresa);
         router.push("/dashboard");
         router.refresh();
       } else {
