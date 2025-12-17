@@ -12,6 +12,7 @@ import {
   Truck,
   PackageCheck,
   Info,
+  Package,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,7 +29,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-type ShippingStatus = 'En almacen' | 'En transito' | 'Entregado' | 'lliurat';
+type ShippingStatus = 'En almacen' | 'En transito' | 'Entregado' | 'lliurat' | 'desconegut';
 
 interface ShipmentData {
   tracking_code: string;
@@ -49,6 +50,12 @@ const statusConfig: {
     text: string;
   };
 } = {
+  'desconegut': {
+    progress: 0,
+    color: 'bg-gray-400',
+    icon: Package,
+    text: 'Informació rebuda',
+  },
   'En almacen': {
     progress: 10,
     color: 'bg-gray-400',
@@ -74,6 +81,14 @@ const statusConfig: {
     text: 'Entregado',
   },
 };
+
+const getStatusConfig = (status?: ShippingStatus) => {
+  if (status && statusConfig[status]) {
+    return statusConfig[status];
+  }
+  return statusConfig['desconegut'];
+};
+
 
 export default function TrackingPage() {
   const [trackingCode, setTrackingCode] = useState('');
@@ -110,7 +125,7 @@ export default function TrackingPage() {
     }
   };
   
-  const currentStatus = shipmentData ? statusConfig[shipmentData.status] : null;
+  const currentStatus = shipmentData ? getStatusConfig(shipmentData.status) : null;
 
   return (
     <div className="container mx-auto max-w-4xl py-12 md:py-20">
@@ -170,7 +185,7 @@ export default function TrackingPage() {
         </Alert>
       )}
 
-      {!isLoading && shipmentData && currentStatus && (
+      {!isLoading && shipmentData && (
         <Card className="overflow-hidden shadow-lg">
           <CardHeader className="bg-muted/30">
             <CardTitle className="flex items-center gap-3 text-2xl">
@@ -182,9 +197,9 @@ export default function TrackingPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="mb-8">
-              <h3 className="mb-4 text-lg font-semibold">Progreso del envío</h3>
-              {currentStatus && (
+            {currentStatus && (
+              <div className="mb-8">
+                <h3 className="mb-4 text-lg font-semibold">Progreso del envío</h3>
                 <>
                   <Progress
                     value={currentStatus.progress}
@@ -196,8 +211,8 @@ export default function TrackingPage() {
                     <div className={cn((shipmentData.status === 'Entregado' || shipmentData.status === 'lliurat') && 'font-bold text-primary')}>Entregado</div>
                   </div>
                 </>
-              )}
-            </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-4">
@@ -205,21 +220,21 @@ export default function TrackingPage() {
                   <MapPin className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold">Origen</h4>
-                    <p className="text-muted-foreground">{shipmentData.origin}</p>
+                    <p className="text-muted-foreground">{shipmentData.origin || 'No especificado'}</p>
                   </div>
                 </div>
                  <div className="flex items-start gap-3">
                   <PackageSearch className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold">Destino</h4>
-                    <p className="text-muted-foreground">{shipmentData.destination}</p>
+                    <p className="text-muted-foreground">{shipmentData.destination || 'No especificado'}</p>
                   </div>
                 </div>
                  <div className="flex items-start gap-3">
                   <Calendar className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold">Fecha prevista (ETA)</h4>
-                    <p className="text-muted-foreground">{shipmentData.eta}</p>
+                    <p className="text-muted-foreground">{shipmentData.eta || 'No especificado'}</p>
                   </div>
                 </div>
               </div>
@@ -228,16 +243,18 @@ export default function TrackingPage() {
                   <Info className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold">Estado</h4>
-                    <p className="text-muted-foreground">{shipmentData.status}</p>
+                    <p className="text-muted-foreground">{shipmentData.status || 'No especificado'}</p>
                   </div>
                 </div>
-                 <div className="flex items-start gap-3">
-                  <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
-                  <div>
-                    <h4 className="font-semibold">Ubicación actual</h4>
-                    <p className="text-muted-foreground">{shipmentData.location}</p>
+                {currentStatus && (
+                  <div className="flex items-start gap-3">
+                    <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                    <div>
+                      <h4 className="font-semibold">Ubicación actual</h4>
+                      <p className="text-muted-foreground">{shipmentData.location || 'No especificado'}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </CardContent>
