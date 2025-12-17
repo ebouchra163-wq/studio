@@ -72,12 +72,12 @@ export default function Home() {
         <div className="absolute inset-0 bg-primary/70" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-primary-foreground">
           <h1 className="font-headline text-4xl font-bold md:text-6xl">
-            <span className="text-orange-500">Global</span> <span className="text-blue-600">Cargo Care</span>
+            <span className="text-accent">Global</span> <span className="text-primary-foreground">Cargo Care</span>
           </h1>
           <p className="mt-4 max-w-2xl text-lg md:text-xl">
             Su socio de confianza para soluciones globales de envío y logística.
           </p>
-          <Button asChild size="lg" className="mt-8 bg-blue-600 text-orange-500 hover:bg-blue-700">
+          <Button asChild size="lg" className="mt-8 bg-primary text-accent hover:bg-primary/90">
             <Link href="#contact">Obtener una Cotización</Link>
           </Button>
         </div>
