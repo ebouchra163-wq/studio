@@ -28,14 +28,14 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-type ShippingStatus = 'En almacen' | 'En transito' | 'Entregado';
+type ShippingStatus = 'En almacen' | 'En transito' | 'Entregado' | 'lliurat';
 
 interface ShipmentData {
   tracking_code: string;
   origin: string;
   destination: string;
   eta: string;
-  current_location: string;
+  location: string;
   status: ShippingStatus;
 }
 
@@ -62,6 +62,12 @@ const statusConfig: {
     text: 'En reparto',
   },
   'Entregado': {
+    progress: 100,
+    color: 'bg-green-500',
+    icon: PackageCheck,
+    text: 'Entregado',
+  },
+  'lliurat': {
     progress: 100,
     color: 'bg-green-500',
     icon: PackageCheck,
@@ -187,7 +193,7 @@ export default function TrackingPage() {
                   <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
                     <div className={cn(shipmentData.status === 'En almacen' && 'font-bold text-primary')}>En origen</div>
                     <div className={cn(shipmentData.status === 'En transito' && 'font-bold text-primary')}>En tránsito</div>
-                    <div className={cn(shipmentData.status === 'Entregado' && 'font-bold text-primary')}>Entregado</div>
+                    <div className={cn((shipmentData.status === 'Entregado' || shipmentData.status === 'lliurat') && 'font-bold text-primary')}>Entregado</div>
                   </div>
                 </>
               )}
@@ -229,7 +235,7 @@ export default function TrackingPage() {
                   <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold">Ubicación actual</h4>
-                    <p className="text-muted-foreground">{shipmentData.current_location}</p>
+                    <p className="text-muted-foreground">{shipmentData.location}</p>
                   </div>
                 </div>
               </div>
