@@ -77,7 +77,7 @@ export default function Home() {
           <p className="mt-4 max-w-2xl text-lg md:text-xl">
             Su socio de confianza para soluciones globales de envío y logística.
           </p>
-          <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button asChild size="lg" className="mt-8 bg-blue-600 text-orange-500 hover:bg-blue-700">
             <Link href="#contact">Obtener una Cotización</Link>
           </Button>
         </div>
