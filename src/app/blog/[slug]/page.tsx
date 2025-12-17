@@ -5,13 +5,13 @@ import { notFound } from 'next/navigation';
 import BlogPostContent from './blog-post-content';
 
 // generateStaticParams runs on the server at build time
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
 
   if (!post) {
