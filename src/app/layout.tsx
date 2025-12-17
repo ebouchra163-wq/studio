@@ -11,6 +11,9 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 export const metadata: Metadata = {
   title: 'Aplicación Global Cargo Care',
   description: 'Su socio de confianza para soluciones globales de envío y logística.',
+  icons: {
+    icon: '/logobouchra.png',
+  },
 };
 
 export default function RootLayout({
