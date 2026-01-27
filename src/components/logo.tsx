@@ -1,15 +1,18 @@
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-export function Logo({ className, imageClassName }: { className?: string; imageClassName?: string }) {
+export function Logo({ className, isHeader = false }: { className?: string; isHeader?: boolean; }) {
   return (
-    <div className={cn("flex items-center h-full", className)}>
+    <div className={cn("flex items-center", isHeader ? '' : 'h-full', className)}>
       <Image
         src="/Logo_Bouchra__2_-removebg-preview.png"
         alt="Logo de la empresa"
         width={500}
         height={200}
-        className={cn("h-full w-auto object-contain", imageClassName)}
+        className={cn(
+          "w-auto object-contain",
+          isHeader ? "h-20" : "h-full"
+        )}
         priority
       />
     </div>
