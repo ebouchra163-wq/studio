@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export function Logo({ className, isHeader = false }: { className?: string; isHeader?: boolean; }) {
   return (
-    <div className={cn("flex items-center", isHeader ? '' : 'h-full', className)}>
+    <div className={cn("relative flex items-center", className)}>
       <Image
         src="/Logo_Bouchra__2_-removebg-preview.png"
         alt="Logo de la empresa"
@@ -11,7 +11,7 @@ export function Logo({ className, isHeader = false }: { className?: string; isHe
         height={200}
         className={cn(
           "w-auto object-contain",
-          isHeader ? "h-20" : "h-full"
+          isHeader ? "h-24" : "h-16"
         )}
         priority
       />
