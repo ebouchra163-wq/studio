@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: 'Aplicación Global Cargo Care',
   description: 'Su socio de confianza para soluciones globales de envío y logística.',
   icons: {
-    icon: '/logo.png',
+    icon: '/Logo_Bouchra__2_-removebg-preview.png',
   },
 };
 

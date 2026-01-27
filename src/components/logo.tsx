@@ -5,7 +5,7 @@ export function Logo({ className, isHeader = false }: { className?: string; isHe
   return (
     <div className={cn("relative flex items-center", className)}>
       <Image
-        src="/logo.png"
+        src="/Logo_Bouchra__2_-removebg-preview.png"
         alt="Logo de la empresa"
         width={500}
         height={200}
