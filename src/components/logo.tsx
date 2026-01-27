@@ -3,13 +3,13 @@ import Image from 'next/image';
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center", className)}>
+    <div className={cn("flex items-center h-full", className)}>
       <Image
         src="/Logo_Bouchra__2_-removebg-preview.png"
         alt="Logo de la empresa"
         width={300}
         height={80}
-        className="h-14 w-auto object-contain md:h-16"
+        className="h-full w-auto object-contain p-1"
         priority
       />
     </div>
