@@ -89,7 +89,7 @@ export function Navbar() {
   if (isMobile) {
     return (
       <header className="sticky top-0 z-50 w-full border-b bg-white">
-        <div className="container flex h-28 items-center justify-between px-4 md:px-6">
+        <div className="container flex h-20 items-center justify-between px-4 md:px-6">
           <Link href="/" className="h-full">
             <Logo />
             <span className="sr-only">Inicio</span>
@@ -134,7 +134,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
-      <div className="container flex h-28 items-center px-4 md:px-6">
+      <div className="container flex h-20 items-center px-4 md:px-6">
         <Link href="/" className="mr-8 h-full">
           <Logo />
           <span className="sr-only">Inicio</span>
