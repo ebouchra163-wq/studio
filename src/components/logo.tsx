@@ -5,13 +5,13 @@ export function Logo({ className, isHeader = false }: { className?: string; isHe
   return (
     <div className={cn("relative flex items-center", className)}>
       <Image
-        src="/Logo_Bouchra__2_-removebg-preview.png"
+        src="/logo.png"
         alt="Logo de la empresa"
         width={500}
         height={200}
         className={cn(
           "w-auto object-contain",
-          isHeader ? "h-24" : "h-16"
+          isHeader ? "h-12" : "h-16"
         )}
         priority
       />
