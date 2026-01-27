@@ -11,7 +11,7 @@ export function Logo({ className, isHeader = false }: { className?: string; isHe
         height={200}
         className={cn(
           "w-auto object-contain",
-          isHeader ? "h-16 transform scale-[1.9]" : "h-24"
+          isHeader ? "h-16 transform scale-[1.9]" : "h-32"
         )}
         priority
       />
