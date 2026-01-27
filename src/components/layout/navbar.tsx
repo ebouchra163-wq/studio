@@ -1,7 +1,8 @@
+
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogIn, Menu, PackageSearch, Route, Home, Newspaper, Users, User } from "lucide-react";
+import { LogIn, Menu, PackageSearch, Route, Home, Newspaper, Users, User, FileText } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -42,11 +43,18 @@ export function Navbar() {
   const authLinks = (
     <>
       {isAuthenticated ? (
-        <Button asChild>
-          <Link href="/dashboard">
-            <User className="mr-2 h-4 w-4" /> Perfil
-          </Link>
-        </Button>
+        <>
+            <Button asChild variant="ghost">
+                <Link href="/documents">
+                    <FileText className="mr-2 h-4 w-4" /> Documents
+                </Link>
+            </Button>
+            <Button asChild>
+              <Link href="/dashboard">
+                <User className="mr-2 h-4 w-4" /> Perfil
+              </Link>
+            </Button>
+        </>
       ) : (
         <>
           <Button asChild variant="ghost">
@@ -65,11 +73,18 @@ export function Navbar() {
   const mobileAuthLinks = (
     <>
       {isAuthenticated ? (
-         <Button asChild className="w-full">
-          <Link href="/dashboard">
-            <User className="mr-2 h-4 w-4" /> Perfil
-          </Link>
-        </Button>
+        <>
+            <Button asChild variant="outline" className="w-full justify-start">
+                <Link href="/documents">
+                    <FileText className="mr-2 h-4 w-4" /> Documents
+                </Link>
+            </Button>
+            <Button asChild className="w-full justify-start">
+              <Link href="/dashboard">
+                <User className="mr-2 h-4 w-4" /> Perfil
+              </Link>
+            </Button>
+        </>
       ) : (
         <>
           <Button asChild variant="secondary" className="w-full">
