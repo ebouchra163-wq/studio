@@ -7,9 +7,9 @@ export function Logo({ className }: { className?: string }) {
       <Image
         src="/Logo_Bouchra__2_-removebg-preview.png"
         alt="Logo de la empresa"
-        width={180}
-        height={50}
-        className="h-12 w-auto object-contain"
+        width={200}
+        height={55}
+        className="h-14 w-auto object-contain"
         priority
       />
     </div>
