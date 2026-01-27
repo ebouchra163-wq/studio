@@ -2,55 +2,55 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "Un gran buque de carga en el océano, representando el transporte global.",
+      "description": "Un gran vaixell de càrrega a l'oceà, representant el transport global.",
       "imageUrl": "https://images.unsplash.com/photo-1568347877321-f8935c7dc5a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYXJnbyUyMHNoaXB8ZW58MHx8fHwxNzYzNTgwMDU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "buque de carga"
     },
     {
       "id": "tracking-map",
-      "description": "Un mapa que muestra una ruta de transporte desde un almacén hasta un destino.",
+      "description": "Un mapa que mostra una ruta de transport des d'un magatzem fins a una destinació.",
       "imageUrl": "https://images.unsplash.com/photo-1651313527570-8bec5a11922c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxyb3V0ZSUyMG1hcHxlbnwwfHx8fDE3NjM1NzEyNTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mapa de ruta"
     },
     {
       "id": "blog-post-1",
-      "description": "Un almacén moderno con robots automatizados moviendo estanterías.",
+      "description": "Un magatzem modern amb robots automatitzats movent prestatgeries.",
       "imageUrl": "https://esypro.com/wp-content/uploads/tendencias-logistica-interna-2024.jpg",
       "imageHint": "almacén automatizado"
     },
     {
       "id": "blog-post-2",
-      "description": "Una pila de cajas de cartón listas para ser recicladas o reutilizadas.",
+      "description": "Una pila de caixes de cartró a punt per ser reciclades o reutilitzades.",
       "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnQLukxqLUoZIOYvSkjA8KsP-Vi1xneFxmPw&s",
       "imageHint": "cajas de devolución"
     },
     {
       "id": "about-us",
-      "description": "Un equipo diverso de profesionales de la logística colaborando en una oficina moderna.",
+      "description": "Un equip divers de professionals de la logística col·laborant en una oficina moderna.",
       "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsb2dpc3RpY3MlMjB0ZWFtfGVufDB8fHx8MTc2NDYwMzkzNnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "equipo de logística"
     },
     {
       "id": "international-shipping",
-      "description": "Un gran buque de carga en el océano, representando el transporte global.",
+      "description": "Un gran vaixell de càrrega a l'oceà, representant el transport global.",
       "imageUrl": "https://images.unsplash.com/photo-1568347877321-f8935c7dc5a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYXJnbyUyMHNoaXB8ZW58MHx8fHwxNzYzNTgwMDU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "buque carga"
     },
     {
       "id": "domestic-freight",
-      "description": "Un camión conduciendo por una carretera al atardecer.",
+      "description": "Un camió conduint per una carretera al capvespre.",
       "imageUrl": "https://images.unsplash.com/photo-1594665877570-2be128f984ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYW1pJUMzJUIzbiUyMGNhcnJldGVyYXxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "camión carretera"
     },
     {
       "id": "warehousing",
-      "description": "El interior de un gran almacén con estanterías altas.",
+      "description": "L'interior d'un gran magatzem amb prestatgeries altes.",
       "imageUrl": "https://images.unsplash.com/photo-1614670151727-d2829b6551e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhbG1hYyVDMyVBOW4lMjBpbnRlcmlvcnxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "almacén interior"
     },
     {
       "id": "reverse-logistics",
-      "description": "Cajas apiladas en un palé, listas para devolución.",
+      "description": "Caixes apilades en un palet, a punt per a la devolució.",
       "imageUrl": "https://images.unsplash.com/photo-1463717738788-85fcacb6ac3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYWphcyUyMGRldm9sdWNpJUMzJUIzbnxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cajas devolución"
     }

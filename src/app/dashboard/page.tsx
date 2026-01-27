@@ -49,7 +49,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className='flex items-center gap-2 mb-4'>
                 <Shield className='h-5 w-5 text-primary'/>
-                <h3 className='font-semibold'>Panell d'Administrador</h3>
+                <h3 className='font-semibold'>Panell d'administrador</h3>
             </div>
             <p className="text-muted-foreground">Aquí tens accés a totes les opcions de gestió del sistema.</p>
           </CardContent>
@@ -59,7 +59,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className='flex items-center gap-2 mb-4'>
                 <Briefcase className='h-5 w-5 text-primary'/>
-                <h3 className='font-semibold'>Panell de Treballador</h3>
+                <h3 className='font-semibold'>Panell de treballador</h3>
             </div>
             <p className="text-muted-foreground">Aquí pots veure les teves tasques i enviaments assignats.</p>
           </CardContent>
@@ -102,19 +102,19 @@ export default function DashboardPage() {
     <div className="container mx-auto max-w-4xl py-12">
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Benvingut, {userName}</h1>
-            <p className="text-muted-foreground">Aquesta és la teva zona privada.</p>
+            <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {userName}</h1>
+            <p className="text-muted-foreground">Aquesta és la teva àrea privada.</p>
         </div>
         <Button variant="outline" onClick={handleLogout} className="w-full sm:w-auto">
             <LogOut className="mr-2 h-4 w-4" />
-            Sortir
+            Tanca la sessió
         </Button>
       </div>
       <Separator className="my-8" />
        <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5"/> El Teu Perfil
+            <User className="h-5 w-5"/> El teu perfil
           </CardTitle>
            <CardDescription>
             Rol: <span className='font-medium text-primary'>{userRole}</span>

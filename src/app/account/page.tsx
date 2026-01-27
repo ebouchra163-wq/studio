@@ -16,9 +16,9 @@ export default function AccountPage() {
   return (
     <div className="container mx-auto max-w-4xl py-12">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Cuenta de Cliente</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Compte de Client</h1>
         <p className="text-muted-foreground">
-          Gestiona tu perfil, direcciones y envíos.
+          Gestiona el teu perfil, adreces i enviaments.
         </p>
       </div>
       <Separator className="my-6" />
@@ -38,7 +38,7 @@ export default function AccountPage() {
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="w-full">
-                Editar Perfil
+                Edita el Perfil
               </Button>
             </CardFooter>
           </Card>
@@ -46,38 +46,38 @@ export default function AccountPage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Información de Dirección</CardTitle>
+              <CardTitle>Informació d'Adreça</CardTitle>
               <CardDescription>
-                Gestiona tus direcciones de facturación y envío.
+                Gestiona les teves adreces de facturació i enviament.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex gap-4">
                 <MapPin className="mt-1 h-5 w-5 shrink-0 text-muted-foreground" />
                 <div>
-                  <h3 className="font-semibold">Dirección de Facturación</h3>
+                  <h3 className="font-semibold">Adreça de Facturació</h3>
                   <div className="text-sm text-muted-foreground">
-                    <p>123 Calle Falsa</p>
+                    <p>123 Carrer Fals</p>
                     <p>Metropolis, NY 10001</p>
-                    <p>Estados Unidos</p>
+                    <p>Estats Units</p>
                   </div>
                 </div>
               </div>
               <div className="flex gap-4">
                 <MapPin className="mt-1 h-5 w-5 shrink-0 text-muted-foreground" />
                 <div>
-                  <h3 className="font-semibold">Dirección de Envío</h3>
+                  <h3 className="font-semibold">Adreça d'Enviament</h3>
                   <div className="text-sm text-muted-foreground">
                     <p>456 Evergreen Terrace</p>
                     <p>Gotham, NJ 07001</p>
-                    <p>Estados Unidos</p>
+                    <p>Estats Units</p>
                   </div>
                 </div>
               </div>
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="w-full">
-                Editar Direcciones
+                Edita les Adreces
               </Button>
             </CardFooter>
           </Card>

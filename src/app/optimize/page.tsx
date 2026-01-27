@@ -30,12 +30,12 @@ import {
 } from "@/ai/flows/optimize-transport-routes";
 
 const formSchema = z.object({
-  origin: z.string().min(1, { message: "El origen es requerido." }),
-  destination: z.string().min(1, { message: "El destino es requerido." }),
+  origin: z.string().min(1, { message: "L'origen és requerit." }),
+  destination: z.string().min(1, { message: "El destí és requerit." }),
   waypoints: z.string().optional(),
-  trafficConditions: z.string().min(1, { message: "Las condiciones del tráfico son requeridas." }),
-  weatherConditions: z.string().min(1, { message: "Las condiciones climáticas son requeridas." }),
-  deliverySchedule: z.string().min(1, { message: "El horario de entrega es requerido." }),
+  trafficConditions: z.string().min(1, { message: "Les condicions del trànsit són requerides." }),
+  weatherConditions: z.string().min(1, { message: "Les condicions climàtiques són requerides." }),
+  deliverySchedule: z.string().min(1, { message: "L'horari d'entrega és requerit." }),
 });
 
 export default function OptimizePage() {
@@ -50,8 +50,8 @@ export default function OptimizePage() {
       destination: "",
       waypoints: "",
       trafficConditions: "Normal",
-      weatherConditions: "Despejado",
-      deliverySchedule: "Cualquier hora durante el día",
+      weatherConditions: "Serè",
+      deliverySchedule: "Qualsevol hora durant el dia",
     },
   });
 
@@ -65,7 +65,7 @@ export default function OptimizePage() {
       setResult(apiResult);
     } catch (e) {
       console.error(e);
-      setError("Hubo un error al optimizar la ruta. Por favor, inténtalo de nuevo.");
+      setError("Hi ha hagut un error en optimitzar la ruta. Si us plau, torna-ho a intentar.");
     } finally {
       setLoading(false);
     }
@@ -75,10 +75,10 @@ export default function OptimizePage() {
     <div className="container mx-auto max-w-4xl py-12">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          Optimización de Rutas Logísticas
+          Optimització de Rutes Logístiques
         </h1>
         <p className="text-muted-foreground">
-          Utilice nuestra herramienta de IA para encontrar la ruta más eficiente para sus envíos.
+          Utilitzeu la nostra eina d'IA per trobar la ruta més eficient per als vostres enviaments.
         </p>
       </div>
       <Separator className="my-6" />
@@ -86,10 +86,10 @@ export default function OptimizePage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Route className="h-6 w-6" /> Parámetros de Ruta
+            <Route className="h-6 w-6" /> Paràmetres de Ruta
           </CardTitle>
           <CardDescription>
-            Rellene los detalles a continuación para generar una ruta optimizada.
+            Ompliu els detalls a continuació per generar una ruta optimitzada.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -103,7 +103,7 @@ export default function OptimizePage() {
                     <FormItem>
                       <FormLabel>Origen</FormLabel>
                       <FormControl>
-                        <Input placeholder="Ej: Madrid, España" {...field} />
+                        <Input placeholder="Ex: Madrid, Espanya" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -114,9 +114,9 @@ export default function OptimizePage() {
                   name="destination"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Destino</FormLabel>
+                      <FormLabel>Destí</FormLabel>
                       <FormControl>
-                        <Input placeholder="Ej: Barcelona, España" {...field} />
+                        <Input placeholder="Ex: Barcelona, Espanya" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -128,9 +128,9 @@ export default function OptimizePage() {
                 name="waypoints"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Puntos intermedios (separados por comas)</FormLabel>
+                    <FormLabel>Punts intermedis (separats per comes)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ej: Zaragoza, Lérida" {...field} />
+                      <Input placeholder="Ex: Saragossa, Lleida" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,7 +141,7 @@ export default function OptimizePage() {
                 name="trafficConditions"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Condiciones del Tráfico</FormLabel>
+                    <FormLabel>Condicions del Trànsit</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -154,7 +154,7 @@ export default function OptimizePage() {
                 name="weatherConditions"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Condiciones Climáticas</FormLabel>
+                    <FormLabel>Condicions Climàtiques</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -167,7 +167,7 @@ export default function OptimizePage() {
                 name="deliverySchedule"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Horario de Entrega</FormLabel>
+                    <FormLabel>Horari d'Entrega</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -177,7 +177,7 @@ export default function OptimizePage() {
               />
               <Button type="submit" disabled={loading} className="w-full">
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {loading ? "Optimizando..." : "Optimizar Ruta"}
+                {loading ? "Optimitzant..." : "Optimitza la Ruta"}
               </Button>
             </form>
           </FormProvider>
@@ -195,19 +195,19 @@ export default function OptimizePage() {
       {result && (
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Ruta Optimizada</CardTitle>
+            <CardTitle>Ruta Optimitzada</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
              <div>
-                <h3 className="font-semibold">Ruta Sugerida:</h3>
+                <h3 className="font-semibold">Ruta Suggerida:</h3>
                 <p className="text-muted-foreground">{result.optimizedRoute}</p>
              </div>
              <div>
-                <h3 className="font-semibold">Tiempo Estimado de Viaje:</h3>
+                <h3 className="font-semibold">Temps Estimat de Viatge:</h3>
                 <p className="text-muted-foreground">{result.estimatedTravelTime}</p>
              </div>
              <div>
-                <h3 className="font-semibold">Recomendaciones:</h3>
+                <h3 className="font-semibold">Recomanacions:</h3>
                 <p className="text-muted-foreground">{result.recommendations}</p>
              </div>
           </CardContent>

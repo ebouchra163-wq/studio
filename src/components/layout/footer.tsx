@@ -9,34 +9,34 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <Logo />
             <p className="text-sm text-muted-foreground">
-              Su socio de confianza para soluciones globales de envío y logística.
+              El vostre soci de confiança per a solucions globals d'enviament i logística.
             </p>
           </div>
           <div className="grid gap-4 text-sm md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <h3 className="font-semibold">Enlaces Rápidos</h3>
-              <Link href="/" className="text-muted-foreground hover:text-primary">Inicio</Link>
-              <Link href="/about" className="text-muted-foreground hover:text-primary">Sobre Nosotros</Link>
+              <h3 className="font-semibold">Enllaços Ràpids</h3>
+              <Link href="/" className="text-muted-foreground hover:text-primary">Inici</Link>
+              <Link href="/about" className="text-muted-foreground hover:text-primary">Sobre Nosaltres</Link>
               <Link href="/blog" className="text-muted-foreground hover:text-primary">Blog</Link>
-              <Link href="/tracking" className="text-muted-foreground hover:text-primary">Rastrear Envío</Link>
-              <Link href="/optimize" className="text-muted-foreground hover:text-primary">Optimizar Ruta</Link>
-              <Link href="#contact" className="text-muted-foreground hover:text-primary">Contacto</Link>
+              <Link href="/tracking" className="text-muted-foreground hover:text-primary">Seguiment d'Enviament</Link>
+              <Link href="/optimize" className="text-muted-foreground hover:text-primary">Optimitzar Ruta</Link>
+              <Link href="#contact" className="text-muted-foreground hover:text-primary">Contacte</Link>
             </div>
             <div className="flex flex-col gap-2">
               <h3 className="font-semibold">Legal</h3>
-              <Link href="#" className="text-muted-foreground hover:text-primary">Política de Privacidad</Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary">Términos de Servicio</Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary">Política de Privadesa</Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary">Termes de Servei</Link>
             </div>
           </div>
           <div className="flex flex-col gap-2 text-sm">
-             <h3 className="font-semibold">Contáctanos</h3>
+             <h3 className="font-semibold">Contacta'ns</h3>
              <p className="text-muted-foreground">123 Logistics Lane, Port City</p>
              <p className="text-muted-foreground">contact@globalcargo.care</p>
              <p className="text-muted-foreground">+1 (234) 567-8900</p>
           </div>
         </div>
         <div className="mt-8 border-t pt-6 text-center text-sm text-muted-foreground">
-          © 2024 Global Cargo Care. Todos los derechos reservados.
+          © 2024 Global Cargo Care. Tots els drets reservats.
         </div>
       </div>
     </footer>

@@ -133,7 +133,7 @@ export default function LoginPage() {
               ) : (
                 <LogIn className="mr-2 h-4 w-4" />
               )}
-              {loading ? "Entrant..." : "Entrar"}
+              {loading ? "Entrant..." : "Entra"}
             </Button>
           </form>
         </CardContent>

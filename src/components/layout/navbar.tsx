@@ -12,11 +12,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 const mainNavLinks = [
-  { href: "/", label: "Inicio", icon: Home },
-  { href: "/about", label: "Sobre Nosotros", icon: Users },
+  { href: "/", label: "Inici", icon: Home },
+  { href: "/about", label: "Sobre Nosaltres", icon: Users },
   { href: "/blog", label: "Blog", icon: Newspaper },
-  { href: "/tracking", label: "Seguimiento", icon: PackageSearch },
-  { href: "/optimize", label: "Optimizar Ruta", icon: Route },
+  { href: "/tracking", label: "Seguiment", icon: PackageSearch },
+  { href: "/optimize", label: "Optimitzar Ruta", icon: Route },
 ];
 
 export function Navbar() {
@@ -50,11 +50,11 @@ export function Navbar() {
       ) : (
         <>
           <Button asChild variant="ghost">
-            <Link href="/signup">Regístrate</Link>
+            <Link href="/signup">Registra't</Link>
           </Button>
           <Button asChild>
             <Link href="/login">
-              <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
+              <LogIn className="mr-2 h-4 w-4" /> Inicia la Sessió
             </Link>
           </Button>
         </>
@@ -73,11 +73,11 @@ export function Navbar() {
       ) : (
         <>
           <Button asChild variant="secondary" className="w-full">
-            <Link href="/signup">Regístrate</Link>
+            <Link href="/signup">Registra't</Link>
           </Button>
           <Button asChild className="w-full">
             <Link href="/login">
-              <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
+              <LogIn className="mr-2 h-4 w-4" /> Inicia la Sessió
             </Link>
           </Button>
         </>
@@ -92,13 +92,13 @@ export function Navbar() {
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/">
             <Logo isHeader={true} />
-            <span className="sr-only">Inicio</span>
+            <span className="sr-only">Inici</span>
           </Link>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Abrir menú de navegación</span>
+                <span className="sr-only">Obre el menú de navegació</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
@@ -137,7 +137,7 @@ export function Navbar() {
       <div className="container flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="mr-8">
           <Logo isHeader={true} />
-          <span className="sr-only">Inicio</span>
+          <span className="sr-only">Inici</span>
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium">
           {mainNavLinks.map((link) => (

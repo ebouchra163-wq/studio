@@ -29,7 +29,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-type ShippingStatus = 'En almacen' | 'En transito' | 'Entregado' | 'lliurat' | 'desconegut';
+type ShippingStatus = 'Al magatzem' | 'En trànsit' | 'Lliurat' | 'Desconegut' | 'En almacen' | 'En transito' | 'Entregado' | 'lliurat' | 'desconegut';
 
 interface ShipmentData {
   tracking_code: string;
@@ -43,50 +43,30 @@ interface ShipmentData {
 const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/n5eliliog16ts';
 
 const statusConfig: {
-  [key in ShippingStatus]: {
+  [key in string]: {
     progress: number;
     color: string;
     icon: React.ElementType;
     text: string;
   };
 } = {
-  'desconegut': {
-    progress: 0,
-    color: 'bg-gray-400',
-    icon: Package,
-    text: 'Informació rebuda',
-  },
-  'En almacen': {
-    progress: 10,
-    color: 'bg-gray-400',
-    icon: WarehouseIcon,
-    text: 'En origen',
-  },
-  'En transito': {
-    progress: 50,
-    color: 'bg-blue-500',
-    icon: Truck,
-    text: 'En reparto',
-  },
-  'Entregado': {
-    progress: 100,
-    color: 'bg-green-500',
-    icon: PackageCheck,
-    text: 'Entregado',
-  },
-  'lliurat': {
-    progress: 100,
-    color: 'bg-green-500',
-    icon: PackageCheck,
-    text: 'Entregado',
-  },
+  'Desconegut': { progress: 0, color: 'bg-gray-400', icon: Package, text: 'Informació rebuda' },
+  'Al magatzem': { progress: 10, color: 'bg-gray-400', icon: WarehouseIcon, text: 'A l\'origen' },
+  'En trànsit': { progress: 50, color: 'bg-blue-500', icon: Truck, text: 'En repartiment' },
+  'Lliurat': { progress: 100, color: 'bg-green-500', icon: PackageCheck, text: 'Lliurat' },
+  // Valors antics per a compatibilitat
+  'desconegut': { progress: 0, color: 'bg-gray-400', icon: Package, text: 'Informació rebuda' },
+  'En almacen': { progress: 10, color: 'bg-gray-400', icon: WarehouseIcon, text: 'A l\'origen' },
+  'En transito': { progress: 50, color: 'bg-blue-500', icon: Truck, text: 'En repartiment' },
+  'Entregado': { progress: 100, color: 'bg-green-500', icon: PackageCheck, text: 'Lliurat' },
+  'lliurat': { progress: 100, color: 'bg-green-500', icon: PackageCheck, text: 'Lliurat' },
 };
 
 const getStatusConfig = (status?: ShippingStatus) => {
   if (status && statusConfig[status]) {
     return statusConfig[status];
   }
-  return statusConfig['desconegut'];
+  return statusConfig['Desconegut'];
 };
 
 
@@ -98,7 +78,7 @@ export default function TrackingPage() {
 
   const handleSearch = async () => {
     if (!trackingCode) {
-      setError('Por favor, introduce un código de seguimiento.');
+      setError('Si us plau, introdueix un codi de seguiment.');
       return;
     }
     setIsLoading(true);
@@ -115,10 +95,10 @@ export default function TrackingPage() {
       if (response.ok && data.length > 0) {
         setShipmentData(data[0]);
       } else {
-        setError('Código no encontrado. Revisa el código y vuelve a intentarlo.');
+        setError('Codi no trobat. Revisa el codi i torna-ho a intentar.');
       }
     } catch (err: any) {
-      setError('Ha habido un problema con la conexión. Inténtalo más tarde.');
+      setError('Hi ha hagut un problema amb la connexió. Intenta-ho més tard.');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -131,10 +111,10 @@ export default function TrackingPage() {
     <div className="container mx-auto max-w-4xl py-12 md:py-20">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-          Localiza tu envío
+          Localitza el teu enviament
         </h1>
         <p className="text-muted-foreground">
-          Introduce tu código de seguimiento para ver el estado en tiempo real.
+          Introdueix el teu codi de seguiment per veure'n l'estat en temps real.
         </p>
       </div>
       <Separator className="my-8" />
@@ -143,11 +123,11 @@ export default function TrackingPage() {
         <CardContent className="p-6">
           <div className="flex w-full flex-col items-end gap-4 sm:flex-row">
             <div className="w-full flex-1">
-              <Label htmlFor="tracking-code" className="font-semibold">Código de Seguimiento</Label>
+              <Label htmlFor="tracking-code" className="font-semibold">Codi de Seguiment</Label>
               <Input
                 id="tracking-code"
                 type="text"
-                placeholder="Ej: TRK12345678"
+                placeholder="Ex: TRK12345678"
                 value={trackingCode}
                 onChange={(e) => setTrackingCode(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -165,7 +145,7 @@ export default function TrackingPage() {
               ) : (
                 <PackageSearch />
               )}
-              <span className="ml-2">Buscar</span>
+              <span className="ml-2">Cerca</span>
             </Button>
           </div>
         </CardContent>
@@ -190,25 +170,25 @@ export default function TrackingPage() {
           <CardHeader className="bg-muted/30">
             <CardTitle className="flex items-center gap-3 text-2xl">
               <CheckCircle className="text-green-500" />
-              <span>Resultados para: {shipmentData.tracking_code}</span>
+              <span>Resultats per a: {shipmentData.tracking_code}</span>
             </CardTitle>
             <CardDescription>
-              A continuación se muestran los detalles de tu envío.
+              A continuació es mostren els detalls del teu enviament.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
             {currentStatus && (
               <div className="mb-8">
-                <h3 className="mb-4 text-lg font-semibold">Progreso del envío</h3>
+                <h3 className="mb-4 text-lg font-semibold">Progrés de l'enviament</h3>
                 <>
                   <Progress
                     value={currentStatus.progress}
                     indicatorClassName={currentStatus.color}
                   />
                   <div className="mt-3 grid grid-cols-3 text-center text-sm font-medium text-muted-foreground">
-                    <div className={cn(shipmentData.status === 'En almacen' && 'font-bold text-primary')}>En origen</div>
-                    <div className={cn(shipmentData.status === 'En transito' && 'font-bold text-primary')}>En tránsito</div>
-                    <div className={cn((shipmentData.status === 'Entregado' || shipmentData.status === 'lliurat') && 'font-bold text-primary')}>Entregado</div>
+                    <div className={cn((shipmentData.status === 'En almacen' || shipmentData.status === 'Al magatzem') && 'font-bold text-primary')}>A l'origen</div>
+                    <div className={cn((shipmentData.status === 'En transito' || shipmentData.status === 'En trànsit') && 'font-bold text-primary')}>En trànsit</div>
+                    <div className={cn((shipmentData.status === 'Entregado' || shipmentData.status === 'lliurat' || shipmentData.status === 'Lliurat') && 'font-bold text-primary')}>Lliurat</div>
                   </div>
                 </>
               </div>
@@ -220,21 +200,21 @@ export default function TrackingPage() {
                   <MapPin className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold">Origen</h4>
-                    <p className="text-muted-foreground">{shipmentData.origin || 'No especificado'}</p>
+                    <p className="text-muted-foreground">{shipmentData.origin || 'No especificat'}</p>
                   </div>
                 </div>
                  <div className="flex items-start gap-3">
                   <PackageSearch className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
-                    <h4 className="font-semibold">Destino</h4>
-                    <p className="text-muted-foreground">{shipmentData.destination || 'No especificado'}</p>
+                    <h4 className="font-semibold">Destí</h4>
+                    <p className="text-muted-foreground">{shipmentData.destination || 'No especificat'}</p>
                   </div>
                 </div>
                  <div className="flex items-start gap-3">
                   <Calendar className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
-                    <h4 className="font-semibold">Fecha prevista (ETA)</h4>
-                    <p className="text-muted-foreground">{shipmentData.eta || 'No especificado'}</p>
+                    <h4 className="font-semibold">Data prevista (ETA)</h4>
+                    <p className="text-muted-foreground">{shipmentData.eta || 'No especificat'}</p>
                   </div>
                 </div>
               </div>
@@ -242,16 +222,16 @@ export default function TrackingPage() {
                 <div className="flex items-start gap-3">
                   <Info className="mt-1 h-5 w-5 shrink-0 text-primary" />
                   <div>
-                    <h4 className="font-semibold">Estado</h4>
-                    <p className="text-muted-foreground">{shipmentData.status || 'No especificado'}</p>
+                    <h4 className="font-semibold">Estat</h4>
+                    <p className="text-muted-foreground">{shipmentData.status || 'No especificat'}</p>
                   </div>
                 </div>
                 {currentStatus && (
                   <div className="flex items-start gap-3">
                     <currentStatus.icon className="mt-1 h-5 w-5 shrink-0 text-primary" />
                     <div>
-                      <h4 className="font-semibold">Ubicación actual</h4>
-                      <p className="text-muted-foreground">{shipmentData.location || 'No especificado'}</p>
+                      <h4 className="font-semibold">Ubicació actual</h4>
+                      <p className="text-muted-foreground">{shipmentData.location || 'No especificat'}</p>
                     </div>
                   </div>
                 )}

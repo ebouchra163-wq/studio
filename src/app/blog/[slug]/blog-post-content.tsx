@@ -3,7 +3,7 @@
 import type { Post } from '@/lib/blog-posts';
 import Image from 'next/image';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { ca } from 'date-fns/locale';
 import { Calendar, ChevronLeft } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ export default function BlogPostContent({ post }: { post: Post }) {
       <Button asChild variant="ghost" className="mb-4">
         <Link href="/blog">
           <ChevronLeft />
-          Volver al Blog
+          Torna al Blog
         </Link>
       </Button>
       <article>
@@ -28,7 +28,7 @@ export default function BlogPostContent({ post }: { post: Post }) {
         <div className="mt-4 flex items-center gap-2 text-muted-foreground">
           <Calendar className="h-4 w-4" />
           <time dateTime={post.date}>
-            {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", { locale: es })}
+            {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", { locale: ca })}
           </time>
         </div>
         {postImage && (

@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { ca } from 'date-fns/locale';
 import { Calendar, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import type { ImagePlaceholder } from '@/lib/placeholder-images';
@@ -27,11 +27,11 @@ export default function BlogList({ posts, images }: BlogListProps) {
     <div className="container mx-auto max-w-6xl py-12 md:py-20">
       <div className="space-y-2 text-center">
         <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
-          Blog de la Industria
+          Blog de la Indústria
         </h1>
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-          Las últimas noticias, tendencias y conocimientos de la industria de la
-          logística y el transporte.
+          Les últimes notícies, tendències i coneixements de la indústria de la
+          logística i el transport.
         </p>
       </div>
       <Separator className="my-12" />
@@ -69,7 +69,7 @@ export default function BlogList({ posts, images }: BlogListProps) {
                       <Calendar className="h-4 w-4" />
                       <time dateTime={post.date}>
                         {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", {
-                          locale: es,
+                          locale: ca,
                         })}
                       </time>
                     </CardDescription>
@@ -82,7 +82,7 @@ export default function BlogList({ posts, images }: BlogListProps) {
                       href={`/blog/${post.slug}`}
                       className="flex items-center font-semibold text-primary transition-colors hover:text-primary/80"
                     >
-                      Leer más
+                      Llegeix més
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </CardFooter>

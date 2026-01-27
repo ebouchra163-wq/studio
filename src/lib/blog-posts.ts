@@ -13,52 +13,52 @@ export const posts: Post[] = [
   {
     id: 1,
     slug: 'tendencias-logisticas-2024',
-    title: '5 Tendencias Logísticas a Seguir en 2024',
+    title: '5 Tendències Logístiques a Seguir el 2024',
     date: '2024-08-01T10:00:00.000Z',
     excerpt:
-      "La industria logística está evolucionando rápidamente. Desde la automatización hasta la sostenibilidad, exploramos las tendencias clave que darán forma a 2024 y más allá.",
+      "La indústria logística està evolucionant ràpidament. Des de l'automatització fins a la sostenibilitat, explorem les tendències clau que donaran forma al 2024 i més enllà.",
     content: `
-        <p>La industria logística se encuentra en un estado constante de cambio, impulsada por los avances tecnológicos, las cambiantes expectativas de los consumidores y un enfoque creciente en la sostenibilidad. A medida que avanzamos en 2024, varias tendencias clave están destinadas a remodelar el panorama logístico.</p>
+        <p>La indústria logística es troba en un estat constant de canvi, impulsada pels avenços tecnològics, les expectatives canviants dels consumidors i un enfocament creixent en la sostenibilitat. A mesura que avancem en el 2024, diverses tendències clau estan destinades a remodelar el panorama logístic.</p>
         
-        <h3>1. Automatización y Robótica</h3>
-        <p>La automatización ya no es cosa del futuro; está aquí. Los almacenes están adoptando cada vez más sistemas de clasificación automatizados, vehículos de guiado autónomo (AGV) y drones para la gestión de inventario. Estas tecnologías aumentan la eficiencia, reducen el error humano y aceleran el cumplimiento de los pedidos.</p>
+        <h3>1. Automatització i Robòtica</h3>
+        <p>L'automatització ja no és cosa del futur; és aquí. Els magatzems estan adoptant cada vegada més sistemes de classificació automatitzats, vehicles de guiatge autònom (AGV) i drons per a la gestió d'inventari. Aquestes tecnologies augmenten l'eficiència, redueixen l'error humà i acceleren el compliment de les comandes.</p>
 
-        <h3>2. Sostenibilidad en la Cadena de Suministro</h3>
-        <p>Las prácticas ecológicas son ahora una prioridad. Las empresas están invirtiendo en vehículos eléctricos, optimizando rutas para reducir emisiones y adoptando embalajes sostenibles. Una cadena de suministro verde no solo es buena para el planeta, sino que también atrae a los consumidores con conciencia ecológica.</p>
+        <h3>2. Sostenibilitat a la Cadena de Subministrament</h3>
+        <p>Les pràctiques ecològiques són ara una prioritat. Les empreses estan invertint en vehicles elèctrics, optimitzant rutes per reduir emissions i adoptant embalatges sostenibles. Una cadena de subministrament verda no només és bona per al planeta, sinó que també atrau els consumidors amb consciència ecològica.</p>
 
-        <h3>3. Toma de Decisiones Basada en Datos</h3>
-        <p>El Big Data y la analítica están revolucionando la gestión logística. Al analizar grandes conjuntos de datos, las empresas pueden prever la demanda, optimizar los niveles de inventario e identificar posibles interrupciones antes de que ocurran, lo que conduce a operaciones más resistentes y eficientes.</p>
+        <h3>3. Presa de Decisions Basada en Dades</h3>
+        <p>El Big Data i l'analítica estan revolucionant la gestió logística. En analitzar grans conjunts de dades, les empreses poden preveure la demanda, optimitzar els nivells d'inventari i identificar possibles interrupcions abans que es produeixin, la qual cosa condueix a operacions més resilients i eficients.</p>
 
-        <h3>4. El Auge de la Logística de Última Milla</h3>
-        <p>Con el auge del comercio electrónico, la última milla de la entrega se ha convertido en un campo de batalla crítico. Las empresas están experimentando con soluciones innovadoras como la entrega colaborativa (crowdsourcing), puntos de recogida y taquillas autónomas para proporcionar entregas más rápidas y flexibles.</p>
+        <h3>4. L'Auge de la Logística d'Última Milla</h3>
+        <p>Amb l'auge del comerç electrònic, l'última milla de l'entrega s'ha convertit en un camp de batalla crític. Les empreses estan experimentant amb solucions innovadores com l'entrega col·laborativa (crowdsourcing), punts de recollida i taquilles autònomes per proporcionar entregues més ràpides i flexibles.</p>
 
-        <h3>5. Digitalización y Visibilidad en Tiempo Real</h3>
-        <p>La tecnología Blockchain y los sensores de IoT están proporcionando una visibilidad sin precedentes en toda la cadena de suministro. Los transportistas pueden rastrear sus mercancías en tiempo real, monitorear las condiciones (como la temperatura) y garantizar la autenticidad y seguridad de sus productos.</p>
+        <h3>5. Digitalització i Visibilitat en Temps Real</h3>
+        <p>La tecnologia Blockchain i els sensors d'IoT estan proporcionant una visibilitat sense precedents a tota la cadena de subministrament. Els transportistes poden rastrejar les seves mercaderies en temps real, monitorar les condicions (com la temperatura) i garantir l'autenticitat i seguretat dels seus productes.</p>
 
-        <p>Adoptar estas tendencias será crucial para las empresas de logística que buscan mantenerse competitivas en un mercado dinámico.</p>
+        <p>Adoptar aquestes tendències serà crucial per a les empreses de logística que busquen mantenir-se competitives en un mercat dinàmic.</p>
       `,
     imageId: 'blog-post-1',
   },
   {
     id: 2,
     slug: 'importancia-de-la-logistica-inversa',
-    title: 'La Creciente Importancia de la Logística Inversa',
+    title: 'La Creixent Importància de la Logística Inversa',
     date: '2024-07-25T14:30:00.000Z',
     excerpt:
-      'La logística inversa, la gestión de devoluciones y reciclaje, ya no es una ocurrencia tardía. Descubra por qué un proceso eficiente de logística inversa es vital para la satisfacción del cliente y la sostenibilidad.',
+      'La logística inversa, la gestió de devolucions i reciclatge, ja no és una idea tardana. Descobriu per què un procés eficient de logística inversa és vital per a la satisfacció del client i la sostenibilitat.',
     content: `
-        <p>Tradicionalmente, la logística se ha centrado en el movimiento hacia adelante de los productos desde el fabricante hasta el consumidor. Sin embargo, el flujo inverso de mercancías, conocido como logística inversa, está adquiriendo una inmensa importancia en el panorama actual del comercio electrónico.</p>
+        <p>Tradicionalment, la logística s'ha centrat en el moviment cap endavant dels productes des del fabricant fins al consumidor. No obstant això, el flux invers de mercaderies, conegut com a logística inversa, està adquirint una importància immensa en el panorama actual del comerç electrònic.</p>
         
-        <h3>¿Qué es la Logística Inversa?</h3>
-        <p>La logística inversa se refiere a todos los procesos involucrados en la devolución de productos de un cliente a un vendedor o fabricante. Esto incluye devoluciones de clientes, reparación y mantenimiento, reempaquetado para reventa, reciclaje y eliminación adecuada.</p>
+        <h3>Què és la Logística Inversa?</h3>
+        <p>La logística inversa es refereix a tots els processos involucrats en la devolució de productes d'un client a un venedor o fabricant. Això inclou devolucions de clients, reparació i manteniment, reempaquetatge per a revenda, reciclatge i eliminació adequada.</p>
 
-        <h3>¿Por qué es tan importante?</h3>
-        <p><strong>1. Satisfacción del Cliente:</strong> Un proceso de devoluciones fácil y sin complicaciones es un motor clave de la lealtad del cliente. Es más probable que los compradores en línea compren a un minorista que ofrece devoluciones sencillas.</p>
-        <p><strong>2. Impacto Financiero:</strong> La gestión eficiente de las devoluciones puede recuperar un valor significativo de los bienes devueltos. Los productos pueden ser reacondicionados, reempaquetados y revendidos, convirtiendo una pérdida potencial en una ganancia.</p>
-        <p><strong>3. Sostenibilidad:</strong> Una logística inversa eficaz es un componente central de la economía circular. En lugar de terminar en vertederos, los productos pueden ser reparados, reutilizados o reciclados, minimizando los residuos y el impacto ambiental.</p>
+        <h3>Per què és tan important?</h3>
+        <p><strong>1. Satisfacció del Client:</strong> Un procés de devolucions fàcil i sense complicacions és un motor clau de la lleialtat del client. És més probable que els compradors en línia comprin a un minorista que ofereix devolucions senzilles.</p>
+        <p><strong>2. Impacte Financer:</strong> La gestió eficient de les devolucions pot recuperar un valor significatiu dels béns retornats. Els productes poden ser recondicionats, reempaquetats i revenuts, convertint una pèrdua potencial en un guany.</p>
+        <p><strong>3. Sostenibilitat:</strong> Una logística inversa eficaç és un component central de l'economia circular. En lloc d'acabar en abocadors, els productes poden ser reparats, reutilitzats o reciclats, minimitzant els residus i l'impacte ambiental.</p>
 
-        <h3>Desafíos en la Logística Inversa</h3>
-        <p>La gestión del flujo inverso presenta desafíos únicos. Los volúmenes son impredecibles, la calidad de los productos devueltos varía y la logística puede ser más compleja y costosa que la logística directa. Sin embargo, invertir en un sistema robusto de logística inversa ya no es opcional; es esencial para el éxito a largo plazo.</p>
+        <h3>Reptes en la Logística Inversa</h3>
+        <p>La gestió del flux invers presenta reptes únics. Els volums són impredictibles, la qualitat dels productes retornats varia i la logística pot ser més complexa i costosa que la logística directa. No obstant això, invertir en un sistema robust de logística inversa ja no és opcional; és essencial per a l'èxit a llarg termini.</p>
       `,
     imageId: 'blog-post-2',
   },

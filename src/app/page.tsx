@@ -28,26 +28,26 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 const services = [
   {
     icon: Globe,
-    title: "Envío Internacional",
-    description: "Conectamos tu negocio con el mundo a través de soluciones de flete marítimo, aéreo y terrestre. Nos encargamos de la aduana y la documentación para un tránsito sin problemas.",
+    title: "Enviament Internacional",
+    description: "Connectem el teu negoci amb el món a través de solucions de transport marítim, aeri i terrestre. Ens encarreguem de la duana i la documentació per a un trànsit sense problemes.",
     imageId: "international-shipping",
   },
   {
     icon: Truck,
-    title: "Transporte Nacional",
-    description: "Nuestra red de transporte nacional garantiza entregas rápidas y seguras en todo el país. Ofrecemos seguimiento en tiempo real y opciones de carga completa (FTL) y carga parcial (LTL).",
+    title: "Transport Nacional",
+    description: "La nostra xarxa de transport nacional garanteix entregues ràpides i segures a tot el país. Oferim seguiment en temps real i opcions de càrrega completa (FTL) i càrrega parcial (LTL).",
     imageId: "domestic-freight",
   },
   {
     icon: Warehouse,
-    title: "Almacenamiento",
-    description: "Instalaciones de almacenamiento modernas y seguras para tus mercancías. Ofrecemos gestión de inventario, picking y packing, y distribución para optimizar tu cadena de suministro.",
+    title: "Emmagatzematge",
+    description: "Instal·lacions d'emmagatzematge modernes i segures per a les teves mercaderies. Oferim gestió d'inventari, picking i packing, i distribució per optimitzar la teva cadena de subministrament.",
     imageId: "warehousing",
   },
   {
     icon: Recycle,
     title: "Logística Inversa",
-    description: "Gestionamos de manera eficiente el flujo de retorno de tus productos, desde devoluciones de clientes hasta reciclaje y disposición final, maximizando la recuperación de valor y la sostenibilidad.",
+    description: "Gestionem de manera eficient el flux de retorn dels teus productes, des de devolucions de clients fins a reciclatge i disposició final, maximitzant la recuperació de valor i la sostenibilitat.",
     imageId: "reverse-logistics",
   },
 ];
@@ -75,10 +75,10 @@ export default function Home() {
             <span className="text-orange-500">Global</span> <span className="text-blue-500">Cargo Care</span>
           </h1>
           <p className="mt-4 max-w-2xl text-lg md:text-xl">
-            Su socio de confianza para soluciones globales de envío y logística.
+            El vostre soci de confiança per a solucions globals d'enviament i logística.
           </p>
           <Button asChild size="lg" className="mt-8 bg-black text-white hover:bg-black/80">
-            <Link href="#contact">Obtener una Cotización</Link>
+            <Link href="#contact">Obtén una Cotització</Link>
           </Button>
         </div>
       </section>
@@ -87,11 +87,11 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="text-center">
             <h2 className="font-headline text-3xl font-bold md:text-4xl">
-              Nuestros Servicios
+              Els Nostres Serveis
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-              Ofrecemos una gama completa de servicios de envío y logística
-              adaptados a sus necesidades.
+              Oferim una gamma completa de serveis d'enviament i logística
+              adaptats a les vostres necessitats.
             </p>
           </div>
           <div className="mx-auto mt-12 max-w-4xl">
@@ -140,10 +140,10 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="text-center">
             <h2 className="font-headline text-3xl font-bold md:text-4xl">
-              Contáctanos
+              Contacta'ns
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-              ¿Tiene preguntas o necesita una cotización? Rellene el siguiente formulario.
+              Teniu preguntes o necessiteu una cotització? Ompliu el formulari següent.
             </p>
           </div>
           <Card className="mx-auto mt-12 max-w-2xl">
@@ -154,11 +154,11 @@ export default function Home() {
                 className="space-y-6"
               >
                 <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Nombre Completo</label>
+                  <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Nom Complet</label>
                   <Input id="name" name="name" placeholder="John Doe" required />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Dirección de Correo Electrónico</label>
+                  <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Adreça de Correu Electrònic</label>
                   <Input
                     id="email"
                     name="email"
@@ -168,11 +168,11 @@ export default function Home() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Su Mensaje o Consulta</label>
+                  <label htmlFor="message" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">El Teu Missatge o Consulta</label>
                   <Textarea
                     id="message"
                     name="message"
-                    placeholder="Cuéntenos cómo podemos ayudarle..."
+                    placeholder="Explica'ns com podem ajudar-te..."
                     className="min-h-[120px]"
                     required
                   />
@@ -181,7 +181,7 @@ export default function Home() {
                   type="submit"
                   className="w-full"
                 >
-                  <Send className="mr-2 h-4 w-4" /> Enviar Consulta
+                  <Send className="mr-2 h-4 w-4" /> Envia la Consulta
                 </Button>
               </form>
             </CardContent>
