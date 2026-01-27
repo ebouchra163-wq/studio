@@ -9,7 +9,7 @@ export function Logo({ className }: { className?: string }) {
         alt="Logo de la empresa"
         width={300}
         height={80}
-        className="h-[52px] w-auto object-contain md:h-[60px]"
+        className="h-14 w-auto object-contain md:h-16"
         priority
       />
     </div>
