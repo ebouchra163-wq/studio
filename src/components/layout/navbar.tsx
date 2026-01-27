@@ -89,9 +89,9 @@ export function Navbar() {
   if (isMobile) {
     return (
       <header className="sticky top-0 z-50 w-full border-b bg-white">
-        <div className="container flex h-20 items-center justify-between px-4 md:px-6">
+        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="h-full">
-            <Logo />
+            <Logo imageClassName="scale-[1.35]" />
             <span className="sr-only">Inicio</span>
           </Link>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
@@ -134,9 +134,9 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
-      <div className="container flex h-20 items-center px-4 md:px-6">
+      <div className="container flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="mr-8 h-full">
-          <Logo />
+          <Logo imageClassName="scale-[1.35]" />
           <span className="sr-only">Inicio</span>
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium">
