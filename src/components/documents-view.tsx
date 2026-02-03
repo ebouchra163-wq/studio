@@ -218,7 +218,7 @@ export default function DocumentsView() {
                     {/* Capçalera de la factura */}
                     <header className="mb-8 grid grid-cols-1 gap-8 border-b pb-8 sm:grid-cols-2">
                         <div>
-                        <Logo className="h-28"/>
+                        <Logo className="h-32 justify-center" />
                         <p className="mt-4 font-bold">{selectedInvoice.ourCompany.empresa}</p>
                         <p className="text-sm text-muted-foreground">{selectedInvoice.ourCompany.adreca}</p>
                         <p className="text-sm text-muted-foreground">NIF: {selectedInvoice.ourCompany.fiscalid}</p>
