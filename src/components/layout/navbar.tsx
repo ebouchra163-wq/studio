@@ -2,7 +2,7 @@
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogIn, Menu, PackageSearch, Route, Home, Newspaper, Users, User, FileText } from "lucide-react";
+import { LogIn, Menu, PackageSearch, Home, Newspaper, Users, User, FileText } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -17,7 +17,6 @@ const mainNavLinks = [
   { href: "/about", label: "Sobre Nosaltres", icon: Users },
   { href: "/blog", label: "Blog", icon: Newspaper },
   { href: "/tracking", label: "Seguiment", icon: PackageSearch },
-  { href: "/optimize", label: "Optimitzar Ruta", icon: Route },
 ];
 
 export function Navbar() {
@@ -106,7 +105,7 @@ export function Navbar() {
       <header className="sticky top-0 z-50 w-full border-b bg-white">
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/">
-            <Logo className="h-20 transform scale-[1.9]" />
+            <Logo className="h-20 transform scale-[2.2]" />
             <span className="sr-only">Inici</span>
           </Link>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
@@ -151,7 +150,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="container flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="mr-8">
-          <Logo className="h-20 transform scale-[1.9]" />
+          <Logo className="h-20 transform scale-[2.2]" />
           <span className="sr-only">Inici</span>
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium">

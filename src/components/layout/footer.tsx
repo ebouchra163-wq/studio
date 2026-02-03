@@ -19,7 +19,6 @@ export function Footer() {
               <Link href="/about" className="text-muted-foreground hover:text-primary">Sobre Nosaltres</Link>
               <Link href="/blog" className="text-muted-foreground hover:text-primary">Blog</Link>
               <Link href="/tracking" className="text-muted-foreground hover:text-primary">Seguiment d'Enviament</Link>
-              <Link href="/optimize" className="text-muted-foreground hover:text-primary">Optimitzar Ruta</Link>
               <Link href="#contact" className="text-muted-foreground hover:text-primary">Contacte</Link>
             </div>
             <div className="flex flex-col gap-2">
