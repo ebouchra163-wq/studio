@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { LogOut, User, Shield, Briefcase } from "lucide-react";
+import { LogOut, User, Shield, Briefcase, UserCircle } from "lucide-react";
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function DashboardPage() {
@@ -62,6 +62,16 @@ export default function DashboardPage() {
                 <h3 className='font-semibold'>Panell de treballador</h3>
             </div>
             <p className="text-muted-foreground">Aquí pots veure les teves tasques i enviaments assignats.</p>
+          </CardContent>
+        );
+      case 'client':
+        return (
+          <CardContent>
+            <div className='flex items-center gap-2 mb-4'>
+                <UserCircle className='h-5 w-5 text-primary'/>
+                <h3 className='font-semibold'>Panell de client</h3>
+            </div>
+            <p className="text-muted-foreground">Aquí pots gestionar la teva informació i consultar els teus documents i enviaments.</p>
           </CardContent>
         );
       default:
