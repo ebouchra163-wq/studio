@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4 py-8 md:px-6">
         <div className="grid gap-8 md:grid-cols-3">
           <div className="flex flex-col gap-4">
-            <Logo />
+            <Logo className="h-32 transform scale-[2.2]" />
             <p className="text-sm text-muted-foreground">
               El vostre soci de confiança per a solucions globals d'enviament i logística.
             </p>
