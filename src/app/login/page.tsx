@@ -69,6 +69,7 @@ export default function LoginPage() {
       if (foundUser) {
         localStorage.setItem("userName", foundUser.usuari);
         localStorage.setItem("userRole", foundUser.rol);
+        localStorage.setItem("userFullName", foundUser.nom);
         router.push("/dashboard");
         router.refresh();
       } else {

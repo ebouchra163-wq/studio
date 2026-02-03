@@ -18,6 +18,7 @@ import DocumentsView from '@/components/documents-view';
 
 export default function DashboardPage() {
   const [userName, setUserName] = useState<string | null>(null);
+  const [userFullName, setUserFullName] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -25,10 +26,12 @@ export default function DashboardPage() {
   useEffect(() => {
     // Aquesta funció s'executarà només al client
     const name = localStorage.getItem("userName");
+    const fullName = localStorage.getItem("userFullName");
     const role = localStorage.getItem("userRole");
 
     if (name && role) {
       setUserName(name);
+      setUserFullName(fullName);
       setUserRole(role.trim().toLowerCase());
     } else {
       // Si no hi ha dades, fem fora l'usuari cap a /login
@@ -40,6 +43,7 @@ export default function DashboardPage() {
   const handleLogout = () => {
     localStorage.removeItem("userName");
     localStorage.removeItem("userRole");
+    localStorage.removeItem("userFullName");
     router.push("/login");
     router.refresh(); // Força l'actualització de la barra de navegació
   };
@@ -114,7 +118,7 @@ export default function DashboardPage() {
     <div className="container mx-auto max-w-5xl py-12">
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {userName}</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {userFullName || userName}</h1>
             <p className="text-muted-foreground">Aquesta és la teva àrea privada.</p>
         </div>
         <Button variant="outline" onClick={handleLogout} className="w-full sm:w-auto">
