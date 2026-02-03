@@ -10,16 +10,12 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -94,44 +90,41 @@ export default function Home() {
               adaptats a les vostres necessitats.
             </p>
           </div>
-          <div className="mx-auto mt-12 max-w-4xl">
-            <Accordion type="single" collapsible className="w-full">
-              {services.map((service, index) => {
-                const serviceImage = PlaceHolderImages.find(
-                  (img) => img.id === service.imageId
-                );
-                return (
-                  <AccordionItem value={`item-${index}`} key={service.title}>
-                    <AccordionTrigger>
-                      <div className="flex items-center gap-4 text-lg font-semibold text-primary">
-                        <service.icon className="h-8 w-8" />
-                        {service.title}
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div className="grid grid-cols-1 gap-6 pt-4 md:grid-cols-3">
-                        <div className="md:col-span-2">
-                          <p className="text-muted-foreground">
-                            {service.description}
-                          </p>
-                        </div>
-                        {serviceImage && (
-                          <div className="relative h-40 w-full overflow-hidden rounded-lg">
-                            <Image
-                              src={serviceImage.imageUrl}
-                              alt={service.title}
-                              fill
-                              className="object-cover"
-                              data-ai-hint={serviceImage.imageHint}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
+          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-2">
+            {services.map((service) => {
+              const serviceImage = PlaceHolderImages.find(
+                (img) => img.id === service.imageId
+              );
+              return (
+                <Card
+                  key={service.title}
+                  className="flex flex-col overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl"
+                >
+                  {serviceImage && (
+                    <div className="relative h-56 w-full">
+                      <Image
+                        src={serviceImage.imageUrl}
+                        alt={service.title}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={serviceImage.imageHint}
+                      />
+                    </div>
+                  )}
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-4">
+                      <service.icon className="h-8 w-8 text-primary" />
+                      <span className="text-2xl">{service.title}</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-muted-foreground">
+                      {service.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
