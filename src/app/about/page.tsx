@@ -16,8 +16,7 @@ export default function AboutPage() {
           Sobre Global Cargo Care
         </h1>
         <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-          Connectant el món amb solucions logístiques fiables i eficients, un
-          enviament a la vegada.
+          Connectant el món amb solucions logístiques <strong>fiables i eficients</strong>.
         </p>
       </div>
       
@@ -34,18 +33,12 @@ export default function AboutPage() {
           )}
         </div>
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold">La Nostra Història</h2>
-          <p className="text-muted-foreground">
-            Fundada el 2010, Global Cargo Care va néixer d'una visió per
-            simplificar la logística global. Vam començar amb un petit equip i un
-            gran somni: fer que l'enviament internacional sigui accessible, transparent,
-            i sense interrupcions per a empreses de totes les mides.
+          <h2 className="text-3xl font-bold">La Nostra Trajectòria</h2>
+          <p className="text-lg text-muted-foreground">
+            Des de <strong>2010</strong>, la nostra missió ha estat <strong>simplificar la logística global</strong>. Vam començar com un petit equip amb un gran somni: fer que l'enviament internacional fos <strong>accessible, transparent i eficient</strong>.
           </p>
-          <p className="text-muted-foreground">
-            Al llarg dels anys, ens hem convertit en un soci logístic de confiança,
-            conegut pel nostre compromís amb la fiabilitat, la innovació i
-            un servei al client excepcional. La nostra xarxa s'estén per tot el món, però
-            el nostre enfocament continua sent personal.
+          <p className="text-lg text-muted-foreground">
+            Avui, som un <strong>soci logístic de confiança</strong> amb una xarxa mundial, reconeguts per la nostra <strong>fiabilitat, innovació</strong> i un servei al client excepcional.
           </p>
         </div>
       </div>
@@ -53,7 +46,7 @@ export default function AboutPage() {
       <Separator className="my-12 md:my-20" />
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-        <Card className="flex flex-col items-center text-center">
+        <Card className="flex flex-col items-center p-4 text-center">
           <CardHeader>
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Target className="h-8 w-8" />
@@ -62,13 +55,11 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              Proporcionar solucions logístiques superiors que impulsin el creixement
-              i l'èxit dels nostres clients, garantint l'entrega puntual i segura de
-              les seves mercaderies a qualsevol part del món.
+              Impulsar l'èxit dels nostres clients amb <strong>solucions logístiques superiors</strong>, garantint entregues <strong>puntuals i segures</strong> a tot el món.
             </p>
           </CardContent>
         </Card>
-        <Card className="flex flex-col items-center text-center">
+        <Card className="flex flex-col items-center p-4 text-center">
           <CardHeader>
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Users className="h-8 w-8" />
@@ -77,13 +68,11 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              Ser el proveïdor de logística més centrat en el client del món,
-              establint l'estàndard d'excel·lència a la indústria i construint
-              relacions duradores basades en la confiança.
+              Ser el proveïdor de logística <strong>líder mundial en servei al client</strong>, construint relacions duradores basades en la <strong>confiança i l'excel·lència</strong>.
             </p>
           </CardContent>
         </Card>
-        <Card className="flex flex-col items-center text-center">
+        <Card className="flex flex-col items-center p-4 text-center">
           <CardHeader>
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Heart className="h-8 w-8" />
@@ -92,38 +81,30 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              Integritat, fiabilitat, innovació i una dedicació incessant
-              a l'èxit dels nostres clients. Aquests principis guien cadascuna de les nostres
-              accions i decisions.
+              <strong>Integritat, Fiabilitat, Innovació</strong> i una dedicació total a <strong>l'èxit del client</strong>. Són els pilars de cada decisió que prenem.
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="mt-12 rounded-lg bg-accent/20 p-8 md:mt-20">
-        <h2 className="mb-8 text-center text-3xl font-bold">Per Què Triar-nos?</h2>
+      <div className="mt-12 md:mt-20">
+        <h2 className="mb-12 text-center text-3xl font-bold">Per Què Triar-nos?</h2>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="flex items-start gap-4">
-            <Clock className="mt-1 h-8 w-8 shrink-0 text-primary" />
-            <div>
-              <h3 className="text-lg font-semibold">Anys d'Experiència</h3>
-              <p className="text-muted-foreground">Més d'una dècada liderant la indústria logística.</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <Globe className="mt-1 h-8 w-8 shrink-0 text-primary" />
-            <div>
-              <h3 className="text-lg font-semibold">Abast Global</h3>
-              <p className="text-muted-foreground">Una xarxa que connecta els principals ports i ciutats de tot el món.</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <Ship className="mt-1 h-8 w-8 shrink-0 text-primary" />
-            <div>
-              <h3 className="text-lg font-semibold">Solucions a Mida</h3>
-              <p className="text-muted-foreground">Serveis adaptats a les seves necessitats específiques d'enviament.</p>
-            </div>
-          </div>
+          <Card className="flex flex-col items-center justify-center p-6 text-center shadow-lg transition-shadow hover:shadow-xl">
+            <Clock className="h-12 w-12 text-primary" />
+            <h3 className="mt-4 text-xl font-bold">Experiència Provada</h3>
+            <p className="mt-2 text-muted-foreground">Més d'una dècada liderant la indústria logística.</p>
+          </Card>
+          <Card className="flex flex-col items-center justify-center p-6 text-center shadow-lg transition-shadow hover:shadow-xl">
+            <Globe className="h-12 w-12 text-primary" />
+            <h3 className="mt-4 text-xl font-bold">Abast Global</h3>
+            <p className="mt-2 text-muted-foreground">Connectem els principals ports i ciutats del món.</p>
+          </Card>
+          <Card className="flex flex-col items-center justify-center p-6 text-center shadow-lg transition-shadow hover:shadow-xl">
+            <Ship className="h-12 w-12 text-primary" />
+            <h3 className="mt-4 text-xl font-bold">Solucions a Mida</h3>
+            <p className="mt-2 text-muted-foreground">Serveis adaptats a les teves necessitats úniques.</p>
+          </Card>
         </div>
       </div>
 
