@@ -43,11 +43,6 @@ export function Navbar() {
     <>
       {isAuthenticated ? (
         <>
-            <Button asChild variant="ghost">
-                <Link href="/documents">
-                    <FileText className="mr-2 h-4 w-4" /> Documents
-                </Link>
-            </Button>
             <Button asChild>
               <Link href="/dashboard">
                 <User className="mr-2 h-4 w-4" /> Perfil
@@ -73,11 +68,6 @@ export function Navbar() {
     <>
       {isAuthenticated ? (
         <>
-            <Button asChild variant="outline" className="w-full justify-start">
-                <Link href="/documents">
-                    <FileText className="mr-2 h-4 w-4" /> Documents
-                </Link>
-            </Button>
             <Button asChild className="w-full justify-start">
               <Link href="/dashboard">
                 <User className="mr-2 h-4 w-4" /> Perfil
@@ -117,7 +107,7 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex h-full flex-col gap-6 p-4">
-                <Logo className="h-16" />
+                <Logo className="h-20" />
                 <nav className="flex flex-col gap-4">
                   {mainNavLinks.map((link) => (
                     <Link

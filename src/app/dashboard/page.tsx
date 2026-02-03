@@ -13,6 +13,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { LogOut, User, Shield, Briefcase, UserCircle } from "lucide-react";
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DocumentsView from '@/components/documents-view';
 
 export default function DashboardPage() {
   const [userName, setUserName] = useState<string | null>(null);
@@ -109,7 +111,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-4xl py-12">
+    <div className="container mx-auto max-w-5xl py-12">
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {userName}</h1>
@@ -121,17 +123,30 @@ export default function DashboardPage() {
         </Button>
       </div>
       <Separator className="my-8" />
-       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5"/> El teu perfil
-          </CardTitle>
-           <CardDescription>
-            Rol: <span className='font-medium text-primary'>{userRole}</span>
-          </CardDescription>
-        </CardHeader>
-        {renderRoleContent()}
-      </Card>
+       
+      <Tabs defaultValue="perfil" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
+          <TabsTrigger value="perfil">El teu Perfil</TabsTrigger>
+          <TabsTrigger value="documents">Documents</TabsTrigger>
+        </TabsList>
+        <TabsContent value="perfil">
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5"/> El teu perfil
+              </CardTitle>
+              <CardDescription>
+                Rol: <span className='font-medium text-primary'>{userRole}</span>
+              </CardDescription>
+            </CardHeader>
+            {renderRoleContent()}
+          </Card>
+        </TabsContent>
+        <TabsContent value="documents">
+            <DocumentsView />
+        </TabsContent>
+      </Tabs>
+
     </div>
   );
 }
