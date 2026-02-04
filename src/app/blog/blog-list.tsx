@@ -36,57 +36,55 @@ export default function BlogList({ posts, images }: BlogListProps) {
       </div>
       <Separator className="my-12" />
 
-      <div className="grid grid-cols-1 gap-12">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         {posts.map((post) => {
           const postImage = images.find((img) => img.id === post.imageId);
           return (
             <Card
               key={post.id}
-              className="transition-all duration-300 hover:shadow-xl"
+              className="group flex flex-col overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-xl"
             >
-              <div className="grid grid-cols-1 md:grid-cols-3">
-                {postImage && (
-                  <div className="relative h-64 w-full md:h-full">
-                    <Link href={`/blog/${post.slug}`}>
-                      <Image
-                        src={postImage.imageUrl}
-                        alt={post.title}
-                        fill
-                        className="rounded-t-lg object-cover md:rounded-l-lg md:rounded-t-none"
-                        data-ai-hint={postImage.imageHint}
-                      />
-                    </Link>
+              {postImage && (
+                <Link href={`/blog/${post.slug}`} className="block overflow-hidden">
+                  <div className="relative h-64 w-full">
+                    <Image
+                      src={postImage.imageUrl}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      data-ai-hint={postImage.imageHint}
+                    />
                   </div>
-                )}
-                <div className="flex flex-col md:col-span-2">
-                  <CardHeader>
-                    <Link href={`/blog/${post.slug}`} className="group">
-                      <CardTitle className="text-2xl group-hover:text-primary">
-                        {post.title}
-                      </CardTitle>
-                    </Link>
-                    <CardDescription className="flex items-center gap-2 pt-2">
-                      <Calendar className="h-4 w-4" />
-                      <time dateTime={post.date}>
-                        {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", {
-                          locale: ca,
-                        })}
-                      </time>
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{post.excerpt}</p>
-                  </CardContent>
-                  <CardFooter className="mt-auto">
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="flex items-center font-semibold text-primary transition-colors hover:text-primary/80"
-                    >
-                      Llegeix més
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </CardFooter>
-                </div>
+                </Link>
+              )}
+              <div className="flex flex-1 flex-col">
+                <CardHeader>
+                  <Link href={`/blog/${post.slug}`}>
+                    <CardTitle className="text-2xl group-hover:text-primary">
+                      {post.title}
+                    </CardTitle>
+                  </Link>
+                  <CardDescription className="flex items-center gap-2 pt-2">
+                    <Calendar className="h-4 w-4" />
+                    <time dateTime={post.date}>
+                      {format(new Date(post.date), "d 'de' MMMM 'de' yyyy", {
+                        locale: ca,
+                      })}
+                    </time>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                </CardContent>
+                <CardFooter className="mt-auto">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="flex items-center font-semibold text-primary transition-colors hover:text-primary/80"
+                  >
+                    Llegeix més
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </CardFooter>
               </div>
             </Card>
           );
