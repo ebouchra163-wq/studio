@@ -1,8 +1,9 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { 
@@ -62,11 +63,12 @@ export default function BookingPage() {
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [bookings, setBookings] = useState<BookingRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [authChecking, setAuthChecking] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
-  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<BookingFormValues>({
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       servei: "",
@@ -82,6 +84,7 @@ export default function BookingPage() {
       router.push('/login');
     } else {
       setCurrentUser(user);
+      setAuthChecking(false);
       fetchBookings(user);
     }
   }, [router]);
@@ -91,12 +94,18 @@ export default function BookingPage() {
       setLoading(true);
       const response = await fetch(SHEETDB_API_URL);
       if (!response.ok) throw new Error("Error al carregar l'històric.");
-      const data: BookingRequest[] = await response.json();
-      // Filtrar només les de l'usuari actual
-      const userBookings = data.filter(b => b.usuari === user);
-      setBookings(userBookings.sort((a, b) => b.data.localeCompare(a.data)));
+      const data = await response.json();
+      
+      // Validació de seguretat: comprovem que data sigui un array
+      if (Array.isArray(data)) {
+        const userBookings = data.filter((b: BookingRequest) => b.usuari === user);
+        setBookings(userBookings.sort((a: BookingRequest, b: BookingRequest) => b.data.localeCompare(a.data)));
+      } else {
+        setBookings([]);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Fetch error:", error);
+      setBookings([]);
     } finally {
       setLoading(false);
     }
@@ -109,7 +118,6 @@ export default function BookingPage() {
     const bookingId = `BK-${Math.floor(100000 + Math.random() * 900000)}`;
     const today = new Date().toISOString().split('T')[0];
     
-    // Concatenació de detalls segons l'estil demanat
     const detallsConcatenats = `Servei: ${data.servei} | Origen: ${data.origen} | Destí: ${data.desti} | Càrrega: ${data.carrega}`;
 
     const newBooking = {
@@ -149,15 +157,24 @@ export default function BookingPage() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status.toLowerCase()) {
+    const s = status || 'Pendent';
+    switch (s.toLowerCase()) {
       case 'pendent':
         return <Badge className="bg-amber-500 hover:bg-amber-600">Pendent</Badge>;
       case 'aprovat':
         return <Badge className="bg-green-600 hover:bg-green-700">Aprovat</Badge>;
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return <Badge variant="outline">{s}</Badge>;
     }
   };
+
+  if (authChecking) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto max-w-5xl py-12">
@@ -167,7 +184,6 @@ export default function BookingPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
-        {/* Formulari */}
         <div className="lg:col-span-2">
           <Card className="sticky top-24 shadow-md">
             <CardHeader>
@@ -180,17 +196,23 @@ export default function BookingPage() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="servei">Tipus de Servei</Label>
-                  <Select onValueChange={(val) => setValue('servei', val, { shouldValidate: true })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona un servei" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Transport Marítim">Transport Marítim</SelectItem>
-                      <SelectItem value="Transport Aeri">Transport Aeri</SelectItem>
-                      <SelectItem value="Transport Terrestre">Transport Terrestre</SelectItem>
-                      <SelectItem value="Emmagatzematge">Emmagatzematge</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Controller
+                    name="servei"
+                    control={control}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona un servei" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Transport Marítim">Transport Marítim</SelectItem>
+                          <SelectItem value="Transport Aeri">Transport Aeri</SelectItem>
+                          <SelectItem value="Transport Terrestre">Transport Terrestre</SelectItem>
+                          <SelectItem value="Emmagatzematge">Emmagatzematge</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
                   {errors.servei && <p className="text-xs text-destructive">{errors.servei.message}</p>}
                 </div>
 
@@ -230,7 +252,6 @@ export default function BookingPage() {
           </Card>
         </div>
 
-        {/* Històric */}
         <div className="lg:col-span-3">
           <div className="mb-4 flex items-center gap-2">
             <History className="h-5 w-5 text-primary" />
