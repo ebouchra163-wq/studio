@@ -1,8 +1,7 @@
-
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogIn, Menu, PackageSearch, Home, Newspaper, Users, User, FileText } from "lucide-react";
+import { LogIn, Menu, PackageSearch, Home, Newspaper, Users, User, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -42,13 +41,18 @@ export function Navbar() {
   const authLinks = (
     <>
       {isAuthenticated ? (
-        <>
+        <div className="flex items-center gap-2">
+            <Button asChild variant="ghost">
+              <Link href="/booking">
+                <CalendarDays className="mr-2 h-4 w-4" /> Reserves
+              </Link>
+            </Button>
             <Button asChild>
               <Link href="/dashboard">
                 <User className="mr-2 h-4 w-4" /> Perfil
               </Link>
             </Button>
-        </>
+        </div>
       ) : (
         <>
           <Button asChild variant="ghost">
@@ -67,13 +71,18 @@ export function Navbar() {
   const mobileAuthLinks = (
     <>
       {isAuthenticated ? (
-        <>
+        <div className="flex flex-col gap-2">
+            <Button asChild variant="outline" className="w-full justify-start">
+              <Link href="/booking">
+                <CalendarDays className="mr-2 h-4 w-4" /> Reserves
+              </Link>
+            </Button>
             <Button asChild className="w-full justify-start">
               <Link href="/dashboard">
                 <User className="mr-2 h-4 w-4" /> Perfil
               </Link>
             </Button>
-        </>
+        </div>
       ) : (
         <>
           <Button asChild variant="secondary" className="w-full">
