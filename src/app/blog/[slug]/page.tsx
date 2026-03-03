@@ -4,6 +4,10 @@ import { getPostBySlug, posts } from '@/lib/blog-posts';
 import { notFound } from 'next/navigation';
 import BlogPostContent from './blog-post-content';
 
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
 // generateStaticParams runs on the server at build time
 export async function generateStaticParams() {
   return posts.map((post) => ({
@@ -11,8 +15,10 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  // En Next.js 15, params és una promesa i s'ha d'esperar.
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();

@@ -31,7 +31,7 @@ interface UserData {
   nom: string;
   empresa: string;
   rol: string;
-  password?: string;
+  password?: string | number;
 }
 
 export default function LoginPage() {
@@ -62,8 +62,9 @@ export default function LoginPage() {
 
       const allUsers: UserData[] = await response.json();
       
+      // Fem servir String() per assegurar que la comparació de la contrasenya sigui robusta
       const foundUser = allUsers.find(
-        (u) => u.usuari === data.usuari && u.password === data.password
+        (u) => u.usuari === data.usuari && String(u.password) === data.password
       );
 
       if (foundUser) {

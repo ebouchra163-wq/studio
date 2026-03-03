@@ -180,7 +180,7 @@ export default function BookingPage() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="servei">Tipus de Servei</Label>
-                  <Select onValueChange={(val) => setValue('servei', val)}>
+                  <Select onValueChange={(val) => setValue('servei', val, { shouldValidate: true })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecciona un servei" />
                     </SelectTrigger>
