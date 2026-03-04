@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -65,6 +64,7 @@ export default function BookingPage() {
   const [loading, setLoading] = useState(true);
   const [authChecking, setAuthChecking] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [fetchError, setFetchError] = useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -92,19 +92,26 @@ export default function BookingPage() {
   const fetchBookings = async (user: string) => {
     try {
       setLoading(true);
+      setFetchError(false);
       const response = await fetch(SHEETDB_API_URL);
-      if (!response.ok) throw new Error("Error al carregar l'històric.");
+      
+      if (!response.ok) {
+        setFetchError(true);
+        setBookings([]);
+        return;
+      }
+      
       const data = await response.json();
       
-      // Validació de seguretat: comprovem que data sigui un array
       if (Array.isArray(data)) {
         const userBookings = data.filter((b: BookingRequest) => b.usuari === user);
-        setBookings(userBookings.sort((a: BookingRequest, b: BookingRequest) => b.data.localeCompare(a.data)));
+        setBookings(userBookings.sort((a: BookingRequest, b: BookingRequest) => (b.data || '').localeCompare(a.data || '')));
       } else {
         setBookings([]);
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.warn("SheetDB Fetch error:", error);
+      setFetchError(true);
       setBookings([]);
     } finally {
       setLoading(false);
@@ -253,9 +260,16 @@ export default function BookingPage() {
         </div>
 
         <div className="lg:col-span-3">
-          <div className="mb-4 flex items-center gap-2">
-            <History className="h-5 w-5 text-primary" />
-            <h2 className="text-2xl font-bold">Les meves sol·licituds</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <History className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Les meves sol·licituds</h2>
+            </div>
+            {currentUser && (
+              <Button variant="ghost" size="sm" onClick={() => fetchBookings(currentUser)} disabled={loading}>
+                Actualitzar
+              </Button>
+            )}
           </div>
           <Separator className="mb-6" />
 
@@ -264,6 +278,17 @@ export default function BookingPage() {
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
               <p className="mt-2 text-muted-foreground">Carregant l'històric...</p>
             </div>
+          ) : fetchError ? (
+            <Card className="border-dashed py-12 text-center border-destructive/50">
+              <CardContent>
+                <Package className="mx-auto h-12 w-12 text-destructive/50" />
+                <p className="mt-4 text-lg font-medium text-destructive">No s'ha pogut carregar l'històric.</p>
+                <p className="text-sm text-muted-foreground">Pot haver-hi un problema de connexió amb el servidor.</p>
+                <Button variant="outline" className="mt-4" onClick={() => currentUser && fetchBookings(currentUser)}>
+                  Torna-ho a intentar
+                </Button>
+              </CardContent>
+            </Card>
           ) : bookings.length === 0 ? (
             <Card className="border-dashed py-12 text-center">
               <CardContent>
