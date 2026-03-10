@@ -19,8 +19,6 @@ import { Label } from "@/components/ui/label";
 import { Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useAuth } from "@/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const signupSchema = z.object({
   fullName: z.string().min(2, { message: "El nom és massa curt." }),
@@ -30,11 +28,12 @@ const signupSchema = z.object({
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
+const SHEETDB_USERS_URL = 'https://sheetdb.io/api/v1/n5eliliog16ts?sheet=usuaris';
+
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const auth = useAuth();
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -50,19 +49,51 @@ export default function SignupPage() {
     setError(null);
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      await updateProfile(userCredential.user, {
-        displayName: data.fullName
-      });
-      router.push("/dashboard");
-      router.refresh();
-    } catch (err: any) {
-      console.error("Error durant el registre:", err);
-      if (err.code === 'auth/email-already-in-use') {
-        setError("Aquest correu ja està en ús.");
-      } else {
-        setError("S'ha produït un error en crear el compte.");
+      // Primer comprovem si l'usuari ja existeix
+      const checkRes = await fetch(SHEETDB_USERS_URL);
+      const users = await checkRes.json();
+      const existingUser = users.find((u: any) => u.usuari.toLowerCase() === data.email.toLowerCase());
+
+      if (existingUser) {
+        setError("Aquest correu ja està registrat.");
+        setLoading(false);
+        return;
       }
+
+      // Creem el nou usuari a SheetDB
+      const response = await fetch(SHEETDB_USERS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: [
+            {
+              usuari: data.email,
+              password: data.password,
+              nom: data.fullName,
+              rol: 'client',
+              empresa: 'Client Particular',
+              fiscalid: '-',
+              adreca: '-',
+              telefon: '-'
+            }
+          ]
+        }),
+      });
+
+      if (response.ok) {
+        localStorage.setItem('userName', data.email);
+        localStorage.setItem('userRole', 'client');
+        localStorage.setItem('userFullName', data.fullName);
+        
+        router.push("/dashboard");
+        router.refresh();
+      } else {
+        throw new Error("Error en el registre");
+      }
+    } catch (err) {
+      setError("S'ha produït un error en crear el compte. Intenta-ho més tard.");
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import {
@@ -11,54 +12,53 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { LogOut, User, UserCircle } from "lucide-react";
-import { Skeleton } from '@/components/ui/skeleton';
+import { LogOut, User, UserCircle, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentsView from '@/components/documents-view';
-import { useUser, useAuth } from '@/firebase';
-import { signOut } from 'firebase/auth';
 
 export default function DashboardPage() {
-  const { user, loading } = useUser();
-  const auth = useAuth();
+  const [currentUser, setCurrentUser] = useState<{ name: string; fullName: string } | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const handleLogout = async () => {
-    await signOut(auth);
+  useEffect(() => {
+    const userName = localStorage.getItem('userName');
+    const userFullName = localStorage.getItem('userFullName');
+    
+    if (!userName) {
+      router.push('/login');
+    } else {
+      setCurrentUser({
+        name: userName,
+        fullName: userFullName || 'Client'
+      });
+    }
+    setLoading(false);
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userFullName');
     router.push("/login");
     router.refresh();
   };
 
   if (loading) {
     return (
-      <div className="container mx-auto max-w-4xl py-12">
-        <div className="space-y-2">
-          <Skeleton className="h-10 w-1/2" />
-          <Skeleton className="h-6 w-3/4" />
-        </div>
-        <Separator className="my-6" />
-        <Card>
-          <CardHeader>
-            <Skeleton className="h-8 w-1/4" />
-          </CardHeader>
-          <CardContent className="space-y-6">
-             <Skeleton className="h-8 w-2/3" />
-          </CardContent>
-        </Card>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
   
-  if (!user) {
-    router.push('/login');
-    return null;
-  }
+  if (!currentUser) return null;
 
   return (
     <div className="container mx-auto max-w-5xl py-12">
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {user.displayName || user.email}</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {currentUser.fullName}</h1>
             <p className="text-muted-foreground">Aquesta és la teva àrea privada de Global Cargo Care.</p>
         </div>
         <Button variant="outline" onClick={handleLogout} className="w-full sm:w-auto">
@@ -89,8 +89,8 @@ export default function DashboardPage() {
                     <UserCircle className='h-8 w-8 text-primary'/>
                   </div>
                   <div>
-                    <h3 className='font-semibold text-lg'>{user.displayName || 'Client'}</h3>
-                    <p className="text-muted-foreground">{user.email}</p>
+                    <h3 className='font-semibold text-lg'>{currentUser.fullName}</h3>
+                    <p className="text-muted-foreground">{currentUser.name}</p>
                   </div>
               </div>
               <p className="text-sm text-muted-foreground mt-4">
