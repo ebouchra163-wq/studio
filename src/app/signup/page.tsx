@@ -49,10 +49,10 @@ export default function SignupPage() {
     setError(null);
 
     try {
-      // Primer comprovem si l'usuari ja existeix
+      // Primer comprovem si l'usuari ja existeix per evitar duplicats
       const checkRes = await fetch(SHEETDB_USERS_URL);
       const users = await checkRes.json();
-      const existingUser = users.find((u: any) => u.usuari.toLowerCase() === data.email.toLowerCase());
+      const existingUser = users.find((u: any) => u.usuari && u.usuari.toLowerCase() === data.email.toLowerCase());
 
       if (existingUser) {
         setError("Aquest correu ja està registrat.");
@@ -60,7 +60,7 @@ export default function SignupPage() {
         return;
       }
 
-      // Creem el nou usuari a SheetDB
+      // Creem el nou usuari a SheetDB. Nota: la columna del nom és 'treballador'
       const response = await fetch(SHEETDB_USERS_URL, {
         method: 'POST',
         headers: {
@@ -71,7 +71,7 @@ export default function SignupPage() {
             {
               usuari: data.email,
               password: data.password,
-              nom: data.fullName,
+              treballador: data.fullName,
               rol: 'client',
               empresa: 'Client Particular',
               fiscalid: '-',
@@ -165,7 +165,7 @@ export default function SignupPage() {
             </Button>
           </form>
         </CardContent>
-        <div className="mb-6 mt-2 text-center text-sm">
+        <div className="mb-6 mt-2 text-center text-sm text-muted-foreground">
           Ja tens un compte?{" "}
           <Link href="/login" className="underline font-semibold text-primary">
             Inicia la sessió

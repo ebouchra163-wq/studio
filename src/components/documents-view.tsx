@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -39,13 +40,12 @@ interface InvoiceLine {
 
 interface UserData {
   usuari: string;
-  nom: string;
+  treballador: string; // Columna 'treballador' de l'Excel
   empresa: string;
   rol: string;
   fiscalid: string;
   adreca: string;
   telefon: string;
-  password?: string;
 }
 
 interface GroupedInvoice {
@@ -230,7 +230,7 @@ export default function DocumentsView() {
                             <p className="text-sm text-muted-foreground">Data: {new Date(selectedInvoice.date).toLocaleDateString('ca-ES')}</p>
                             <div className="mt-4 rounded-md border bg-muted/30 p-4 text-left">
                                 <p className="font-semibold">Client:</p>
-                                <p className="font-bold">{selectedInvoice.client.empresa || selectedInvoice.client.nom}</p>
+                                <p className="font-bold">{selectedInvoice.client.empresa || selectedInvoice.client.treballador}</p>
                                 <p className="text-sm text-muted-foreground">{selectedInvoice.client.adreca}</p>
                                 <p className="text-sm text-muted-foreground">NIF: {selectedInvoice.client.fiscalid}</p>
                                 <p className="text-sm text-muted-foreground">Tel: {selectedInvoice.client.telefon}</p>
@@ -335,7 +335,7 @@ export default function DocumentsView() {
               <TableRow key={invoice.invoiceNumber}>
                 <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
                 <TableCell>{new Date(invoice.date).toLocaleDateString('ca-ES')}</TableCell>
-                {currentUser?.role !== 'client' && <TableCell>{invoice.client.empresa || invoice.client.nom}</TableCell>}
+                {currentUser?.role !== 'client' && <TableCell>{invoice.client.empresa || invoice.client.treballador}</TableCell>}
                 <TableCell className="text-right font-mono">{invoice.total.toFixed(2)} €</TableCell>
                 <TableCell className="text-right">
                   <Button

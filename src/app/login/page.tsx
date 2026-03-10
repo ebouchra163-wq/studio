@@ -22,7 +22,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Introdueix un correu electrònic vàlid." }),
-  password: z.string().min(6, { message: "La contrasenya ha de tenir almenys 6 caràcters." }),
+  password: z.string().min(1, { message: "La contrasenya és requerida." }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -50,14 +50,20 @@ export default function LoginPage() {
       const response = await fetch(SHEETDB_USERS_URL);
       const users = await response.json();
       
+      // Comprovem si l'usuari i la contrasenya coincideixen
       const user = users.find(
-        (u: any) => u.usuari.toLowerCase() === data.email.toLowerCase() && String(u.password) === data.password
+        (u: any) => 
+          u.usuari && 
+          u.usuari.toLowerCase().trim() === data.email.toLowerCase().trim() && 
+          String(u.password).trim() === data.password.trim()
       );
 
       if (user) {
+        // Guardem la sessió a localStorage
         localStorage.setItem('userName', user.usuari);
-        localStorage.setItem('userRole', user.rol);
-        localStorage.setItem('userFullName', user.nom);
+        localStorage.setItem('userRole', user.rol || 'client');
+        // Utilitzem 'treballador' per al nom complet, segons l'Excel
+        localStorage.setItem('userFullName', user.treballador || user.usuari);
         
         router.push("/dashboard");
         router.refresh();
@@ -126,7 +132,7 @@ export default function LoginPage() {
             </Button>
           </form>
         </CardContent>
-        <div className="mb-6 mt-2 text-center text-sm">
+        <div className="mb-6 mt-2 text-center text-sm text-muted-foreground">
           No tens un compte?{" "}
           <Link href="/signup" className="underline font-semibold text-primary">
             Registra't ara
