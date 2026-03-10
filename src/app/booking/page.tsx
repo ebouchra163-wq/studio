@@ -40,7 +40,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 
-// URL de SheetDB apuntant específicament a la pestanya 'solicituds'
+// URL de SheetDB apuntant a la pestanya 'solicituds'
 const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/n5eliliog16ts?sheet=solicituds';
 
 const bookingSchema = z.object({
@@ -58,6 +58,7 @@ interface BookingRecord {
   usuari: string;
   estat: string;
   detalls: string;
+  isLocal?: boolean; // Marca per identificar reserves desades només localment
 }
 
 export default function BookingPage() {
@@ -75,24 +76,32 @@ export default function BookingPage() {
     setError(null);
     try {
       const response = await fetch(SHEETDB_API_URL);
-      if (!response.ok) {
-        throw new Error("No s'ha pogut connectar amb el servidor.");
-      }
-      const data = await response.json();
+      let apiData: BookingRecord[] = [];
       
-      if (Array.isArray(data)) {
-        // Filtrem per l'usuari actual (case-insensitive per seguretat)
-        const userBookings = data.filter((b: any) => 
-          b.usuari && b.usuari.toLowerCase() === userName.toLowerCase()
-        );
-        // Ordenem per mostrar les últimes primer
-        setBookings(userBookings.reverse());
+      if (response.ok) {
+        apiData = await response.json();
       } else {
-        setBookings([]);
+        console.warn("L'API de SheetDB no ha respost correctament. Carregant només dades locals.");
       }
+      
+      // Carreguem també les reserves locals (fallback)
+      const localDataRaw = localStorage.getItem(`local_bookings_${userName}`);
+      const localData: BookingRecord[] = localDataRaw ? JSON.parse(localDataRaw) : [];
+
+      // Filtrem les dades de l'API per l'usuari actual
+      const filteredApiData = Array.isArray(apiData) 
+        ? apiData.filter((b: any) => b.usuari && b.usuari.toLowerCase() === userName.toLowerCase())
+        : [];
+
+      // Combinem i ordenem (les més recents primer)
+      const combined = [...localData, ...filteredApiData].sort((a, b) => {
+        return new Date(b.data).getTime() - new Date(a.data).getTime();
+      });
+
+      setBookings(combined);
     } catch (err: any) {
       console.error("Error carregant reserves:", err);
-      setError("No s'ha pogut carregar l'històric de sol·licituds.");
+      setError("No s'ha pogut carregar l'històric de l'Excel, però pots seguir veient les teves dades locals.");
     } finally {
       setLoading(false);
     }
@@ -127,7 +136,7 @@ export default function BookingPage() {
     
     const detallsConcatenats = `Servei: ${formData.servei} | Origen: ${formData.origen} | Destí: ${formData.desti} | Càrrega: ${formData.carrega}`;
 
-    const newBooking = {
+    const newBooking: BookingRecord = {
       id: bookingId,
       data: today,
       usuari: currentUser,
@@ -147,34 +156,54 @@ export default function BookingPage() {
       if (response.ok) {
         toast({
           title: "Sol·licitud enviada!",
-          description: `La teva reserva ${bookingId} s'ha registrat correctament.`,
+          description: `La teva reserva ${bookingId} s'ha registrat correctament a l'Excel.`,
         });
         reset();
-        setTimeout(() => fetchBookings(currentUser), 1500);
+        fetchBookings(currentUser);
       } else {
-        const errorData = await response.json();
-        const errorMessage = errorData.error || response.statusText || "Error en l'enviament";
+        const errorData = await response.json().catch(() => ({}));
         
-        // Si detectem error de permisos (403), donem un missatge més específic
-        if (response.status === 403 || errorMessage.toLowerCase().includes('permission')) {
-          throw new Error("No tens permisos per escriure a l'Excel. Revisa la configuració de l'API a SheetDB.io (ha d'estar en mode Read/Write).");
+        // GESTIÓ DE FALLBACK: Si no hi ha permisos a SheetDB, desem localment
+        if (response.status === 403 || response.status === 401) {
+          saveLocally(newBooking, currentUser);
+          toast({
+            variant: "destructive",
+            title: "Error de permisos a SheetDB",
+            description: "No s'ha pogut escriure a l'Excel. Hem desat la reserva localment al teu navegador.",
+          });
+          reset();
+          fetchBookings(currentUser);
+        } else {
+          throw new Error(errorData.error || "Error desconegut en l'enviament.");
         }
-        
-        throw new Error(errorMessage);
       }
     } catch (err: any) {
       console.error("Error enviant reserva:", err);
+      // Fallback en cas d'error de xarxa
+      saveLocally(newBooking, currentUser);
       toast({
         variant: "destructive",
-        title: "Error en l'enviament",
-        description: err.message || "No s'ha pogut crear la reserva. Revisa la configuració de SheetDB.",
+        title: "Reserva desada localment",
+        description: "Hi ha hagut un problema de connexió. La reserva s'ha guardat al teu dispositiu.",
       });
+      reset();
+      fetchBookings(currentUser);
     } finally {
       setSubmitting(false);
     }
   };
 
-  const getStatusBadge = (status: string) => {
+  const saveLocally = (booking: BookingRecord, userName: string) => {
+    const localDataRaw = localStorage.getItem(`local_bookings_${userName}`);
+    const localData: BookingRecord[] = localDataRaw ? JSON.parse(localDataRaw) : [];
+    localData.push({ ...booking, isLocal: true });
+    localStorage.setItem(`local_bookings_${userName}`, JSON.stringify(localData));
+  };
+
+  const getStatusBadge = (status: string, isLocal?: boolean) => {
+    if (isLocal) {
+      return <Badge variant="secondary" className="bg-slate-200 text-slate-700">Pendent (Local)</Badge>;
+    }
     const s = (status || 'Pendent').toLowerCase();
     if (s.includes('pendent')) {
       return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none">Pendent</Badge>;
@@ -289,14 +318,14 @@ export default function BookingPage() {
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
               <p className="mt-2 text-muted-foreground">Carregant dades...</p>
             </div>
-          ) : error ? (
+          ) : error && bookings.length === 0 ? (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error de càrrega</AlertTitle>
+              <AlertTitle>Error de connexió</AlertTitle>
               <AlertDescription>
                 {error}
                 <Button variant="link" className="p-0 h-auto ml-2 text-destructive underline" onClick={() => currentUser && fetchBookings(currentUser)}>
-                  Torna-ho a intentar
+                  Reintentar
                 </Button>
               </AlertDescription>
             </Alert>
@@ -310,15 +339,20 @@ export default function BookingPage() {
             </Card>
           ) : (
             <div className="space-y-4">
+              {error && (
+                <div className="text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-200 mb-2">
+                  Nota: Hi ha hagut problemes de sincronització. Algunes dades podrien no ser les més recents de l'Excel.
+                </div>
+              )}
               {bookings.map((booking, idx) => (
-                <Card key={booking.id || idx} className="transition-all hover:shadow-md border-l-4 border-l-primary">
+                <Card key={booking.id || idx} className={cn("transition-all hover:shadow-md border-l-4", booking.isLocal ? "border-l-slate-400" : "border-l-primary")}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-primary">{booking.id}</span>
                         <span className="text-xs text-muted-foreground">• {booking.data}</span>
                       </div>
-                      {getStatusBadge(booking.estat)}
+                      {getStatusBadge(booking.estat, booking.isLocal)}
                     </div>
                   </CardHeader>
                   <CardContent className="pb-4">
@@ -331,7 +365,7 @@ export default function BookingPage() {
                         <MapPin className="h-3 w-3" />
                         Logística Global Care
                      </div>
-                     <span className="italic">Consulta de client</span>
+                     {booking.isLocal && <span className="text-amber-600 font-semibold italic">Només local</span>}
                   </CardFooter>
                 </Card>
               ))}
