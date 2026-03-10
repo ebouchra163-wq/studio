@@ -1,15 +1,18 @@
+
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogIn, Menu, PackageSearch, Home, Newspaper, Users, User, CalendarDays } from "lucide-react";
+import { LogIn, Menu, PackageSearch, Home, Newspaper, Users, User, CalendarDays, LogOut } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useUser, useAuth } from "@/firebase";
+import { signOut } from "firebase/auth";
 
 const mainNavLinks = [
   { href: "/", label: "Inici", icon: Home },
@@ -21,46 +24,51 @@ const mainNavLinks = [
 export function Navbar() {
   const isMobile = useIsMobile();
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading } = useUser();
+  const auth = useAuth();
   const [isSheetOpen, setSheetOpen] = React.useState(false);
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-
-  React.useEffect(() => {
-    // Comprovar si l'usuari està autenticat llegint del localStorage
-    const userName = localStorage.getItem("userName");
-    setIsAuthenticated(!!userName);
-  }, [pathname]); // Re-comprovar en canviar de ruta
 
   React.useEffect(() => {
     setSheetOpen(false);
   }, [pathname]);
 
-  if (isMobile === undefined) {
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/");
+    router.refresh();
+  };
+
+  if (isMobile === undefined || loading) {
     return null;
   }
   
   const authLinks = (
     <>
-      {isAuthenticated ? (
+      {user ? (
         <div className="flex items-center gap-2">
-            <Button asChild variant="ghost">
+            <Button asChild variant="ghost" size="sm">
               <Link href="/booking">
                 <CalendarDays className="mr-2 h-4 w-4" /> Reserves
               </Link>
             </Button>
-            <Button asChild>
+            <Button asChild variant="ghost" size="sm">
               <Link href="/dashboard">
                 <User className="mr-2 h-4 w-4" /> Perfil
               </Link>
             </Button>
+            <Button variant="outline" size="sm" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" /> Surt
+            </Button>
         </div>
       ) : (
         <>
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" size="sm">
             <Link href="/signup">Registra't</Link>
           </Button>
-          <Button asChild>
+          <Button asChild size="sm">
             <Link href="/login">
-              <LogIn className="mr-2 h-4 w-4" /> Inicia la Sessió
+              <LogIn className="mr-2 h-4 w-4" /> Entra
             </Link>
           </Button>
         </>
@@ -70,17 +78,20 @@ export function Navbar() {
 
   const mobileAuthLinks = (
     <>
-      {isAuthenticated ? (
+      {user ? (
         <div className="flex flex-col gap-2">
             <Button asChild variant="outline" className="w-full justify-start">
               <Link href="/booking">
                 <CalendarDays className="mr-2 h-4 w-4" /> Reserves
               </Link>
             </Button>
-            <Button asChild className="w-full justify-start">
+            <Button asChild variant="outline" className="w-full justify-start">
               <Link href="/dashboard">
                 <User className="mr-2 h-4 w-4" /> Perfil
               </Link>
+            </Button>
+            <Button variant="secondary" className="w-full justify-start" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" /> Tanca la sessió
             </Button>
         </div>
       ) : (
@@ -101,17 +112,17 @@ export function Navbar() {
 
   if (isMobile) {
     return (
-      <header className="sticky top-0 z-50 w-full border-b bg-white">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
+        <div className="container flex h-16 items-center justify-between px-4">
           <Link href="/">
-            <Logo className="h-20 transform scale-[2.2]" />
+            <Logo className="h-14 transform scale-[1.8]" />
             <span className="sr-only">Inici</span>
           </Link>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Obre el menú de navegació</span>
+                <span className="sr-only">Obre el menú</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
@@ -146,7 +157,7 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white">
+    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
       <div className="container flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="mr-8">
           <Logo className="h-20 transform scale-[2.2]" />
@@ -160,7 +171,7 @@ export function Navbar() {
               className={cn(
                 "transition-colors hover:text-primary",
                 pathname === link.href
-                  ? "text-primary font-semibold"
+                  ? "text-primary font-bold"
                   : "text-muted-foreground"
               )}
             >

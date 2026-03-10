@@ -1,6 +1,6 @@
+
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import {
@@ -11,82 +11,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { LogOut, User, Shield, Briefcase, UserCircle } from "lucide-react";
+import { LogOut, User, UserCircle } from "lucide-react";
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentsView from '@/components/documents-view';
+import { useUser, useAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
 
 export default function DashboardPage() {
-  const [userName, setUserName] = useState<string | null>(null);
-  const [userFullName, setUserFullName] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useUser();
+  const auth = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    // Aquesta funció s'executarà només al client
-    const name = localStorage.getItem("userName");
-    const fullName = localStorage.getItem("userFullName");
-    const role = localStorage.getItem("userRole");
-
-    if (name && role) {
-      setUserName(name);
-      setUserFullName(fullName);
-      setUserRole(role.trim().toLowerCase());
-    } else {
-      // Si no hi ha dades, fem fora l'usuari cap a /login
-      router.push('/login');
-    }
-    setLoading(false);
-  }, [router]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userFullName");
+  const handleLogout = async () => {
+    await signOut(auth);
     router.push("/login");
-    router.refresh(); // Força l'actualització de la barra de navegació
-  };
-  
-  const renderRoleContent = () => {
-    switch (userRole) {
-      case 'administrador':
-        return (
-          <CardContent>
-            <div className='flex items-center gap-2 mb-4'>
-                <Shield className='h-5 w-5 text-primary'/>
-                <h3 className='font-semibold'>Panell d'administrador</h3>
-            </div>
-            <p className="text-muted-foreground">Aquí tens accés a totes les opcions de gestió del sistema.</p>
-          </CardContent>
-        );
-      case 'treballador':
-        return (
-          <CardContent>
-            <div className='flex items-center gap-2 mb-4'>
-                <Briefcase className='h-5 w-5 text-primary'/>
-                <h3 className='font-semibold'>Panell de treballador</h3>
-            </div>
-            <p className="text-muted-foreground">Aquí pots veure les teves tasques i enviaments assignats.</p>
-          </CardContent>
-        );
-      case 'client':
-        return (
-          <CardContent>
-            <div className='flex items-center gap-2 mb-4'>
-                <UserCircle className='h-5 w-5 text-primary'/>
-                <h3 className='font-semibold'>Panell de client</h3>
-            </div>
-            <p className="text-muted-foreground">Aquí pots gestionar la teva informació i consultar els teus documents i enviaments.</p>
-          </CardContent>
-        );
-      default:
-        return (
-            <CardContent>
-                <p className="text-destructive font-semibold">Rol no reconegut.</p>
-            </CardContent>
-        );
-    }
+    router.refresh();
   };
 
   if (loading) {
@@ -109,8 +49,8 @@ export default function DashboardPage() {
     );
   }
   
-  if (!userName) {
-    // Aquesta comprovació evita un flaix de contingut mentre es redirigeix
+  if (!user) {
+    router.push('/login');
     return null;
   }
 
@@ -118,8 +58,8 @@ export default function DashboardPage() {
     <div className="container mx-auto max-w-5xl py-12">
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {userFullName || userName}</h1>
-            <p className="text-muted-foreground">Aquesta és la teva àrea privada.</p>
+            <h1 className="text-3xl font-bold tracking-tight">Benvingut/da, {user.displayName || user.email}</h1>
+            <p className="text-muted-foreground">Aquesta és la teva àrea privada de Global Cargo Care.</p>
         </div>
         <Button variant="outline" onClick={handleLogout} className="w-full sm:w-auto">
             <LogOut className="mr-2 h-4 w-4" />
@@ -137,20 +77,32 @@ export default function DashboardPage() {
           <Card className="mt-6">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5"/> El teu perfil
+                <User className="h-5 w-5"/> Informació Personal
               </CardTitle>
               <CardDescription>
-                Rol: <span className='font-medium text-primary'>{userRole}</span>
+                Dades associades al teu compte de client.
               </CardDescription>
             </CardHeader>
-            {renderRoleContent()}
+            <CardContent>
+              <div className='flex items-center gap-4 mb-4'>
+                  <div className="bg-primary/10 p-3 rounded-full">
+                    <UserCircle className='h-8 w-8 text-primary'/>
+                  </div>
+                  <div>
+                    <h3 className='font-semibold text-lg'>{user.displayName || 'Client'}</h3>
+                    <p className="text-muted-foreground">{user.email}</p>
+                  </div>
+              </div>
+              <p className="text-sm text-muted-foreground mt-4">
+                Des del teu perfil pots veure les teves reserves i consultar les teves factures a la pestanya de documents.
+              </p>
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="documents">
             <DocumentsView />
         </TabsContent>
       </Tabs>
-
     </div>
   );
 }

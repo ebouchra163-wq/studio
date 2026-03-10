@@ -1,5 +1,11 @@
+
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,39 +16,128 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAuth } from "@/firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+
+const signupSchema = z.object({
+  fullName: z.string().min(2, { message: "El nom és massa curt." }),
+  email: z.string().email({ message: "Introdueix un correu electrònic vàlid." }),
+  password: z.string().min(6, { message: "La contrasenya ha de tenir almenys 6 caràcters." }),
+});
+
+type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const auth = useAuth();
+
+  const form = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data: SignupFormValues) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      await updateProfile(userCredential.user, {
+        displayName: data.fullName
+      });
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err: any) {
+      console.error("Error durant el registre:", err);
+      if (err.code === 'auth/email-already-in-use') {
+        setError("Aquest correu ja està en ús.");
+      } else {
+        setError("S'ha produït un error en crear el compte.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex min-h-full flex-1 items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
+    <div className="flex min-h-full flex-1 items-center justify-center p-4 py-20">
+      <Card className="w-full max-w-sm shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl">Crea un Compte</CardTitle>
           <CardDescription>
-            Introdueix la teva informació per crear un nou compte de client.
+            Introdueix la teva informació per registrar-te a Global Cargo Care.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="full-name">Nom Complet</Label>
-            <Input id="full-name" placeholder="John Doe" required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Correu Electrònic</Label>
-            <Input id="email" type="email" placeholder="m@example.com" required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Contrasenya</Label>
-            <Input id="password" type="password" required />
-          </div>
-          <Button asChild className="w-full">
-            <Link href="/account">Crea el Compte</Link>
-          </Button>
+        <CardContent>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="fullName">Nom Complet</Label>
+              <Input
+                id="fullName"
+                placeholder="John Doe"
+                {...form.register("fullName")}
+                disabled={loading}
+              />
+              {form.formState.errors.fullName && (
+                <p className="text-xs font-medium text-destructive">{form.formState.errors.fullName.message}</p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Correu Electrònic</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="usuari@exemple.com"
+                {...form.register("email")}
+                disabled={loading}
+              />
+              {form.formState.errors.email && (
+                <p className="text-xs font-medium text-destructive">{form.formState.errors.email.message}</p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Contrasenya</Label>
+              <Input
+                id="password"
+                type="password"
+                {...form.register("password")}
+                disabled={loading}
+              />
+              {form.formState.errors.password && (
+                <p className="text-xs font-medium text-destructive">{form.formState.errors.password.message}</p>
+              )}
+            </div>
+
+            {error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error de registre</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                "Crea el Compte"
+              )}
+            </Button>
+          </form>
         </CardContent>
-        <div className="mb-4 mt-2 text-center text-sm">
+        <div className="mb-6 mt-2 text-center text-sm">
           Ja tens un compte?{" "}
-          <Link href="/login" className="underline">
-            Inicia la Sessió
+          <Link href="/login" className="underline font-semibold text-primary">
+            Inicia la sessió
           </Link>
         </div>
       </Card>

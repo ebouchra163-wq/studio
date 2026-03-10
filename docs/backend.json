@@ -1,0 +1,28 @@
+
+{
+  "entities": {
+    "Booking": {
+      "title": "Booking",
+      "description": "A transport booking request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "data": { "type": "string", "format": "date" },
+        "usuari": { "type": "string" },
+        "estat": { "type": "string", "enum": ["Pendent", "Aprovat", "Rebutjat"] },
+        "detalls": { "type": "string" },
+        "userId": { "type": "string" }
+      },
+      "required": ["id", "data", "usuari", "estat", "detalls", "userId"]
+    }
+  },
+  "auth": {
+    "providers": ["password"]
+  },
+  "firestore": {
+    "/bookings/{bookingId}": {
+      "schema": "#/backend/entities/Booking",
+      "description": "Collection of booking requests"
+    }
+  }
+}

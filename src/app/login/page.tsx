@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -18,31 +19,26 @@ import { Label } from "@/components/ui/label";
 import { LogIn, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAuth } from "@/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const loginSchema = z.object({
-  usuari: z.string().min(1, { message: "L'usuari és requerit." }),
-  password: z.string().min(1, { message: "La contrasenya és requerida." }),
+  email: z.string().email({ message: "Introdueix un correu electrònic vàlid." }),
+  password: z.string().min(6, { message: "La contrasenya ha de tenir almenys 6 caràcters." }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
-
-interface UserData {
-  usuari: string;
-  nom: string;
-  empresa: string;
-  rol: string;
-  password?: string | number;
-}
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const auth = useAuth();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      usuari: "",
+      email: "",
       password: "",
     },
   });
@@ -52,60 +48,43 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const response = await fetch(
-        `https://sheetdb.io/api/v1/n5eliliog16ts?sheet=usuaris`
-      );
-      
-      if (!response.ok) {
-        throw new Error(`Error de l'API: ${response.status} ${response.statusText}`);
-      }
-
-      const allUsers: UserData[] = await response.json();
-      
-      // Fem servir String() per assegurar que la comparació de la contrasenya sigui robusta
-      const foundUser = allUsers.find(
-        (u) => u.usuari === data.usuari && String(u.password) === data.password
-      );
-
-      if (foundUser) {
-        localStorage.setItem("userName", foundUser.usuari);
-        localStorage.setItem("userRole", foundUser.rol);
-        localStorage.setItem("userFullName", foundUser.nom);
-        router.push("/dashboard");
-        router.refresh();
-      } else {
-        setError("Dades incorrectes. Revisa l'usuari i la contrasenya.");
-      }
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      router.push("/dashboard");
+      router.refresh();
     } catch (err: any) {
       console.error("Error durant el login:", err);
-      setError(err.message || "No s'ha pogut connectar amb el servidor. Revisa la teva connexió o intenta-ho més tard.");
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        setError("Correu o contrasenya incorrectes.");
+      } else {
+        setError("S'ha produït un error en l'inici de sessió.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
-    <div className="flex min-h-full flex-1 items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
+    <div className="flex min-h-full flex-1 items-center justify-center p-4 py-20">
+      <Card className="w-full max-w-sm shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl">Accés d'Usuari</CardTitle>
           <CardDescription>
-            Introdueix les teves credencials per accedir.
+            Introdueix les teves credencials de Firebase per accedir.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="usuari">Usuari</Label>
+              <Label htmlFor="email">Correu Electrònic</Label>
               <Input
-                id="usuari"
-                placeholder="El teu usuari"
-                {...form.register("usuari")}
+                id="email"
+                type="email"
+                placeholder="usuari@exemple.com"
+                {...form.register("email")}
                 disabled={loading}
               />
-              {form.formState.errors.usuari && (
-                <p className="text-sm font-medium text-destructive">{form.formState.errors.usuari.message}</p>
+              {form.formState.errors.email && (
+                <p className="text-xs font-medium text-destructive">{form.formState.errors.email.message}</p>
               )}
             </div>
             <div className="grid gap-2">
@@ -117,7 +96,7 @@ export default function LoginPage() {
                 disabled={loading}
               />
               {form.formState.errors.password && (
-                <p className="text-sm font-medium text-destructive">{form.formState.errors.password.message}</p>
+                <p className="text-xs font-medium text-destructive">{form.formState.errors.password.message}</p>
               )}
             </div>
 
@@ -135,14 +114,14 @@ export default function LoginPage() {
               ) : (
                 <LogIn className="mr-2 h-4 w-4" />
               )}
-              {loading ? "Entrant..." : "Entra"}
+              {loading ? "Iniciant..." : "Entra"}
             </Button>
           </form>
         </CardContent>
-        <div className="mb-4 mt-2 text-center text-sm">
+        <div className="mb-6 mt-2 text-center text-sm">
           No tens un compte?{" "}
-          <Link href="/signup" className="underline">
-            Registra't
+          <Link href="/signup" className="underline font-semibold text-primary">
+            Registra't ara
           </Link>
         </div>
       </Card>

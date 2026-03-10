@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,15 +32,12 @@ import {
   PlusCircle, 
   History, 
   Package, 
-  MapPin, 
-  Ship, 
-  Plane, 
-  Truck, 
-  Warehouse 
+  MapPin 
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/n5eliliog16ts?sheet=solicituds';
+import { useUser, useFirestore, useCollection, errorEmitter } from '@/firebase';
+import { collection, query, where, orderBy, addDoc, serverTimestamp } from 'firebase/firestore';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 const bookingSchema = z.object({
   servei: z.string().min(1, { message: "El tipus de servei és requerit." }),
@@ -50,23 +48,24 @@ const bookingSchema = z.object({
 
 type BookingFormValues = z.infer<typeof bookingSchema>;
 
-interface BookingRequest {
-  id: string;
-  data: string;
-  usuari: string;
-  estat: string;
-  detalls: string;
-}
-
 export default function BookingPage() {
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
-  const [bookings, setBookings] = useState<BookingRequest[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [authChecking, setAuthChecking] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [fetchError, setFetchError] = useState<boolean>(false);
+  const { user, loading: authLoading } = useUser();
+  const db = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
+  const [submitting, setSubmitting] = useState(false);
+
+  // Consulta per a l'històric de l'usuari
+  const bookingsQuery = useMemo(() => {
+    if (!db || !user) return null;
+    return query(
+      collection(db, 'bookings'),
+      where('userId', '==', user.uid),
+      orderBy('createdAt', 'desc')
+    );
+  }, [db, user]);
+
+  const { data: bookings, loading: bookingsLoading } = useCollection(bookingsQuery);
 
   const { control, register, handleSubmit, reset, formState: { errors } } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
@@ -78,89 +77,52 @@ export default function BookingPage() {
     }
   });
 
-  useEffect(() => {
-    const user = localStorage.getItem('userName');
-    if (!user) {
-      router.push('/login');
-    } else {
-      setCurrentUser(user);
-      setAuthChecking(false);
-      fetchBookings(user);
-    }
-  }, [router]);
-
-  const fetchBookings = async (user: string) => {
-    try {
-      setLoading(true);
-      setFetchError(false);
-      const response = await fetch(SHEETDB_API_URL);
-      
-      if (!response.ok) {
-        setFetchError(true);
-        setBookings([]);
-        return;
-      }
-      
-      const data = await response.json();
-      
-      if (Array.isArray(data)) {
-        const userBookings = data.filter((b: BookingRequest) => b.usuari === user);
-        setBookings(userBookings.sort((a: BookingRequest, b: BookingRequest) => (b.data || '').localeCompare(a.data || '')));
-      } else {
-        setBookings([]);
-      }
-    } catch (error) {
-      console.warn("SheetDB Fetch error:", error);
-      setFetchError(true);
-      setBookings([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const onSubmit = async (data: BookingFormValues) => {
-    if (!currentUser) return;
+    if (!user || !db) return;
     
     setSubmitting(true);
     const bookingId = `BK-${Math.floor(100000 + Math.random() * 900000)}`;
     const today = new Date().toISOString().split('T')[0];
     
+    // Concatenació segons el format esperat
     const detallsConcatenats = `Servei: ${data.servei} | Origen: ${data.origen} | Destí: ${data.desti} | Càrrega: ${data.carrega}`;
 
-    const newBooking = {
+    const newBookingData = {
       id: bookingId,
       data: today,
-      usuari: currentUser,
+      usuari: user.displayName || user.email || 'Usuari',
+      userId: user.uid,
       estat: 'Pendent',
-      detalls: detallsConcatenats
+      detalls: detallsConcatenats,
+      createdAt: serverTimestamp()
     };
 
-    try {
-      const response = await fetch(SHEETDB_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: [newBooking] })
-      });
-
-      if (response.ok) {
+    const bookingsRef = collection(db, 'bookings');
+    
+    addDoc(bookingsRef, newBookingData)
+      .then(() => {
         toast({
           title: "Sol·licitud enviada!",
-          description: `La teva reserva ${bookingId} s'ha registrat correctament.`,
+          description: `La teva reserva ${bookingId} s'ha registrat correctament a Firestore.`,
         });
         reset();
-        fetchBookings(currentUser);
-      } else {
-        throw new Error("Error en l'enviament.");
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "No s'ha pogut enviar la sol·licitud. Intenta-ho més tard.",
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: bookingsRef.path,
+          operation: 'create',
+          requestResourceData: newBookingData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "No s'ha pogut desar la reserva. Comprova els permisos.",
+        });
+      })
+      .finally(() => {
+        setSubmitting(false);
       });
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -170,12 +132,14 @@ export default function BookingPage() {
         return <Badge className="bg-amber-500 hover:bg-amber-600">Pendent</Badge>;
       case 'aprovat':
         return <Badge className="bg-green-600 hover:bg-green-700">Aprovat</Badge>;
+      case 'rebutjat':
+        return <Badge variant="destructive">Rebutjat</Badge>;
       default:
         return <Badge variant="outline">{s}</Badge>;
     }
   };
 
-  if (authChecking) {
+  if (authLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -183,11 +147,16 @@ export default function BookingPage() {
     );
   }
 
+  if (!user) {
+    router.push('/login');
+    return null;
+  }
+
   return (
     <div className="container mx-auto max-w-5xl py-12">
       <div className="mb-8 space-y-2">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Gestió de Reserves</h1>
-        <p className="text-muted-foreground">Sol·licita nous transports i gestiona les teves comandes actives.</p>
+        <p className="text-muted-foreground">Sol·licita nous transports i gestiona les teves comandes actives de forma segura.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
@@ -265,30 +234,14 @@ export default function BookingPage() {
               <History className="h-5 w-5 text-primary" />
               <h2 className="text-2xl font-bold">Les meves sol·licituds</h2>
             </div>
-            {currentUser && (
-              <Button variant="ghost" size="sm" onClick={() => fetchBookings(currentUser)} disabled={loading}>
-                Actualitzar
-              </Button>
-            )}
           </div>
           <Separator className="mb-6" />
 
-          {loading ? (
+          {bookingsLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <p className="mt-2 text-muted-foreground">Carregant l'històric...</p>
+              <p className="mt-2 text-muted-foreground">Carregant l'històric des de Firestore...</p>
             </div>
-          ) : fetchError ? (
-            <Card className="border-dashed py-12 text-center border-destructive/50">
-              <CardContent>
-                <Package className="mx-auto h-12 w-12 text-destructive/50" />
-                <p className="mt-4 text-lg font-medium text-destructive">No s'ha pogut carregar l'històric.</p>
-                <p className="text-sm text-muted-foreground">Pot haver-hi un problema de connexió amb el servidor.</p>
-                <Button variant="outline" className="mt-4" onClick={() => currentUser && fetchBookings(currentUser)}>
-                  Torna-ho a intentar
-                </Button>
-              </CardContent>
-            </Card>
           ) : bookings.length === 0 ? (
             <Card className="border-dashed py-12 text-center">
               <CardContent>
@@ -299,7 +252,7 @@ export default function BookingPage() {
             </Card>
           ) : (
             <div className="space-y-4">
-              {bookings.map((booking) => (
+              {bookings.map((booking: any) => (
                 <Card key={booking.id} className="transition-shadow hover:shadow-md">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
