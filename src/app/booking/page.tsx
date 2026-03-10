@@ -85,7 +85,7 @@ export default function BookingPage() {
         const userBookings = data.filter((b: any) => 
           b.usuari && b.usuari.toLowerCase() === userName.toLowerCase()
         );
-        // Ordenem per ID o data si és possible, aquí fem un reverse simple per mostrar les últimes primer
+        // Ordenem per mostrar les últimes primer
         setBookings(userBookings.reverse());
       } else {
         setBookings([]);
@@ -140,7 +140,6 @@ export default function BookingPage() {
       const response = await fetch(SHEETDB_API_URL, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ data: [newBooking] }),
@@ -152,18 +151,24 @@ export default function BookingPage() {
           description: `La teva reserva ${bookingId} s'ha registrat correctament.`,
         });
         reset();
-        // Donem un petit marge perquè l'Excel s'actualitzi abans de tornar a carregar
-        setTimeout(() => fetchBookings(currentUser), 500);
+        // Donem un marge perquè l'Excel s'actualitzi abans de tornar a carregar
+        setTimeout(() => fetchBookings(currentUser), 1000);
       } else {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Error en l'enviament");
+        const errorMessage = errorData.error || response.statusText || "Error en l'enviament";
+        
+        if (response.status === 403) {
+          throw new Error("No tens permisos per escriure a l'Excel. Revisa la configuració de SheetDB (Mode Read/Write).");
+        }
+        
+        throw new Error(errorMessage);
       }
     } catch (err: any) {
       console.error("Error enviant reserva:", err);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "No s'ha pogut crear la reserva. Revisa la teva connexió.",
+        title: "Error en l'enviament",
+        description: err.message || "No s'ha pogut crear la reserva. Revisa la configuració de SheetDB.",
       });
     } finally {
       setSubmitting(false);
@@ -173,9 +178,9 @@ export default function BookingPage() {
   const getStatusBadge = (status: string) => {
     const s = (status || 'Pendent').toLowerCase();
     if (s.includes('pendent')) {
-      return <Badge className="bg-amber-500 hover:bg-amber-600">Pendent</Badge>;
+      return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none">Pendent</Badge>;
     } else if (s.includes('aprovat')) {
-      return <Badge className="bg-green-600 hover:bg-green-700">Aprovat</Badge>;
+      return <Badge className="bg-green-600 hover:bg-green-700 text-white border-none">Aprovat</Badge>;
     } else if (s.includes('rebutjat')) {
       return <Badge variant="destructive">Rebutjat</Badge>;
     }
@@ -199,7 +204,7 @@ export default function BookingPage() {
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
         <div className="lg:col-span-2">
-          <Card className="sticky top-24 shadow-md">
+          <Card className="sticky top-24 shadow-md border-primary/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <PlusCircle className="h-5 w-5 text-primary" /> Nova Sol·licitud
@@ -299,7 +304,7 @@ export default function BookingPage() {
           ) : bookings.length === 0 ? (
             <Card className="border-dashed py-12 text-center">
               <CardContent>
-                <Package className="mx-auto h-12 w-12 text-muted-foreground/50" />
+                <Package className="mx-auto h-12 w-12 text-muted-foreground/30" />
                 <p className="mt-4 text-lg font-medium">No tens cap sol·licitud activa.</p>
                 <p className="text-sm text-muted-foreground">Fes servir el formulari per crear la teva primera reserva.</p>
               </CardContent>
@@ -307,7 +312,7 @@ export default function BookingPage() {
           ) : (
             <div className="space-y-4">
               {bookings.map((booking, idx) => (
-                <Card key={booking.id || idx} className="transition-shadow hover:shadow-md">
+                <Card key={booking.id || idx} className="transition-all hover:shadow-md border-l-4 border-l-primary">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -318,15 +323,16 @@ export default function BookingPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="pb-4">
-                    <div className="rounded-md bg-muted/50 p-3">
-                      <p className="text-sm leading-relaxed">{booking.detalls}</p>
+                    <div className="rounded-md bg-muted/50 p-4 border border-muted">
+                      <p className="text-sm leading-relaxed whitespace-pre-line">{booking.detalls}</p>
                     </div>
                   </CardContent>
-                  <CardFooter className="pt-0 text-xs text-muted-foreground flex items-center gap-4">
+                  <CardFooter className="pt-0 text-xs text-muted-foreground flex items-center justify-between">
                      <div className="flex items-center gap-1">
                         <MapPin className="h-3 w-3" />
-                        Logística Global
+                        Logística Global Care
                      </div>
+                     <span className="italic">Consulta de client</span>
                   </CardFooter>
                 </Card>
               ))}
