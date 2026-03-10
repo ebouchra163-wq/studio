@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -151,7 +150,7 @@ export default function BookingPage() {
       if (response.ok) {
         toast({
           title: "Sol·licitud enviada!",
-          description: `La reserva ${bookingId} s'ha registrat a l'Excel.`,
+          description: `La reserva ${bookingId} s'ha registrat correctament.`,
         });
         reset();
         await fetchBookings(currentUser);
@@ -205,12 +204,20 @@ export default function BookingPage() {
     }
     
     // Verificació d'estat aprovat/acceptat (EN VERD)
-    if (s.includes('aprovat') || s.includes('aceptada') || s.includes('aprovada') || s.includes('aceptado') || s === 'approved') {
+    // Fem la verificació més robusta per a variants com "Aceptada", "Acceptada", "Aprobado", etc.
+    if (
+      s.includes('aprov') || 
+      s.includes('acept') || 
+      s.includes('accept') || 
+      s === 'approved' || 
+      s === 'ok' ||
+      s === 'lliurat'
+    ) {
       return <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-sm">{status}</Badge>;
     }
     
     // Verificació d'estat rebutjat
-    if (s.includes('rebutjat') || s.includes('rechazada') || s === 'rejected' || s === 'rebutjada') {
+    if (s.includes('rebutjat') || s.includes('rechazada') || s === 'rejected' || s === 'rebutjada' || s.includes('cancel')) {
       return <Badge variant="destructive" className="shadow-sm">{status}</Badge>;
     }
     
