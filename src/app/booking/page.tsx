@@ -64,7 +64,6 @@ export default function BookingPage() {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   
   const router = useRouter();
   const { toast } = useToast();
@@ -72,22 +71,16 @@ export default function BookingPage() {
   const fetchBookings = useCallback(async (userName: string) => {
     if (!userName) return;
     setLoading(true);
-    setError(null);
     
     try {
       const response = await fetch(SHEETDB_API_URL);
-      if (!response.ok) {
-         // No llancem error fatal, simplement seguim per carregar dades locals
-         console.warn("No s'ha pogut connectar amb SheetDB.");
-      }
-      
       const apiData = response.ok ? await response.json() : [];
 
       // Carreguem les reserves locals (fallback de seguretat)
       const localDataRaw = localStorage.getItem(`local_bookings_${userName.trim().toLowerCase()}`);
       const localData: BookingRecord[] = localDataRaw ? JSON.parse(localDataRaw) : [];
 
-      // Filtrem les dades de l'API per l'usuari actual
+      // Filtrem les dades de l'API per l'usuari actual (insensible a majúscules i amb trim)
       const userClean = userName.trim().toLowerCase();
       const filteredApiData = Array.isArray(apiData) 
         ? apiData.filter((b: any) => b.usuari && b.usuari.trim().toLowerCase() === userClean)
@@ -104,7 +97,6 @@ export default function BookingPage() {
       setBookings(unique);
     } catch (err: any) {
       console.error("Error carregant reserves:", err);
-      setError("Error de connexió.");
     } finally {
       setLoading(false);
     }
@@ -185,7 +177,7 @@ export default function BookingPage() {
       toast({
         variant: "destructive",
         title: "Connexió fallida",
-        description: "Hem guardat la teva sol·licitud al teu navegador.",
+        description: "Hem guardat la teva sol·licitud al teu navegador per seguretat.",
       });
       reset();
       await fetchBookings(currentUser);
@@ -207,14 +199,19 @@ export default function BookingPage() {
     
     const s = (status || 'Pendent').trim().toLowerCase();
     
+    // Verificació d'estat pendent
     if (s.includes('pendent') || s === 'pending') {
       return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none shadow-sm">Pendent</Badge>;
     }
-    if (s.includes('aprovat') || s.includes('aceptada') || s === 'approved' || s === 'aceptado' || s === 'aceptada') {
-      return <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-sm">Aprovat</Badge>;
+    
+    // Verificació d'estat aprovat/acceptat (EN VERD)
+    if (s.includes('aprovat') || s.includes('aceptada') || s.includes('aprovada') || s.includes('aceptado') || s === 'approved') {
+      return <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-sm">{status}</Badge>;
     }
+    
+    // Verificació d'estat rebutjat
     if (s.includes('rebutjat') || s.includes('rechazada') || s === 'rejected' || s === 'rebutjada') {
-      return <Badge variant="destructive" className="shadow-sm">Rebutjat</Badge>;
+      return <Badge variant="destructive" className="shadow-sm">{status}</Badge>;
     }
     
     return <Badge variant="outline" className="shadow-sm">{status}</Badge>;
