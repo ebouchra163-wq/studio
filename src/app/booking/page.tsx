@@ -33,11 +33,9 @@ import {
   History, 
   Package, 
   MapPin,
-  AlertCircle,
   RefreshCcw
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 
 // URL de SheetDB apuntant a la pestanya 'solicituds'
@@ -78,17 +76,18 @@ export default function BookingPage() {
     
     try {
       const response = await fetch(SHEETDB_API_URL);
-      let apiData: any[] = [];
-      
-      if (response.ok) {
-        apiData = await response.json();
+      if (!response.ok) {
+         // No llancem error fatal, simplement seguim per carregar dades locals
+         console.warn("No s'ha pogut connectar amb SheetDB.");
       }
+      
+      const apiData = response.ok ? await response.json() : [];
 
       // Carreguem les reserves locals (fallback de seguretat)
       const localDataRaw = localStorage.getItem(`local_bookings_${userName.trim().toLowerCase()}`);
       const localData: BookingRecord[] = localDataRaw ? JSON.parse(localDataRaw) : [];
 
-      // Filtrem les dades de l'API per l'usuari actual (insensible a majúscules/espais)
+      // Filtrem les dades de l'API per l'usuari actual
       const userClean = userName.trim().toLowerCase();
       const filteredApiData = Array.isArray(apiData) 
         ? apiData.filter((b: any) => b.usuari && b.usuari.trim().toLowerCase() === userClean)
@@ -105,7 +104,7 @@ export default function BookingPage() {
       setBookings(unique);
     } catch (err: any) {
       console.error("Error carregant reserves:", err);
-      setError("No s'ha pogut carregar l'històric de l'Excel, però pots veure les dades desades al teu navegador.");
+      setError("Error de connexió.");
     } finally {
       setLoading(false);
     }
@@ -152,6 +151,7 @@ export default function BookingPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({ data: [newBooking] }),
       });
@@ -164,23 +164,28 @@ export default function BookingPage() {
         reset();
         await fetchBookings(currentUser);
       } else {
-        // Fallback local si l'API falla (per exemple per permisos)
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || "No s'ha pogut escriure a l'Excel.";
+        
+        // Fallback local si l'API falla per permisos (403)
         saveLocally(newBooking, currentUser);
         toast({
           variant: "destructive",
           title: "Desada localment",
-          description: "No s'ha pogut escriure a l'Excel (revisa permisos a SheetDB), però la veuràs aquí mateix.",
+          description: response.status === 403 
+            ? "L'Excel està en mode lectura, però hem guardat la teva sol·licitud aquí." 
+            : errorMessage,
         });
         reset();
         await fetchBookings(currentUser);
       }
     } catch (err: any) {
-      console.error("Error enviant:", err);
+      console.error("Error enviant reserva:", err);
       saveLocally(newBooking, currentUser);
       toast({
         variant: "destructive",
         title: "Connexió fallida",
-        description: "Hem guardat la teva sol·licitud al navegador.",
+        description: "Hem guardat la teva sol·licitud al teu navegador.",
       });
       reset();
       await fetchBookings(currentUser);
@@ -199,11 +204,20 @@ export default function BookingPage() {
 
   const getStatusBadge = (status: string, isLocal?: boolean) => {
     if (isLocal) return <Badge variant="secondary" className="bg-slate-200 text-slate-700">Pendent (Local)</Badge>;
-    const s = (status || 'Pendent').toLowerCase();
-    if (s.includes('pendent')) return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none">Pendent</Badge>;
-    if (s.includes('aprovat')) return <Badge className="bg-green-600 hover:bg-green-700 text-white border-none">Aprovat</Badge>;
-    if (s.includes('rebutjat')) return <Badge variant="destructive">Rebutjat</Badge>;
-    return <Badge variant="outline">{status}</Badge>;
+    
+    const s = (status || 'Pendent').trim().toLowerCase();
+    
+    if (s.includes('pendent') || s === 'pending') {
+      return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none shadow-sm">Pendent</Badge>;
+    }
+    if (s.includes('aprovat') || s.includes('aceptada') || s === 'approved' || s === 'aceptado' || s === 'aceptada') {
+      return <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-sm">Aprovat</Badge>;
+    }
+    if (s.includes('rebutjat') || s.includes('rechazada') || s === 'rejected' || s === 'rebutjada') {
+      return <Badge variant="destructive" className="shadow-sm">Rebutjat</Badge>;
+    }
+    
+    return <Badge variant="outline" className="shadow-sm">{status}</Badge>;
   };
 
   if (!currentUser && loading) {
@@ -297,8 +311,8 @@ export default function BookingPage() {
               <h2 className="text-2xl font-bold">Les meves sol·licituds</h2>
             </div>
             {currentUser && (
-              <Button variant="ghost" size="icon" onClick={() => fetchBookings(currentUser)} disabled={loading}>
-                <RefreshCcw className={cn("h-5 w-5", loading && "animate-spin")} />
+              <Button variant="ghost" size="sm" onClick={() => fetchBookings(currentUser)} disabled={loading}>
+                <RefreshCcw className={cn("h-4 w-4", loading && "animate-spin")} />
               </Button>
             )}
           </div>
