@@ -203,8 +203,7 @@ export default function BookingPage() {
       return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none shadow-sm">Pendent</Badge>;
     }
     
-    // Verificació d'estat aprovat/acceptat (EN VERD)
-    // Fem la verificació més robusta per a variants com "Aceptada", "Acceptada", "Aprobado", etc.
+    // Verificació d'estat aprovat/acceptat (EN VERD CLAR)
     if (
       s.includes('aprov') || 
       s.includes('acept') || 
@@ -213,7 +212,7 @@ export default function BookingPage() {
       s === 'ok' ||
       s === 'lliurat'
     ) {
-      return <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-sm">{status}</Badge>;
+      return <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200 shadow-sm">{status}</Badge>;
     }
     
     // Verificació d'estat rebutjat
