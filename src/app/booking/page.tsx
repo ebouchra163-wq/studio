@@ -39,6 +39,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 
+// URL de SheetDB apuntant específicament a la pestanya 'solicituds'
 const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/n5eliliog16ts?sheet=solicituds';
 
 const bookingSchema = z.object({
@@ -72,16 +73,22 @@ export default function BookingPage() {
     setLoading(true);
     setError(null);
     try {
+      // Fem el GET directament a la pestanya de solicituds
       const response = await fetch(SHEETDB_API_URL);
       if (!response.ok) {
-        throw new Error("No s'ha pogut connectar amb el servidor de reserves.");
+        throw new Error("No s'ha pogut connectar amb el servidor.");
       }
       const data = await response.json();
       
       if (Array.isArray(data)) {
-        // Filtrem per l'usuari actual
-        const userBookings = data.filter((b: any) => b.usuari === userName);
-        setBookings(userBookings.reverse()); // Les més recents primer
+        // Filtrem per l'usuari actual (case-insensitive per seguretat)
+        const userBookings = data.filter((b: any) => 
+          b.usuari && b.usuari.toLowerCase() === userName.toLowerCase()
+        );
+        // Ordenem per ID o data si és possible, aquí fem un reverse simple per mostrar les últimes primer
+        setBookings(userBookings.reverse());
+      } else {
+        setBookings([]);
       }
     } catch (err: any) {
       console.error("Error carregant reserves:", err);
@@ -111,15 +118,16 @@ export default function BookingPage() {
     }
   });
 
-  const onSubmit = async (data: BookingFormValues) => {
+  const onSubmit = async (formData: BookingFormValues) => {
     if (!currentUser) return;
     
     setSubmitting(true);
     const bookingId = `BK-${Math.floor(100000 + Math.random() * 900000)}`;
     const today = new Date().toISOString().split('T')[0];
     
-    const detallsConcatenats = `Servei: ${data.servei} | Origen: ${data.origen} | Destí: ${data.desti} | Càrrega: ${data.carrega}`;
+    const detallsConcatenats = `Servei: ${formData.servei} | Origen: ${formData.origen} | Destí: ${formData.desti} | Càrrega: ${formData.carrega}`;
 
+    // Aquest objecte ha de coincidir EXACTAMENT amb les capçaleres de l'Excel
     const newBooking = {
       id: bookingId,
       data: today,
@@ -132,6 +140,7 @@ export default function BookingPage() {
       const response = await fetch(SHEETDB_API_URL, {
         method: 'POST',
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ data: [newBooking] }),
@@ -143,15 +152,18 @@ export default function BookingPage() {
           description: `La teva reserva ${bookingId} s'ha registrat correctament.`,
         });
         reset();
-        fetchBookings(currentUser);
+        // Donem un petit marge perquè l'Excel s'actualitzi abans de tornar a carregar
+        setTimeout(() => fetchBookings(currentUser), 500);
       } else {
-        throw new Error("Error en l'enviament");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error en l'enviament");
       }
-    } catch (err) {
+    } catch (err: any) {
+      console.error("Error enviant reserva:", err);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "No s'ha pogut enviar la sol·licitud. Intenta-ho més tard.",
+        description: "No s'ha pogut crear la reserva. Revisa la teva connexió.",
       });
     } finally {
       setSubmitting(false);
@@ -159,17 +171,15 @@ export default function BookingPage() {
   };
 
   const getStatusBadge = (status: string) => {
-    const s = status || 'Pendent';
-    switch (s.toLowerCase()) {
-      case 'pendent':
-        return <Badge className="bg-amber-500 hover:bg-amber-600">Pendent</Badge>;
-      case 'aprovat':
-        return <Badge className="bg-green-600 hover:bg-green-700">Aprovat</Badge>;
-      case 'rebutjat':
-        return <Badge variant="destructive">Rebutjat</Badge>;
-      default:
-        return <Badge variant="outline">{s}</Badge>;
+    const s = (status || 'Pendent').toLowerCase();
+    if (s.includes('pendent')) {
+      return <Badge className="bg-amber-500 hover:bg-amber-600">Pendent</Badge>;
+    } else if (s.includes('aprovat')) {
+      return <Badge className="bg-green-600 hover:bg-green-700">Aprovat</Badge>;
+    } else if (s.includes('rebutjat')) {
+      return <Badge variant="destructive">Rebutjat</Badge>;
     }
+    return <Badge variant="outline">{status}</Badge>;
   };
 
   if (!currentUser && loading) {
@@ -273,7 +283,7 @@ export default function BookingPage() {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <p className="mt-2 text-muted-foreground">Carregant dades des del servidor...</p>
+              <p className="mt-2 text-muted-foreground">Carregant dades...</p>
             </div>
           ) : error ? (
             <Alert variant="destructive">
@@ -296,8 +306,8 @@ export default function BookingPage() {
             </Card>
           ) : (
             <div className="space-y-4">
-              {bookings.map((booking) => (
-                <Card key={booking.id} className="transition-shadow hover:shadow-md">
+              {bookings.map((booking, idx) => (
+                <Card key={booking.id || idx} className="transition-shadow hover:shadow-md">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
