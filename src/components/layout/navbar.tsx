@@ -11,8 +11,6 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { useUser, useAuth } from "@/firebase";
-import { signOut } from "firebase/auth";
 
 const mainNavLinks = [
   { href: "/", label: "Inici", icon: Home },
@@ -25,27 +23,30 @@ export function Navbar() {
   const isMobile = useIsMobile();
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading } = useUser();
-  const auth = useAuth();
+  const [currentUser, setCurrentUser] = React.useState<string | null>(null);
   const [isSheetOpen, setSheetOpen] = React.useState(false);
 
   React.useEffect(() => {
+    setCurrentUser(localStorage.getItem('userName'));
     setSheetOpen(false);
   }, [pathname]);
 
-  const handleLogout = async () => {
-    await signOut(auth);
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userFullName');
+    setCurrentUser(null);
     router.push("/");
     router.refresh();
   };
 
-  if (isMobile === undefined || loading) {
+  if (isMobile === undefined) {
     return null;
   }
   
   const authLinks = (
     <>
-      {user ? (
+      {currentUser ? (
         <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="sm">
               <Link href="/booking">
@@ -78,7 +79,7 @@ export function Navbar() {
 
   const mobileAuthLinks = (
     <>
-      {user ? (
+      {currentUser ? (
         <div className="flex flex-col gap-2">
             <Button asChild variant="outline" className="w-full justify-start">
               <Link href="/booking">

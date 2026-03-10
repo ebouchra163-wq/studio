@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
-import { FirebaseClientProvider } from '@/firebase';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -31,14 +30,12 @@ export default function RootLayout({
           inter.variable
         )}
       >
-        <FirebaseClientProvider>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="relative flex flex-1 flex-col">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-        </FirebaseClientProvider>
+        <div className="flex min-h-screen flex-col">
+          <Navbar />
+          <main className="relative flex flex-1 flex-col">{children}</main>
+          <Footer />
+        </div>
+        <Toaster />
       </body>
     </html>
   );

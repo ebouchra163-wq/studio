@@ -19,8 +19,6 @@ import { Label } from "@/components/ui/label";
 import { LogIn, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useAuth } from "@/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Introdueix un correu electrònic vàlid." }),
@@ -29,11 +27,12 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
+const SHEETDB_USERS_URL = 'https://sheetdb.io/api/v1/n5eliliog16ts?sheet=usuaris';
+
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const auth = useAuth();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -48,16 +47,25 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
-      router.push("/dashboard");
-      router.refresh();
-    } catch (err: any) {
-      console.error("Error durant el login:", err);
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-        setError("Correu o contrasenya incorrectes.");
+      const response = await fetch(SHEETDB_USERS_URL);
+      const users = await response.json();
+      
+      const user = users.find(
+        (u: any) => u.usuari.toLowerCase() === data.email.toLowerCase() && String(u.password) === data.password
+      );
+
+      if (user) {
+        localStorage.setItem('userName', user.usuari);
+        localStorage.setItem('userRole', user.rol);
+        localStorage.setItem('userFullName', user.nom);
+        
+        router.push("/dashboard");
+        router.refresh();
       } else {
-        setError("S'ha produït un error en l'inici de sessió.");
+        setError("Correu o contrasenya incorrectes.");
       }
+    } catch (err) {
+      setError("S'ha produït un error en l'inici de sessió. Revisa la teva connexió.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +77,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle className="text-2xl">Accés d'Usuari</CardTitle>
           <CardDescription>
-            Introdueix les teves credencials de Firebase per accedir.
+            Introdueix les teves credencials per accedir.
           </CardDescription>
         </CardHeader>
         <CardContent>
