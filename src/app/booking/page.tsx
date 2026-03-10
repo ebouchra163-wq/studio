@@ -204,10 +204,12 @@ export default function BookingPage() {
     }
     
     // Verificació d'estat aprovat/acceptat (EN VERD CLAR)
+    // S'inclou la detecció del typo 'Accepatda' que apareix a l'Excel de l'usuari
     if (
       s.includes('aprov') || 
       s.includes('acept') || 
       s.includes('accept') || 
+      s.includes('accepa') || // Suport per al typo 'Accepatda'
       s === 'approved' || 
       s === 'ok' ||
       s === 'lliurat'
