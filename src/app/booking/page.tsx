@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -73,7 +74,6 @@ export default function BookingPage() {
     setLoading(true);
     setError(null);
     try {
-      // Fem el GET directament a la pestanya de solicituds
       const response = await fetch(SHEETDB_API_URL);
       if (!response.ok) {
         throw new Error("No s'ha pogut connectar amb el servidor.");
@@ -127,7 +127,6 @@ export default function BookingPage() {
     
     const detallsConcatenats = `Servei: ${formData.servei} | Origen: ${formData.origen} | Destí: ${formData.desti} | Càrrega: ${formData.carrega}`;
 
-    // Aquest objecte ha de coincidir EXACTAMENT amb les capçaleres de l'Excel
     const newBooking = {
       id: bookingId,
       data: today,
@@ -151,14 +150,14 @@ export default function BookingPage() {
           description: `La teva reserva ${bookingId} s'ha registrat correctament.`,
         });
         reset();
-        // Donem un marge perquè l'Excel s'actualitzi abans de tornar a carregar
-        setTimeout(() => fetchBookings(currentUser), 1000);
+        setTimeout(() => fetchBookings(currentUser), 1500);
       } else {
         const errorData = await response.json();
         const errorMessage = errorData.error || response.statusText || "Error en l'enviament";
         
-        if (response.status === 403) {
-          throw new Error("No tens permisos per escriure a l'Excel. Revisa la configuració de SheetDB (Mode Read/Write).");
+        // Si detectem error de permisos (403), donem un missatge més específic
+        if (response.status === 403 || errorMessage.toLowerCase().includes('permission')) {
+          throw new Error("No tens permisos per escriure a l'Excel. Revisa la configuració de l'API a SheetDB.io (ha d'estar en mode Read/Write).");
         }
         
         throw new Error(errorMessage);
