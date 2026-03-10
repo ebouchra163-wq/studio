@@ -58,7 +58,7 @@ interface BookingRecord {
   usuari: string;
   estat: string;
   detalls: string;
-  isLocal?: boolean; // Marca per identificar reserves desades només localment
+  isLocal?: boolean;
 }
 
 export default function BookingPage() {
@@ -72,36 +72,40 @@ export default function BookingPage() {
   const { toast } = useToast();
 
   const fetchBookings = useCallback(async (userName: string) => {
+    if (!userName) return;
     setLoading(true);
     setError(null);
+    
     try {
       const response = await fetch(SHEETDB_API_URL);
-      let apiData: BookingRecord[] = [];
+      let apiData: any[] = [];
       
       if (response.ok) {
         apiData = await response.json();
-      } else {
-        console.warn("L'API de SheetDB no ha respost correctament. Carregant només dades locals.");
       }
-      
-      // Carreguem també les reserves locals (fallback)
-      const localDataRaw = localStorage.getItem(`local_bookings_${userName}`);
+
+      // Carreguem les reserves locals (fallback de seguretat)
+      const localDataRaw = localStorage.getItem(`local_bookings_${userName.trim().toLowerCase()}`);
       const localData: BookingRecord[] = localDataRaw ? JSON.parse(localDataRaw) : [];
 
-      // Filtrem les dades de l'API per l'usuari actual
+      // Filtrem les dades de l'API per l'usuari actual (insensible a majúscules/espais)
+      const userClean = userName.trim().toLowerCase();
       const filteredApiData = Array.isArray(apiData) 
-        ? apiData.filter((b: any) => b.usuari && b.usuari.toLowerCase() === userName.toLowerCase())
+        ? apiData.filter((b: any) => b.usuari && b.usuari.trim().toLowerCase() === userClean)
         : [];
 
-      // Combinem i ordenem (les més recents primer)
+      // Combinem i ordenem per data
       const combined = [...localData, ...filteredApiData].sort((a, b) => {
         return new Date(b.data).getTime() - new Date(a.data).getTime();
       });
 
-      setBookings(combined);
+      // Eliminem duplicats si la local s'ha sincronitzat amb l'API
+      const unique = combined.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
+
+      setBookings(unique);
     } catch (err: any) {
       console.error("Error carregant reserves:", err);
-      setError("No s'ha pogut carregar l'històric de l'Excel, però pots seguir veient les teves dades locals.");
+      setError("No s'ha pogut carregar l'històric de l'Excel, però pots veure les dades desades al teu navegador.");
     } finally {
       setLoading(false);
     }
@@ -133,8 +137,7 @@ export default function BookingPage() {
     setSubmitting(true);
     const bookingId = `BK-${Math.floor(100000 + Math.random() * 900000)}`;
     const today = new Date().toISOString().split('T')[0];
-    
-    const detallsConcatenats = `Servei: ${formData.servei} | Origen: ${formData.origen} | Destí: ${formData.desti} | Càrrega: ${formData.carrega}`;
+    const detallsConcatenats = `${formData.servei} | Origen: ${formData.origen} -> Destí: ${formData.desti} | Càrrega: ${formData.carrega}`;
 
     const newBooking: BookingRecord = {
       id: bookingId,
@@ -156,62 +159,50 @@ export default function BookingPage() {
       if (response.ok) {
         toast({
           title: "Sol·licitud enviada!",
-          description: `La teva reserva ${bookingId} s'ha registrat correctament a l'Excel.`,
+          description: `La reserva ${bookingId} s'ha registrat a l'Excel.`,
         });
         reset();
-        fetchBookings(currentUser);
+        await fetchBookings(currentUser);
       } else {
-        const errorData = await response.json().catch(() => ({}));
-        
-        // GESTIÓ DE FALLBACK: Si no hi ha permisos a SheetDB, desem localment
-        if (response.status === 403 || response.status === 401) {
-          saveLocally(newBooking, currentUser);
-          toast({
-            variant: "destructive",
-            title: "Error de permisos a SheetDB",
-            description: "No s'ha pogut escriure a l'Excel. Hem desat la reserva localment al teu navegador.",
-          });
-          reset();
-          fetchBookings(currentUser);
-        } else {
-          throw new Error(errorData.error || "Error desconegut en l'enviament.");
-        }
+        // Fallback local si l'API falla (per exemple per permisos)
+        saveLocally(newBooking, currentUser);
+        toast({
+          variant: "destructive",
+          title: "Desada localment",
+          description: "No s'ha pogut escriure a l'Excel (revisa permisos a SheetDB), però la veuràs aquí mateix.",
+        });
+        reset();
+        await fetchBookings(currentUser);
       }
     } catch (err: any) {
-      console.error("Error enviant reserva:", err);
-      // Fallback en cas d'error de xarxa
+      console.error("Error enviant:", err);
       saveLocally(newBooking, currentUser);
       toast({
         variant: "destructive",
-        title: "Reserva desada localment",
-        description: "Hi ha hagut un problema de connexió. La reserva s'ha guardat al teu dispositiu.",
+        title: "Connexió fallida",
+        description: "Hem guardat la teva sol·licitud al navegador.",
       });
       reset();
-      fetchBookings(currentUser);
+      await fetchBookings(currentUser);
     } finally {
       setSubmitting(false);
     }
   };
 
   const saveLocally = (booking: BookingRecord, userName: string) => {
-    const localDataRaw = localStorage.getItem(`local_bookings_${userName}`);
+    const key = `local_bookings_${userName.trim().toLowerCase()}`;
+    const localDataRaw = localStorage.getItem(key);
     const localData: BookingRecord[] = localDataRaw ? JSON.parse(localDataRaw) : [];
     localData.push({ ...booking, isLocal: true });
-    localStorage.setItem(`local_bookings_${userName}`, JSON.stringify(localData));
+    localStorage.setItem(key, JSON.stringify(localData));
   };
 
   const getStatusBadge = (status: string, isLocal?: boolean) => {
-    if (isLocal) {
-      return <Badge variant="secondary" className="bg-slate-200 text-slate-700">Pendent (Local)</Badge>;
-    }
+    if (isLocal) return <Badge variant="secondary" className="bg-slate-200 text-slate-700">Pendent (Local)</Badge>;
     const s = (status || 'Pendent').toLowerCase();
-    if (s.includes('pendent')) {
-      return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none">Pendent</Badge>;
-    } else if (s.includes('aprovat')) {
-      return <Badge className="bg-green-600 hover:bg-green-700 text-white border-none">Aprovat</Badge>;
-    } else if (s.includes('rebutjat')) {
-      return <Badge variant="destructive">Rebutjat</Badge>;
-    }
+    if (s.includes('pendent')) return <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none">Pendent</Badge>;
+    if (s.includes('aprovat')) return <Badge className="bg-green-600 hover:bg-green-700 text-white border-none">Aprovat</Badge>;
+    if (s.includes('rebutjat')) return <Badge variant="destructive">Rebutjat</Badge>;
     return <Badge variant="outline">{status}</Badge>;
   };
 
@@ -224,22 +215,22 @@ export default function BookingPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-5xl py-12">
+    <div className="container mx-auto max-w-5xl py-12 px-4">
       <div className="mb-8 space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Gestió de Reserves</h1>
-        <p className="text-muted-foreground">Sol·licita nous transports i gestiona les teves comandes actives de forma segura.</p>
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl text-blue-900">Gestió de Reserves</h1>
+        <p className="text-muted-foreground">Sol·licita nous transports i gestiona les teves comandes actives.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
         <div className="lg:col-span-2">
-          <Card className="sticky top-24 shadow-md border-primary/10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <PlusCircle className="h-5 w-5 text-primary" /> Nova Sol·licitud
+          <Card className="sticky top-24 shadow-lg border-primary/10">
+            <CardHeader className="bg-primary/5">
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <PlusCircle className="h-5 w-5" /> Nova Sol·licitud
               </CardTitle>
-              <CardDescription>Omple els detalls del transport que necessites.</CardDescription>
+              <CardDescription>Detalls de la mercaderia a transportar.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="servei">Tipus de Servei</Label>
@@ -266,12 +257,12 @@ export default function BookingPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="origen">Origen</Label>
-                    <Input id="origen" placeholder="Ex: BCN" {...register('origen')} />
+                    <Input id="origen" placeholder="Ex: Barcelona" {...register('origen')} />
                     {errors.origen && <p className="text-xs text-destructive">{errors.origen.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="desti">Destí</Label>
-                    <Input id="desti" placeholder="Ex: NYC" {...register('desti')} />
+                    <Input id="desti" placeholder="Ex: Nova York" {...register('desti')} />
                     {errors.desti && <p className="text-xs text-destructive">{errors.desti.message}</p>}
                   </div>
                 </div>
@@ -280,16 +271,16 @@ export default function BookingPage() {
                   <Label htmlFor="carrega">Descripció de la Càrrega</Label>
                   <Textarea 
                     id="carrega" 
-                    placeholder="Pes, dimensions, quantitat de bultos..." 
+                    placeholder="Pes, volum, dimensions, bultos..." 
                     className="min-h-[100px]"
                     {...register('carrega')}
                   />
                   {errors.carrega && <p className="text-xs text-destructive">{errors.carrega.message}</p>}
                 </div>
 
-                <Button type="submit" className="w-full" disabled={submitting}>
+                <Button type="submit" className="w-full h-12 text-lg" disabled={submitting}>
                   {submitting ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Enviant...</>
+                    <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Enviant...</>
                   ) : (
                     "Enviar Sol·licitud"
                   )}
@@ -302,12 +293,12 @@ export default function BookingPage() {
         <div className="lg:col-span-3">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <History className="h-5 w-5 text-primary" />
+              <History className="h-6 w-6 text-primary" />
               <h2 className="text-2xl font-bold">Les meves sol·licituds</h2>
             </div>
             {currentUser && (
-              <Button variant="ghost" size="sm" onClick={() => fetchBookings(currentUser)} disabled={loading}>
-                <RefreshCcw className={cn("h-4 w-4", loading && "animate-spin")} />
+              <Button variant="ghost" size="icon" onClick={() => fetchBookings(currentUser)} disabled={loading}>
+                <RefreshCcw className={cn("h-5 w-5", loading && "animate-spin")} />
               </Button>
             )}
           </div>
@@ -315,57 +306,43 @@ export default function BookingPage() {
 
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <p className="mt-2 text-muted-foreground">Carregant dades...</p>
+              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+              <p className="mt-4 text-muted-foreground animate-pulse">Sincronitzant amb l'Excel...</p>
             </div>
-          ) : error && bookings.length === 0 ? (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error de connexió</AlertTitle>
-              <AlertDescription>
-                {error}
-                <Button variant="link" className="p-0 h-auto ml-2 text-destructive underline" onClick={() => currentUser && fetchBookings(currentUser)}>
-                  Reintentar
-                </Button>
-              </AlertDescription>
-            </Alert>
           ) : bookings.length === 0 ? (
-            <Card className="border-dashed py-12 text-center">
+            <Card className="border-dashed py-20 text-center bg-muted/20">
               <CardContent>
-                <Package className="mx-auto h-12 w-12 text-muted-foreground/30" />
-                <p className="mt-4 text-lg font-medium">No tens cap sol·licitud activa.</p>
-                <p className="text-sm text-muted-foreground">Fes servir el formulari per crear la teva primera reserva.</p>
+                <Package className="mx-auto h-16 w-16 text-muted-foreground/20" />
+                <p className="mt-6 text-xl font-medium text-muted-foreground">No tens cap sol·licitud activa.</p>
+                <p className="text-sm text-muted-foreground mt-2">Les teves noves reserves apareixeran aquí mateix.</p>
               </CardContent>
             </Card>
           ) : (
             <div className="space-y-4">
-              {error && (
-                <div className="text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-200 mb-2">
-                  Nota: Hi ha hagut problemes de sincronització. Algunes dades podrien no ser les més recents de l'Excel.
-                </div>
-              )}
-              {bookings.map((booking, idx) => (
-                <Card key={booking.id || idx} className={cn("transition-all hover:shadow-md border-l-4", booking.isLocal ? "border-l-slate-400" : "border-l-primary")}>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
+              {bookings.map((booking) => (
+                <Card key={booking.id} className={cn("transition-all hover:shadow-md border-l-4", booking.isLocal ? "border-l-slate-400" : "border-l-primary")}>
+                  <CardHeader className="pb-3 flex flex-row items-start justify-between">
+                    <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-primary">{booking.id}</span>
-                        <span className="text-xs text-muted-foreground">• {booking.data}</span>
+                        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{booking.data}</span>
                       </div>
-                      {getStatusBadge(booking.estat, booking.isLocal)}
+                      <CardTitle className="text-base font-semibold pt-1">
+                         {booking.detalls.split('|')[0].trim()}
+                      </CardTitle>
                     </div>
+                    {getStatusBadge(booking.estat, booking.isLocal)}
                   </CardHeader>
                   <CardContent className="pb-4">
-                    <div className="rounded-md bg-muted/50 p-4 border border-muted">
-                      <p className="text-sm leading-relaxed whitespace-pre-line">{booking.detalls}</p>
+                    <div className="rounded-lg bg-muted/40 p-3 border border-muted text-sm leading-relaxed whitespace-pre-line text-slate-700">
+                      {booking.detalls.includes('|') ? booking.detalls.split('|').slice(1).join(' | ').trim() : booking.detalls}
                     </div>
                   </CardContent>
                   <CardFooter className="pt-0 text-xs text-muted-foreground flex items-center justify-between">
                      <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        Logística Global Care
+                        <MapPin className="h-3 w-3" /> Global Cargo Care
                      </div>
-                     {booking.isLocal && <span className="text-amber-600 font-semibold italic">Només local</span>}
+                     {booking.isLocal && <span className="text-amber-600 font-bold italic text-[10px] uppercase tracking-wider bg-amber-50 px-2 py-0.5 rounded border border-amber-100">Desada localment</span>}
                   </CardFooter>
                 </Card>
               ))}
