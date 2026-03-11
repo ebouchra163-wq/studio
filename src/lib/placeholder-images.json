@@ -20,9 +20,9 @@
     },
     {
       "id": "blog-post-2",
-      "description": "Imatge representativa de logística inversa amb paquets i símbol de reciclatge.",
-      "imageUrl": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-      "imageHint": "recycling logistics"
+      "description": "Interior d'un magatzem dedicat a la logística inversa i processament de devolucions.",
+      "imageUrl": "https://images.unsplash.com/photo-1591392841054-12ca13072c41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "imageHint": "almacén reciclaje"
     },
     {
       "id": "about-us",
@@ -50,9 +50,9 @@
     },
     {
       "id": "reverse-logistics",
-      "description": "Logística inversa, gestió de devolucions i sostenibilitat.",
-      "imageUrl": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-      "imageHint": "recycling packages"
+      "description": "Un centre logístic dedicat a la logística inversa, gestió de devolucions i reciclatge.",
+      "imageUrl": "https://images.unsplash.com/photo-1591392841054-12ca13072c41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "imageHint": "almacén reciclaje"
     }
   ]
 }
