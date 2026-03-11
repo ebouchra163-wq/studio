@@ -74,10 +74,10 @@ export default function Home() {
             El vostre soci de confiança per a solucions globals d'enviament i logística.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-lg shadow-xl">
-              <Link href="#contact">Obtén una Cotització</Link>
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-lg shadow-xl font-bold">
+              <Link href="#contact">Demana un Pressupost</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-black px-8 py-6 text-lg">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-lg shadow-xl font-bold">
               <Link href="#services">Els Nostres Serveis</Link>
             </Button>
           </div>
