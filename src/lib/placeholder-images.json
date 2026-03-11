@@ -38,8 +38,8 @@
     },
     {
       "id": "domestic-freight",
-      "description": "Un camió conduint per una carretera al capvespre.",
-      "imageUrl": "https://images.unsplash.com/photo-1594665877570-2be128f984ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYW1pJUMzJUIzbiUyMGNhcnJldGVyYXxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Un camió modern circulant per una autopista assolellada.",
+      "imageUrl": "https://picsum.photos/seed/truck-highway-sun/1080/720",
       "imageHint": "camión carretera"
     },
     {
