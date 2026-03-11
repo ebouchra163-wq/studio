@@ -38,8 +38,8 @@
     },
     {
       "id": "domestic-freight",
-      "description": "Un camió modern circulant per una autopista assolellada.",
-      "imageUrl": "https://picsum.photos/seed/truck-highway-sun/1080/720",
+      "description": "Un camió de gran tonatge circulant per una autopista.",
+      "imageUrl": "https://images.unsplash.com/photo-1519003722824-194d4455a60c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
       "imageHint": "camión carretera"
     },
     {
