@@ -20,9 +20,9 @@
     },
     {
       "id": "blog-post-2",
-      "description": "Una pila de caixes de cartró a punt per ser reciclades o reutilitzades.",
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnQLukxqLUoZIOYvSkjA8KsP-Vi1xneFxmPw&s",
-      "imageHint": "cajas de devolución"
+      "description": "Imatge representativa de logística inversa amb paquets i símbol de reciclatge.",
+      "imageUrl": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "imageHint": "recycling logistics"
     },
     {
       "id": "about-us",
@@ -50,9 +50,9 @@
     },
     {
       "id": "reverse-logistics",
-      "description": "Caixes apilades en un palet, a punt per a la devolució.",
-      "imageUrl": "https://images.unsplash.com/photo-1463717738788-85fcacb6ac3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYWphcyUyMGRldm9sdWNpJUMzJUIzbnxlbnwwfHx8fDE3NjQxODM0MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "cajas devolución"
+      "description": "Logística inversa, gestió de devolucions i sostenibilitat.",
+      "imageUrl": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "imageHint": "recycling packages"
     }
   ]
 }
