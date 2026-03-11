@@ -54,43 +54,49 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative h-[60vh] w-full">
+      <section className="relative h-[60vh] w-full overflow-hidden">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
             alt={heroImage.description}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-1000 hover:scale-105"
             data-ai-hint={heroImage.imageHint}
             priority
           />
         )}
-        <div className="absolute inset-0 bg-blue-900/80" />
-        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-primary-foreground">
-          <h1 className="font-headline text-4xl font-bold md:text-6xl">
-            <span className="text-orange-500">Global</span> <span className="text-blue-500">Cargo Care</span>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
+        <div className="relative z-10 container mx-auto flex h-full flex-col items-center justify-center text-center text-white px-4">
+          <h1 className="font-headline text-5xl font-extrabold md:text-7xl tracking-tighter">
+            <span className="text-accent">Global</span> <span className="text-primary">Cargo Care</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-lg md:text-xl">
+          <p className="mt-6 max-w-2xl text-lg md:text-2xl font-light opacity-90">
             El vostre soci de confiança per a solucions globals d'enviament i logística.
           </p>
-          <Button asChild size="lg" className="mt-8 bg-black text-white hover:bg-black/80">
-            <Link href="#contact">Obtén una Cotització</Link>
-          </Button>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-lg shadow-xl">
+              <Link href="#contact">Obtén una Cotització</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-black px-8 py-6 text-lg">
+              <Link href="#services">Els Nostres Serveis</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
-      <section id="services" className="w-full py-16 md:py-24">
-        <div className="container mx-auto">
-          <div className="text-center">
-            <h2 className="font-headline text-3xl font-bold md:text-4xl">
+      <section id="services" className="w-full py-20 md:py-32 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="font-headline text-4xl font-bold md:text-5xl text-slate-900">
               Els Nostres Serveis
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+            <div className="mt-4 mx-auto w-24 h-1 bg-accent rounded-full mb-6"></div>
+            <p className="mx-auto max-w-2xl text-slate-600 md:text-xl">
               Oferim una gamma completa de serveis d'enviament i logística
-              adaptats a les vostres necessitats.
+              adaptats a les vostres necessitats amb tecnologia d'última generació.
             </p>
           </div>
-          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-2">
+          <div className="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-2">
             {services.map((service) => {
               const serviceImage = PlaceHolderImages.find(
                 (img) => img.id === service.imageId
@@ -98,27 +104,30 @@ export default function Home() {
               return (
                 <Card
                   key={service.title}
-                  className="flex flex-col overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl"
+                  className="group flex flex-col overflow-hidden rounded-2xl border-none shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                 >
                   {serviceImage && (
-                    <div className="relative h-56 w-full">
+                    <div className="relative h-64 w-full overflow-hidden">
                       <Image
                         src={serviceImage.imageUrl}
                         alt={service.title}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                         data-ai-hint={serviceImage.imageHint}
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                   )}
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-4">
-                      <service.icon className="h-8 w-8 text-primary" />
-                      <span className="text-2xl">{service.title}</span>
+                  <CardHeader className="relative">
+                    <div className="absolute -top-10 left-6 bg-white p-4 rounded-xl shadow-lg text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                      <service.icon className="h-8 w-8" />
+                    </div>
+                    <CardTitle className="pt-6 text-2xl font-bold group-hover:text-primary transition-colors">
+                      {service.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow">
-                    <p className="text-muted-foreground">
+                    <p className="text-slate-600 leading-relaxed text-lg">
                       {service.description}
                     </p>
                   </CardContent>
@@ -129,52 +138,54 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="w-full bg-white py-16 md:py-24">
-        <div className="container mx-auto">
-          <div className="text-center">
-            <h2 className="font-headline text-3xl font-bold md:text-4xl">
+      <section id="contact" className="w-full bg-white py-20 md:py-32">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="font-headline text-4xl font-bold md:text-5xl text-slate-900">
               Contacta'ns
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-              Teniu preguntes o necessiteu una cotització? Ompliu el formulari següent.
+            <div className="mt-4 mx-auto w-24 h-1 bg-primary rounded-full mb-6"></div>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-600 md:text-xl">
+              Teniu preguntes o necessiteu una cotització personalitzada? Ompliu el formulari i ens posarem en contacte en menys de 24 hores.
             </p>
           </div>
-          <Card className="mx-auto mt-12 max-w-2xl">
-            <CardContent className="p-6">
+          <Card className="mx-auto mt-12 max-w-2xl border-none shadow-2xl rounded-3xl overflow-hidden">
+            <CardContent className="p-10">
               <form
                 action="https://formspree.io/f/xyzrjdqq"
                 method="POST"
-                className="space-y-6"
+                className="space-y-8"
               >
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Nom Complet</label>
-                  <Input id="name" name="name" placeholder="John Doe" required />
+                <div className="space-y-3">
+                  <label htmlFor="name" className="text-sm font-bold uppercase tracking-wider text-slate-500">Nom Complet</label>
+                  <Input id="name" name="name" placeholder="Ex: Marc Sala" required className="bg-slate-50 border-none h-14 text-lg rounded-xl focus:ring-2 focus:ring-primary/20" />
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Adreça de Correu Electrònic</label>
+                <div className="space-y-3">
+                  <label htmlFor="email" className="text-sm font-bold uppercase tracking-wider text-slate-500">Adreça de Correu Electrònic</label>
                   <Input
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="john.doe@example.com"
+                    placeholder="marc.sala@exemple.com"
                     required
+                    className="bg-slate-50 border-none h-14 text-lg rounded-xl focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">El Teu Missatge o Consulta</label>
+                <div className="space-y-3">
+                  <label htmlFor="message" className="text-sm font-bold uppercase tracking-wider text-slate-500">La Teva Consulta</label>
                   <Textarea
                     id="message"
                     name="message"
-                    placeholder="Explica'ns com podem ajudar-te..."
-                    className="min-h-[120px]"
+                    placeholder="Explica'ns els detalls del teu enviament..."
+                    className="min-h-[150px] bg-slate-50 border-none text-lg rounded-xl focus:ring-2 focus:ring-primary/20"
                     required
                   />
                 </div>
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full h-16 text-xl font-bold bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/30 rounded-xl"
                 >
-                  <Send className="mr-2 h-4 w-4" /> Envia la Consulta
+                  <Send className="mr-3 h-6 w-6" /> Envia la Consulta
                 </Button>
               </form>
             </CardContent>
