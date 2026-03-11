@@ -21,8 +21,8 @@
     {
       "id": "blog-post-2",
       "description": "Interior d'un magatzem dedicat a la logística inversa i processament de devolucions.",
-      "imageUrl": "https://images.unsplash.com/photo-1591392841054-12ca13072c41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-      "imageHint": "almacén reciclaje"
+      "imageUrl": "https://images.unsplash.com/photo-1565891741441-64926e441838?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "imageHint": "almacén devoluciones"
     },
     {
       "id": "about-us",
@@ -51,8 +51,8 @@
     {
       "id": "reverse-logistics",
       "description": "Un centre logístic dedicat a la logística inversa, gestió de devolucions i reciclatge.",
-      "imageUrl": "https://images.unsplash.com/photo-1591392841054-12ca13072c41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-      "imageHint": "almacén reciclaje"
+      "imageUrl": "https://images.unsplash.com/photo-1565891741441-64926e441838?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "imageHint": "almacén devoluciones"
     }
   ]
 }
