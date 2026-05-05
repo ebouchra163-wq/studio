@@ -2,7 +2,7 @@
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogIn, Menu, PackageSearch, Home, Newspaper, Users, User, CalendarDays, LogOut } from "lucide-react";
+import { LogIn, Menu, PackageSearch, Home, Newspaper, Users, User, CalendarDays, LogOut, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
@@ -17,6 +17,7 @@ const mainNavLinks = [
   { href: "/about", label: "Sobre Nosaltres", icon: Users },
   { href: "/blog", label: "Blog", icon: Newspaper },
   { href: "/tracking", label: "Seguiment", icon: PackageSearch },
+  { href: "/complaints", label: "Queixes", icon: MessageSquare },
 ];
 
 export function Navbar() {
@@ -172,7 +173,7 @@ export function Navbar() {
               className={cn(
                 "transition-colors hover:text-primary",
                 pathname === link.href
-                  ? "text-primary font-bold"
+                  ? "text-primary font-bold border-b-2 border-primary"
                   : "text-muted-foreground"
               )}
             >
